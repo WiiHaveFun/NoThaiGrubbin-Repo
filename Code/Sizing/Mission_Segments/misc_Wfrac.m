@@ -11,9 +11,10 @@ switch segment
     case "takeoff"
         Wfrac = 0.99;
     case "climb"
-        Wfrac = 
+        Wfrac = 0.96;
     case "descent"
         Wfrac = 0.99;
     case "landing"
         Wfrac = 0.995;
+end
 end
