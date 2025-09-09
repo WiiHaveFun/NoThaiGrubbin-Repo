@@ -1,0 +1,9 @@
+function d = get_climb_dist(V_climb, climb_rate, angle, altitude)
+% GET_CLIMB_DIST  Calculates the distance traveled during a climb segment.
+%   d = GET_CLIMB_DIST(h, M) calculate the distance traveled during a climb
+%   segment.
+
+t = altitude ./ climb_rate;
+
+end
+
