@@ -7,9 +7,10 @@ Wfrac = Wfrac .* misc_Wfrac("taxi");
 Wfrac = Wfrac .* misc_Wfrac("takeoff");
 % Climb and accelerate
 Wfrac = Wfrac .* climb_acc_Wfrac(0.0, ac.initial.M_cruise);
+d_climb = get_climb_dist(ac.initial.climb_angle, ac.initial.h_cruise);
 % Cruise climb to combat
 LDmax = sub_LDmax_est(ac.initial.AR, ac.initial.M_cruise);
-Wfrac = Wfrac .* cruise_Wfrac(ac.strike.R, ac.initial.V_cruise, ac.initial.TSFC_dry, 0.943.*LDmax);
+Wfrac = Wfrac .* cruise_Wfrac(ac.strike.R - d_climb, ac.initial.V_cruise, ac.initial.TSFC_dry, 0.943.*LDmax);
 % Descent to combat
 Wfrac = Wfrac .* misc_Wfrac("descent");
 % Combat acceleration
@@ -21,9 +22,10 @@ Wf_combat = combat_Wf(ac.initial.TSFC_dry, ac.initial.T_mil, ac.strike.t_combat)
 Wfrac = Wfrac .* (1 - Wf_combat ./ (Wfrac .* ac.initial.W0));
 % Climb and accelerate
 Wfrac = Wfrac .* climb_acc_Wfrac(0.0, ac.initial.M_cruise);
+d_climb = get_climb_dist(ac.initial.climb_angle, ac.initial.h_cruise);
 % Cruise climb back
 LDmax = sub_LDmax_est(ac.initial.AR, ac.initial.M_cruise);
-Wfrac = Wfrac .* cruise_Wfrac(ac.strike.R, ac.initial.V_cruise, ac.initial.TSFC_dry, 0.943.*LDmax);
+Wfrac = Wfrac .* cruise_Wfrac(ac.strike.R - d_climb, ac.initial.V_cruise, ac.initial.TSFC_dry, 0.943.*LDmax);
 % Descent to loiter
 Wfrac = Wfrac .* misc_Wfrac("descent");
 % Loiter
