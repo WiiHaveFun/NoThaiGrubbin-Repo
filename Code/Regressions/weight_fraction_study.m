@@ -89,7 +89,7 @@ coeffs_comp_1 = [C, A];
 [A, C] = fit_We_W0(W0_non, We_non./W0_non);
 coeffs_non_2 = [C, A];
 
-figure(1);
+figure(3);
 clf;
 scatter(W0_comp, We_comp./W0_comp, 50, "red");
 hold on;
@@ -126,7 +126,7 @@ coeffs_int = [C, A];
 [A, C] = fit_We_W0(W0_ext, We_ext./W0_ext);
 coeffs_ext = [C, A];
 
-figure(1);
+figure(4);
 clf;
 scatter(W0_int, We_int./W0_int, 50, "red");
 hold on;
@@ -156,7 +156,7 @@ Wf = [7000, 14076, 8818.49, 11077.2, 5399.2, 13729.2, 16000, 14500, 20700];
 p_fuel = polyfit(We, Wf, 1);
 We_in = linspace(10000, 50000, 100);
 
-figure(3);
+figure(5);
 clf;
 scatter(We, Wf, 50);
 hold on;
