@@ -1,6 +1,13 @@
+%% Plot options
+fontsize = 10;
+width = 5;
+height = 3;
+
+%% Reference Regressions
+
 coeffs_raymer = [-0.13, 2.34];
 coeffs_nicolai = [-0.053, 0.911];
-coeffs_raymer_comp = [-0.13, 0.9.*2.34];
+coeffs_raymer_comp = [-0.13, 0.95.*2.34];
 coeffs_nicolai_comp = [-0.053, 0.84.*0.911];
 
 %% 1 vs. 2 crew
@@ -28,17 +35,18 @@ plot(W0_in, get_weight_frac(coeffs_crew_2, W0_in), "-b");
 plot(W0_in, get_weight_frac(coeffs_raymer, W0_in), "--k");
 plot(W0_in, get_weight_frac(coeffs_nicolai, W0_in), "-.k");
 
-plot(W0_in, get_weight_frac(coeffs_raymer_comp, W0_in), "--m");
-plot(W0_in, get_weight_frac(coeffs_nicolai_comp, W0_in), "-.m");
-
-xlabel("W_0 (lbf)");
-ylabel("W_e/W_0")
+xlabel("$W_0$ (lb)", "Interpreter", "latex", "FontSize", fontsize);
+ylabel("$W_e/W_0$", "Interpreter", "latex", "FontSize", fontsize);
 xlim([20000, 90000]);
 ylim([0, 1]);
 set(gca, 'XScale', 'log');
-legend(["1 crew", "2 crew"]);
+legend(["", "", "1 crew", "2 crew", "Raymer", "Nicolai"], "Interpreter", "latex", "FontSize", fontsize);
 
-saveas(gcf, "crew_fit.png");
+set(gca, 'TickLabelInterpreter', 'latex');
+set(gcf, "Units", "Inches", "Position", [3 3 width height]);
+
+set(gcf, 'PaperUnits', 'inches', 'PaperPosition', [0 0 width height]);
+saveas(gcf, "crew_fit.svg");
 
 %% 1 vs. 2 engines
 We_eng_1 = [18589, 14330, 15652, 34800, 29300];
@@ -65,17 +73,18 @@ plot(W0_in, get_weight_frac(coeffs_eng_2, W0_in), "-b");
 plot(W0_in, get_weight_frac(coeffs_raymer, W0_in), "--k");
 plot(W0_in, get_weight_frac(coeffs_nicolai, W0_in), "-.k");
 
-plot(W0_in, get_weight_frac(coeffs_raymer_comp, W0_in), "--m");
-plot(W0_in, get_weight_frac(coeffs_nicolai_comp, W0_in), "-.m");
-
-xlabel("W_0 (lbf)");
-ylabel("W_e/W_0")
+xlabel("$W_0$ (lb)", "Interpreter", "latex", "FontSize", fontsize);
+ylabel("$W_e/W_0$", "Interpreter", "latex", "FontSize", fontsize);
 xlim([20000, 90000]);
 ylim([0, 1]);
 set(gca, 'XScale', 'log');
-legend(["1 engine", "2 engine"]);
+legend(["", "", "1 engine", "2 engine", "Raymer", "Nicolai"], "Interpreter", "latex", "FontSize", fontsize);
 
-saveas(gcf, "engine_fit.png");
+set(gca, 'TickLabelInterpreter', 'latex');
+set(gcf, "Units", "Inches", "Position", [3 3 width height]);
+
+set(gcf, 'PaperUnits', 'inches', 'PaperPosition', [0 0 width height]);
+saveas(gcf, "engine_fit.svg");
 
 %% Composite vs. Non-Composite
 We_comp = [29300, 21495, 43340, 23000, 32081, 34800];
@@ -83,11 +92,11 @@ W0_comp = [65918, 50706, 83500, 51900, 66000, 70000];
 We_non = [18589, 29000, 31700, 43735];
 W0_non = [37500, 68000, 81000, 74350];
 
-[A, C] = fit_We_W0(W0_comp, We_comp./W0_comp, -0.053);
-coeffs_comp_1 = [C, A];
-
 [A, C] = fit_We_W0(W0_non, We_non./W0_non);
 coeffs_non_2 = [C, A];
+
+[A, C] = fit_We_W0(W0_comp, We_comp./W0_comp, C);
+coeffs_comp_1 = [C, A];
 
 figure(3);
 clf;
@@ -105,26 +114,30 @@ plot(W0_in, get_weight_frac(coeffs_nicolai, W0_in), "-.k");
 plot(W0_in, get_weight_frac(coeffs_raymer_comp, W0_in), "--m");
 plot(W0_in, get_weight_frac(coeffs_nicolai_comp, W0_in), "-.m");
 
-xlabel("W_0 (lbf)");
-ylabel("W_e/W_0")
+xlabel("$W_0$ (lb)", "Interpreter", "latex", "FontSize", fontsize);
+ylabel("$W_e/W_0$", "Interpreter", "latex", "FontSize", fontsize);
 xlim([20000, 90000]);
 ylim([0, 1]);
 set(gca, 'XScale', 'log');
-legend(["Composite", "Non-composite"]);
+legend(["", "", "Composite", "Non-composite", "Raymer", "Nicolai", "Raymer Comp.", "Nicolai Comp."], "Interpreter", "latex", "FontSize", fontsize, 'NumColumns', 2);
 
-saveas(gcf, "composite_fit.png");
+set(gca, 'TickLabelInterpreter', 'latex');
+set(gcf, "Units", "Inches", "Position", [3 3 width height]);
 
-%% Composite vs. Non-Composite
+set(gcf, 'PaperUnits', 'inches', 'PaperPosition', [0 0 width height]);
+saveas(gcf, "composite_fit.svg");
+
+%% Internal vs. External Ordnance
 We_int = [29300, 43340, 37479, 34800];
 W0_int = [65918, 83500, 81571, 70000];
 We_ext = [18589, 29000, 21495, 23000, 14330, 31700, 43735, 32081, 15652, 39462, 39021];
 W0_ext = [37500, 68000, 50706, 51900, 27557, 81000, 74350, 66000, 30864, 76059, 77161];
 
-[A, C] = fit_We_W0(W0_int, We_int./W0_int, -0.053);
-coeffs_int = [C, A];
-
 [A, C] = fit_We_W0(W0_ext, We_ext./W0_ext);
 coeffs_ext = [C, A];
+
+[A, C] = fit_We_W0(W0_int, We_int./W0_int, C);
+coeffs_int = [C, A];
 
 figure(4);
 clf;
@@ -139,14 +152,18 @@ plot(W0_in, get_weight_frac(coeffs_ext, W0_in), "-b");
 plot(W0_in, get_weight_frac(coeffs_raymer, W0_in), "--k");
 plot(W0_in, get_weight_frac(coeffs_nicolai, W0_in), "-.k");
 
-xlabel("W_0 (lbf)");
-ylabel("W_e/W_0")
+xlabel("$W_0$ (lb)", "Interpreter", "latex", "FontSize", fontsize);
+ylabel("$W_e/W_0$", "Interpreter", "latex", "FontSize", fontsize);
 xlim([20000, 90000]);
 ylim([0, 1]);
 set(gca, 'XScale', 'log');
-legend(["Internal", "External"]);
+legend(["", "", "Internal", "External", "Raymer", "Nicolai"], "Interpreter", "latex", "FontSize", fontsize);
 
-saveas(gcf, "ordinance_fit.png");
+set(gca, 'TickLabelInterpreter', 'latex');
+set(gcf, "Units", "Inches", "Position", [9.5 6 width height]);
+
+set(gcf, 'PaperUnits', 'inches', 'PaperPosition', [0 0 width height]);
+saveas(gcf, "ordnance_fit.svg");
 
 %% Fuel weight vs. Empty weight
 
@@ -162,10 +179,14 @@ scatter(We, Wf, 50);
 hold on;
 plot(We_in, polyval(p_fuel, We_in), "-k");
 
-xlabel("W_e (lbf)");
-ylabel("W_f (lbf)")
+xlabel("$W_e$ (lb)", "Interpreter", "latex", "FontSize", fontsize);
+ylabel("$W_{f,\mathrm{int}}$ (lb)", "Interpreter", "latex", "FontSize", fontsize);
 
-saveas(gcf, "fuel_fit.png");
+set(gca, 'TickLabelInterpreter', 'latex');
+set(gcf, "Units", "Inches", "Position", [9.5 6 width height]);
+
+set(gcf, 'PaperUnits', 'inches', 'PaperPosition', [0 0 width height]);
+saveas(gcf, "fuel_fit.svg");
 
 %% Functions
 function W0_We = get_weight_frac(coeffs, W0)

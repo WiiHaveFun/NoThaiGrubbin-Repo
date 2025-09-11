@@ -16,7 +16,7 @@ ac.initial.V_climb = 151.2 .* 77.784;               % Climb speed (kts to m/s)
 ac.initial.climb_rate = 55.7 .* 77.784;             % Rate of climb (kts to m/s)
 ac.initial.climb_angle = deg2rad(13);               % Climb angle (deg to rad)
 % Aircraft geometry
-ac.initial.AR = 4;                                  % Aspect ratio
+ac.initial.AR = 3;                                  % Aspect ratio
 % Engine performance
 ac.initial.TSFC_dry = 0.82 ./ 3600;                 % Dry thrust specific fuel consumption (lb/lb-s to N/N-s)
 ac.initial.TSFC_wet = 1.844 ./ 3600;
@@ -27,12 +27,12 @@ ac.initial.W0 = 60000 .* 4.44822;                   % Takeoff weight (lb to N)
 ac.initial.We = 30000 .* 4.44822;                   % Empty weight (lb to N)
 ac.initial.Wf = 24800 .* 4.44822;                   % Fuel weight (lb to N)
 ac.initial.W_crew = 200 .* 4.44822;                 % Crew weight (lb to N)
-ac.initial.W_pay = 5000 .* 4.44822;                 % Payload weight (lb to N)
+ac.initial.W_pay = 2460 .* 4.44822;                 % Payload weight (lb to N)
 
 % Air-to-air mission parameters
-ac.a2a.R = 1000 .* 1852;                            % Combat radius (nm to m)
+ac.a2a.R = 957.143 .* 1852;                            % Combat radius (nm to m)
 ac.a2a.M_dash = 2.0;                                % Dash Mach number
-ac.a2a.t_combat = 5 .* 60;                          % Combat time (min to s)
+ac.a2a.t_combat = 4.35714 .* 60;                          % Combat time (min to s)
 ac.a2a.t_loiter = 20 .* 60;                         % Loiter time (min to s)
 ac.a2a.h_combat = 10000 .* 0.3048;                  % Cruise altitude (ft to m)
 
