@@ -5,14 +5,14 @@ function cst = cost(ac)
 % All units are imperial (ft-lb-s)
 
 %% Aircraft struct TODO put in aircraft.m
-ac_num_crew = 1;
-ac_num_engines = 2;
+ac_num_crew = ac.initial.num_crew;
+ac_num_engines = ac.initial.num_eng;
 
-ac_num_AIM120C_a2a = 6;
-ac_num_AIM9X_a2a = 2;
+ac_num_AIM120C_a2a = ac.a2a.num_120;
+ac_num_AIM9X_a2a = ac.a2a.num_9x;
 
-ac_num_JDAM_strike = 4;
-ac_num_AIM9X_strike = 2;
+ac_num_JDAM_strike = ac.strike.num_JDAM;
+ac_num_AIM9X_strike = ac.strike.num_9x;
 
 %% Auxillary
 [cst.aux.block_time_a2a, cst.aux.block_time_strike] = get_block_time(ac);  % Block time for each mission (hours)
