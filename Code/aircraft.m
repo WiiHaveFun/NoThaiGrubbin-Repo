@@ -16,7 +16,7 @@ ac.initial.V_climb = 151.2 .* 77.784;               % Climb speed (kts to m/s)
 ac.initial.climb_rate = 55.7 .* 77.784;             % Rate of climb (kts to m/s)
 ac.initial.climb_angle = deg2rad(13);               % Climb angle (deg to rad)
 % Aircraft geometry
-ac.initial.AR = 3;                                  % Aspect ratio
+ac.initial.AR = 4;                                  % Aspect ratio
 % Engine performance
 ac.initial.TSFC_dry = 0.82 ./ 3600;                 % Dry thrust specific fuel consumption (lb/lb-s to N/N-s)
 ac.initial.TSFC_wet = 1.844 ./ 3600;

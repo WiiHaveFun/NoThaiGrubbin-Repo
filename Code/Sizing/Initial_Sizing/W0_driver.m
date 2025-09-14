@@ -15,8 +15,11 @@ a2a_t_combat = linspace(2, 5, n) .* 60;
 
 W0 = zeros(n);
 
-Wfrac_reg.A = 0.8570 .* 0.224809.^-0.0557;
-Wfrac_reg.C = -0.0557;
+% Wfrac_reg.A = 0.8570 .* 0.224809.^-0.0557;
+% Wfrac_reg.C = -0.0557;
+
+Wfrac_reg.A = 2.3400 .* 0.224809.^-0.1300;
+Wfrac_reg.C = -0.1300;
 
 for i = 1:n
     for j = 1:n
@@ -31,7 +34,7 @@ end
 
 figure(1);
 clf;
-contour(a2a_R./1852, a2a_t_combat./60, W0./4.44822, 4e4:1e4:9e4, "-k", "ShowText", "on");
+contour(a2a_R./1852, a2a_t_combat./60, W0./4.44822, 4e4:1e4:15e4, "-k", "ShowText", "on");
 
 grid on;
 
@@ -48,8 +51,6 @@ saveas(gcf, "a2a_weight.svg");
 
 %%
 ac = aircraft();
-
-W0 = zeros(n);
 
 Wfrac_reg.A = 0.8570 .* 0.224809.^-0.0557;
 Wfrac_reg.C = -0.0557;
