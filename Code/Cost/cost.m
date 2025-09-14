@@ -34,7 +34,9 @@ cst.EFCW.life_support = inflation(1999, 195000);  % Life support cost (USD), Eje
 
 cst.EFCW.mass_avionics = 2500;  % Avionics weight (lb), RFP
 cst.EFCW.C_lb_avionics = inflation(2012, mean([4000, 8000]));  % Avionics price per pound (USD/lb), Raymer 18.4.2
-cst.EFCW.C_avionics = cst.EFCW.mass_avionics * cst.EFCW.C_lb_avionics;  % Avionics cost (USD)
+cst.EFCW.C_avionics = 5400 * cst.EFCW.C_lb_avionics;  % Avionics cost (USD), guessed so avionics cost is 0.40(AEP), Roskam VIII Appendix C
+% = Before Avionics cost assumed 2500 lbs in cst.EFCW.C_avionics = 
+% cst.EFCW.mass_avionics * cst.EFCW.C_lb_avionics;  % Avionics cost (USD)
 
 cst.EFCW.surface_treat_per_FH = mean([500000, 1000000]) / 1200;  % Surface treatment cost (USD/FH)
 cst.EFCW.sub_tech = 0;  % Subsystem technologies cost (USD) TODO
