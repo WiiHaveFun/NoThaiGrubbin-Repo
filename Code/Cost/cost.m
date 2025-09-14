@@ -19,9 +19,9 @@ ac_num_AIM9X_strike = 2;
 cst.aux.block_time_avg = mean([cst.aux.block_time_a2a, cst.aux.block_time_strike]);  % Average block time assuming 50-50 mix (hours)
 
 cst.aux.fuel_density = 6.739;  % Fuel density (lb/gal)
-cst.aux.fuel_price = 4.05;  % Fuel price (USD/gal)
+cst.aux.fuel_price = inflation(2024, 4.05);  % Fuel price (USD/gal)
 cst.aux.oil_density = 7.15;  % Lubricating oil density (lb/gal)
-cst.aux.oil_price = 14.58;  % Lubricating oil price (USD/gal)
+cst.aux.oil_price = inflation(2025, 14.58);  % Lubricating oil price (USD/gal)
 cst.aux.price_engine = ac_num_engines * inflation(2010, 4860000);  % F414-GE-400 total price (USD)
 
 %% Environmental, Fleet, Compatibility, Weapons
@@ -38,11 +38,55 @@ cst.EFCW.surface_treat_per_FH = mean([500000, 1000000000]) / 1200;  % Surface tr
 cst.EFCW.sub_tech = 0;  % Subsystem technologies cost (USD) TODO
 
 %% COC
-cst.COC.crew_ratio = 1.1 * ac_num_crew;  % Number of pilots per aircraft, Raymer 18.5.1
-cst.COC.pilot_rate = inflation(2012, 115);  % Pilot hourly rate (USD), Raymer 18.4.2
-cst.COC.pilot_hours = 2080;  % Pilot hours per year
-cst.COC.crew = cst.COC.crew_ratio * cst.COC.pilot_rate * cst.COC.pilot_hours;  % Crew yearly cost (USD)
+% Fuel, oil, lubricant
+cst.MO.F_OL = 1.005;  % Oil and lubricant cost factor, Roskam VIII Page 146
+cst.MO.W_F_used = N2lbs(ac.initial.Wf);  % Fuel used per mission (lbs), TODO calculate for average mission
+cst.MO.FP = cst.aux.fuel_price;  % Fuel price (USD/gal)
+cst.MO.FD = cst.aux.fuel_density;  % Fuel density (lb/gal)
 
+cst.MO.U_ann_flt = mean([250, 400]);  % Annual flight hours, Roskam Fig. 6.1
+cst.MO.t_mis = cst.aux.block_time_avg;  % Average mission time, assuming 50-50 mission mix
+cst.MO.N_mission = cst.MO.U_ann_flt / cst.MO.t_mis;  % Number of missions flown per year, Roskam VIII Eq. 6.3
+
+cst.MO.N_acq = 500;  % Production run number of units, AIAA RFP, Roskam VIII Page 149
+cst.MO.N_res = 0.1 * cst.MO.N_acq;  % Number of units in reserve, Roskam VIII Eq. 6.7
+cst.MO.N_serv = cst.MO.N_acq - cst.MO.N_res ;  % Number of airplanes of type in service w/o lost airplanes, Roskam VIII Eq. 6.4
+cst.MO.L_R = mean([2.1, 1.9]);  % Annual loss rate, Roskam VIII Table 6.2, F-18
+cst.MO.N_yr = mean([20, 40]);  % Years in active service, Roskam VIII Page 149
+cst.MO.N_loss = cst.MO.L_R * 10^-5 * cst.MO.N_serv * cst.MO.U_ann_flt * cst.MO.N_yr;  % Number of airplanes lost due to accidents, Roskam VIII Eq. 6.8. Equation incorrect in Roskam, need to multiply by 10^-5
+cst.MO.N_serv = cst.MO.N_serv - 0.5*cst.MO.N_loss; % Average number of airplanes of type in service, Roskam VIII Eq. 6.4
+
+cst.MO.C_POL = cst.MO.F_OL * cst.MO.W_F_used * (cst.MO.FP / cst.MO.FD) * cst.MO.N_mission * cst.MO.N_serv * cst.MO.N_yr;  % Program cost of fuel, oil, and lubricants, Roskam VIII 6.2
+
+% Direct personnel
+cst.MO.N_crew = ac_num_crew;  % Number of pilots from ac file
+cst.MO.R_cr = 1.1;  % Crew ratio per airplane, Roskam VIII Table 6.1
+cst.MO.Pay_crew = inflation(2012, 115);  % Pilot hourly rate (USD), Raymer 18.4.2 for engineering via Raymer 18.5.2
+cst.MO.OHR_crew = 3;  % Crew overhead rate factor, Roskam VIII Page 154
+cst.MO.C_crewpr = cst.MO.N_serv * cst.MO.N_crew * cst.MO.R_cr * cst.MO.Pay_crew * cst.MO.OHR_crew * cst.MO.N_yr;  % Program cost of aircrews, Roskam VIII Eq. 6.10
+
+cst.MO.MHR_flthr = mean([15, 35]);  % Maintenence man-hours per flight hour, Roskam VIII Table 6.5
+cst.MO.R_m_ml = inflation(1989, 45);  % Military maintenence labor rate, Roskam VIII Page 157
+cst.MO.C_mpersdir = cst.MO.N_serv * cst.MO.N_yr * cst.MO.U_ann_flt * cst.MO.MHR_flthr * cst.MO.R_m_ml;  % Program cost of direct maintenence personnel, Roskam VIII Eq. 6.11
+
+cst.MO.C_PERSDIR = cst.MO.C_crewpr + cst.MO.C_mpersdir;  % Program cost of direct personnel, Roskam VIII Eq. 6.9
+
+% Consumable materials
+cst.MO.R_conmat = inflation(1989, 6.5);  % Average cost for consumable materials, Roskam VIII Eq. 6.15
+cst.MO.C_CONMAT = cst.MO.N_serv * cst.MO.N_yr * cst.MO.U_ann_flt * cst.MO.MHR_flthr * cst.MO.R_conmat;  % Cost of consumable materials, Roskam VIII Eq. 6.14
+
+% Indirect personnel, spares, depot, misc
+cst.MO.f_persind = mean([0.34, 0.32, 0.28, 0.38, 0.38]);  % Fractional contribution of indirect personnel, Roskam VIII Table 6.6
+cst.MO.f_spares = mean([0.13, 0.16, 0.27, 0.12, 0.16]);  % Fractional contribution of spares, Roskam VIII Table 6.6
+cst.MO.f_depot = mean([0.2, 0.15, 0.22, 0.13, 0.16]);  % Fractional contribution of depot, Roskam VIII Table 6.6
+cst.MO.f_misc = mean([0.03, 0.01, 0.04, 0.07, 0.06]);  % Fractional contribution of misc, Roskam VIII Table 6.6
+
+% Total operating cost
+cst.MO.C_OPS = (cst.MO.C_POL + cst.MO.C_PERSDIR + cst.MO.C_CONMAT) / ...
+               (1 - cst.MO.f_persind - cst.MO.f_spares - cst.MO.f_depot - cst.MO.f_misc);  % Program operating cost, Roskam VIII Eq. 6.20
+cst.MO.C_OPS_HR = cst.MO.C_OPS / (cst.MO.N_serv * cst.MO.N_yr * cst.MO.U_ann_flt);  % Program operating cost per flight hour, Roskam VIII Eq. 6.23
+
+% Weapons
 cst.COC.a2a_weapons = ac_num_AIM120C_a2a * cst.EFCW.AIM120_price + ...
                       ac_num_AIM9X_a2a * cst.EFCW.AIM9X_price;  % Single A2A mission weapons cost, assumes all are used (USD)
 
@@ -50,15 +94,6 @@ cst.COC.strike_weapons = ac_num_JDAM_strike * cst.EFCW.JDAM_price + ...
                          ac_num_AIM9X_strike * cst.EFCW.AIM9X_price;  % Single strike mission weapons cost, assumes all are used (USD)
 
 cst.COC.avg_weapons = (0.5 * cst.COC.a2a_weapons) + (0.5 * ac_num_AIM9X_strike);  % Average mission cost, assumes 50-50 mission mix
-
-cst.COC.FH_YR_AC = mean([300, 500]);  % Flight hours per year per aircraft, Raymer 18.5.1
-cst.COC.fuel_cost = 1.02 * N2lbs(ac.initial.Wf) * (cst.aux.fuel_price / cst.aux.fuel_density);  % Fuel cost per mission (USD)
-cst.COC.fuel_cost_yr = (cst.COC.FH_YR_AC / cst.aux.block_time_avg) * cst.COC.fuel_cost;  % Fuel cost per year (USD)
-
-cst.COC.MMH_FH = mean([10, 15]);  % Maintainance hours per flight hour, Raymer 18.5.1
-cst.COC.W_oil = 0.0125 * N2lbs(ac.initial.Wf) * (cst.aux.block_time_avg / 100);  % Oil weight per mission (lb)
-cst.COC.oil_cost = 1.02 * cst.COC.W_oil * (cst.aux.oil_price / cst.aux.oil_density);  % Oil cost per mission (USD)
-cst.COC.oil_cost_yr = (cst.COC.FH_YR_AC / cst.aux.block_time_avg) * cst.COC.oil_cost;  % Oil cost per year (USD)
 
 %% Airplane Unit Cost
 % Labor Cost
@@ -81,12 +116,7 @@ cst.unit.C_man_m = cst.unit.MHR_man_program * cst.unit.R_m_m - cst.unit.C_man_r;
 
 % Materials Cost
 cst.unit.F_mat = 3;  % Material correcton factor (carbon composite), Roskam Part VIII Page 31
-cst.unit.b_year = 1989;  % Roskam year published
-% cst.unit.t_year = 2025;  % Year now
-% cst.unit.b_CEF = 5.17053 + 0.104981 * (cst.unit.b_year - 2006);  % Base CEF, Metabook 3.2
-% cst.unit.t_CEF = 5.17053 + 0.104981 * (cst.unit.t_year - 2006);  % Then CEF, Metabook 3.2
-% cst.unit.CEF = cst.unit.t_CEF / cst.unit.b_CEF;  % CEF, Metabook 3.4
-cst.unit.CEF = inflation(cst.unit.b_year, 1);
+cst.unit.CEF = inflation(1989, 1);  % CEF for Roskam 1989
 
 cst.unit.C_mat_program = 37.632 * cst.unit.F_mat * cst.unit.W_ampr^0.689 * cst.unit.V_max^0.624 * cst.unit.N_program^0.792 * cst.unit.CEF;  % Program materials cost (USD) Roskam VIII Eq. 4.13
 
@@ -141,10 +171,9 @@ cst.unit.R_e_m = cst.unit.R_e_r;  % Engineering labor rate (USD/hour), assumed s
 cst.unit.MHR_aed_program = 0.0396 * cst.unit.W_ampr^0.791 * cst.unit.V_max^1.526 * cst.unit.N_program^0.183 * cst.unit.F_diff * cst.unit.F_cad;  % Program engineering man-hours, Roskam VIII Eq. 4.6
 cst.unit.C_aed_m = cst.unit.MHR_aed_program * cst.unit.R_e_m - cst.unit.C_aed_r;  % Total airframe engineering and design cost, Roskam 4.5b
 
-cst.unit.C_ops_hr = 100; % TODO
 cst.unit.t_pft = 20;  % Test flight hours per unit, Roskam Page 55
 cst.unit.F_ftoh = 4;  % Flight test ovehear factor, Roskam Page 55
-cst.unit.C_fto_m = cst.unit.N_m * cst.unit.C_ops_hr * cst.unit.t_pft * cst.unit.F_ftoh;  % Production flight test operations cost, Roskam VIII Eq. 4.17
+cst.unit.C_fto_m = cst.unit.N_m * cst.MO.C_OPS_HR * cst.unit.t_pft * cst.unit.F_ftoh;  % Production flight test operations cost, Roskam VIII Eq. 4.17
 
 cst.unit.C_MAN = cst.unit.C_aed_m + cst.unit.C_apc_m + cst.unit.C_fto_m;  % Total manufacturing cost, Roskam 4.4
 
