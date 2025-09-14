@@ -24,6 +24,8 @@ cst.aux.oil_density = 7.15;  % Lubricating oil density (lb/gal)
 cst.aux.oil_price = inflation(2025, 14.58);  % Lubricating oil price (USD/gal)
 cst.aux.price_engine = ac_num_engines * inflation(2010, 4860000);  % F414-GE-400 total price (USD)
 
+cst.aux.avg_missiles = mean([ac_num_AIM120C_a2a + ac_num_AIM9X_a2a, ac_num_AIM9X_strike]);  % Average missiles carried
+
 %% Environmental, Fleet, Compatibility, Weapons
 cst.EFCW.AIM120_price = inflation(1991, 386000);  % Cost per AIM-120 (USD)
 cst.EFCW.AIM9X_price = inflation(2023, 430000);  % Cost per AIM-9X (USD)
@@ -34,7 +36,7 @@ cst.EFCW.mass_avionics = 2500;  % Avionics weight (lb), RFP
 cst.EFCW.C_lb_avionics = inflation(2012, mean([4000, 8000]));  % Avionics price per pound (USD/lb), Raymer 18.4.2
 cst.EFCW.C_avionics = cst.EFCW.mass_avionics * cst.EFCW.C_lb_avionics;  % Avionics cost (USD)
 
-cst.EFCW.surface_treat_per_FH = mean([500000, 1000000000]) / 1200;  % Surface treatment cost (USD/FH)
+cst.EFCW.surface_treat_per_FH = mean([500000, 1000000]) / 1200;  % Surface treatment cost (USD/FH)
 cst.EFCW.sub_tech = 0;  % Subsystem technologies cost (USD) TODO
 
 %% COC
@@ -65,9 +67,13 @@ cst.MO.Pay_crew = inflation(2012, 115);  % Pilot hourly rate (USD), Raymer 18.4.
 cst.MO.OHR_crew = 3;  % Crew overhead rate factor, Roskam VIII Page 154
 cst.MO.C_crewpr = cst.MO.N_serv * cst.MO.N_crew * cst.MO.R_cr * cst.MO.Pay_crew * cst.MO.OHR_crew * cst.MO.N_yr;  % Program cost of aircrews, Roskam VIII Eq. 6.10
 
-cst.MO.MHR_flthr = mean([15, 35]);  % Maintenence man-hours per flight hour, Roskam VIII Table 6.5
-cst.MO.R_m_ml = inflation(1989, 45);  % Military maintenence labor rate, Roskam VIII Page 157
-cst.MO.C_mpersdir = cst.MO.N_serv * cst.MO.N_yr * cst.MO.U_ann_flt * cst.MO.MHR_flthr * cst.MO.R_m_ml;  % Program cost of direct maintenence personnel, Roskam VIII Eq. 6.11
+cst.MO.MHR_flthr = mean([15, 35]);  % Maintenance man-hours per flight hour, Roskam VIII Table 6.5
+cst.MO.R_m_ml = inflation(1989, 45);  % Military maintenance labor rate, Roskam VIII Page 157
+cst.MO.C_mpersdir = cst.MO.N_serv * cst.MO.N_yr * cst.MO.U_ann_flt * cst.MO.MHR_flthr * cst.MO.R_m_ml;  % Program cost of direct maintenance personnel, Roskam VIII Eq. 6.11
+
+cst.MO.engine_ratio = 2793/10652.9;  % Ratio of maintenance relating to engines, Gov. Accountability Office
+cst.MO.airframe_total = (1 - cst.MO.engine_ratio) * cst.MO.C_mpersdir;  %  Program cost of airframe maintenance
+cst.MO.engine_total = cst.MO.engine_ratio * cst.MO.C_mpersdir;  % Program cost of engine maintenance
 
 cst.MO.C_PERSDIR = cst.MO.C_crewpr + cst.MO.C_mpersdir;  % Program cost of direct personnel, Roskam VIII Eq. 6.9
 
@@ -93,14 +99,14 @@ cst.COC.a2a_weapons = ac_num_AIM120C_a2a * cst.EFCW.AIM120_price + ...
 cst.COC.strike_weapons = ac_num_JDAM_strike * cst.EFCW.JDAM_price + ...
                          ac_num_AIM9X_strike * cst.EFCW.AIM9X_price;  % Single strike mission weapons cost, assumes all are used (USD)
 
-cst.COC.avg_weapons = (0.5 * cst.COC.a2a_weapons) + (0.5 * ac_num_AIM9X_strike);  % Average mission cost, assumes 50-50 mission mix
+cst.COC.avg_weapons = mean([cst.COC.a2a_weapons, ac_num_AIM9X_strike]);  % Average mission cost, assumes 50-50 mission mix
 
 %% Airplane Unit Cost
 % Labor Cost
 cst.unit.W_ampr = 10^(0.1936 + 0.8645*log10(N2lbs(ac.initial.W0)));  % Aeronautical Manufacturers Planning Report weight, Roskam VIII Eq. 3.5
 cst.unit.V_max = ms2knots(ac.strike.V_dash);  % Maximium speed (knots), Roskam V Page 38
 cst.unit.N_rdte = mean([6, 20]);  % Number of airplanes in the RDTE phase, Roskam VIII Page 26
-cst.unit.F_diff = 1.5;  % Judgement factor for new technology, Roskam VIII Page 26
+cst.unit.F_diff = 1.25;  % Judgement factor for new technology, Roskam VIII Page 26
 
 cst.unit.N_m = 500;  % Production run number of units, AIAA RFP
 cst.unit.N_program = cst.unit.N_m + cst.unit.N_rdte;  % Number of units produced. Added RDTE airplanes via Roskam VIII Eq. 4.1
@@ -182,12 +188,5 @@ cst.unit.F_pro_m = 0.1;  % Profit, Roskam Eq. 4.19
 cst.unit.C_ACQ = cst.unit.C_MAN * (1 + cst.unit.F_fin_m + cst.unit.F_pro_m);  % Total manufacturing cost after financing and profit, Roskam 4.18, 4.19, and 4.2
 
 cst.unit.AEP = (cst.unit.C_ACQ + cst.unit.C_RDTE) / cst.unit.N_m;  % Unit price per airplane, including profit and RDTE, Roskam 4.3 TODO look into learning curve
-
-%% Auxillary
-cst.aux.labor_rate = mean([cst.unit.R_m_m, cst.unit.R_t_m]);  % Labor rate (USD/hr)
-cst.aux.price_aircraft = cst.unit.AEP;  % Aircraft price (USD)
-
-%% EFCW
-%cst.EFCW.surface_treat = 
 
 end
