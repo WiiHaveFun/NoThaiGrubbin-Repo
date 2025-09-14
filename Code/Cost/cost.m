@@ -19,10 +19,10 @@ ac_num_AIM9X_strike = 2;
 cst.aux.block_time_avg = mean([cst.aux.block_time_a2a, cst.aux.block_time_strike]);  % Average block time assuming 50-50 mix (hours)
 
 cst.aux.fuel_density = 6.739;  % Fuel density (lb/gal)
-cst.aux.fuel_price = inflation(2024, 4.05);  % Fuel price (USD/gal)
+cst.aux.fuel_price = inflation(2025, 4.05);  % Fuel price (USD/gal)
 cst.aux.oil_density = 7.15;  % Lubricating oil density (lb/gal)
 cst.aux.oil_price = inflation(2025, 14.58);  % Lubricating oil price (USD/gal)
-cst.aux.price_engine = ac_num_engines * inflation(2010, 4860000);  % F414-GE-400 total price (USD)
+cst.aux.price_engine = ac_num_engines * inflation(2012, 4000000);  % F414-GE-400 total price (USD)
 
 cst.aux.avg_missiles = mean([ac_num_AIM120C_a2a + ac_num_AIM9X_a2a, ac_num_AIM9X_strike]);  % Average missiles carried
 
