@@ -34,7 +34,7 @@ ac.initial.Wf = 24800 .* 4.44822;                   % Fuel weight (lb to N)
 ac.initial.Wf_ext = 10000 .* 4.44822;                 % External Fuel weight (lb to N)
 ac.initial.W_crew = ac.initial.num_crew .* ...      % Crew weight (lb to N)
                     200 .* 4.44822;                 
-ac.initial.W_pay = 4424 .* 4.44822;                 % Payload weight (lb to N)
+ac.initial.W_pay = 2460 .* 4.44822;                 % Payload weight (lb to N)
 
 % Air-to-air mission parameters
 ac.a2a.R = 764.286 .* 1852;                         % Combat radius (nm to m)
