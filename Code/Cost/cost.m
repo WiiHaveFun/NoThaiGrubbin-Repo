@@ -28,13 +28,15 @@ cst.aux.avg_missiles = mean([ac_num_AIM120C_a2a + ac_num_AIM9X_a2a, ac_num_AIM9X
 
 %% Environmental, Fleet, Compatibility, Weapons
 cst.EFCW.AIM120_price = inflation(1991, 386000);  % Cost per AIM-120 (USD)
-cst.EFCW.AIM9X_price = inflation(2023, 430000);  % Cost per AIM-9X (USD)
+cst.EFCW.AIM9X_price = inflation(2022, 516144);  % Cost per AIM-9X (USD)
 cst.EFCW.JDAM_price = inflation(2007, 22000) + inflation(2001, 3026);  % Cost per JDAM (USD)
 cst.EFCW.life_support = inflation(1999, 195000);  % Life support cost (USD), Ejection seat only
 
 cst.EFCW.mass_avionics = 2500;  % Avionics weight (lb), RFP
 cst.EFCW.C_lb_avionics = inflation(2012, mean([4000, 8000]));  % Avionics price per pound (USD/lb), Raymer 18.4.2
-cst.EFCW.C_avionics = cst.EFCW.mass_avionics * cst.EFCW.C_lb_avionics;  % Avionics cost (USD)
+cst.EFCW.C_avionics = 5400 * cst.EFCW.C_lb_avionics;  % Avionics cost (USD), guessed so avionics cost is 0.40(AEP), Roskam VIII Appendix C
+% = Before Avionics cost assumed 2500 lbs in cst.EFCW.C_avionics = 
+% cst.EFCW.mass_avionics * cst.EFCW.C_lb_avionics;  % Avionics cost (USD)
 
 cst.EFCW.surface_treat_per_FH = mean([500000, 1000000]) / 1200;  % Surface treatment cost (USD/FH)
 cst.EFCW.sub_tech = 0;  % Subsystem technologies cost (USD) TODO

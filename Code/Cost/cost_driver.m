@@ -12,7 +12,8 @@ fprintf("COC/hr: $%g\n", cst.MO.C_OPS_HR);
 
 cost_column = [
     cst.MO.C_crewpr / (cst.MO.N_mission * cst.MO.N_yr)
-    cst.COC.avg_weapons
+    cst.COC.a2a_weapons
+    cst.COC.strike_weapons
     cst.MO.W_F_used * (cst.MO.FP / cst.MO.FD)
     (cst.MO.F_OL - 1) * (cst.MO.W_F_used * (cst.MO.FP / cst.MO.FD))
     0
@@ -21,10 +22,12 @@ cost_column = [
     cst.MO.engine_total / (cst.MO.N_mission * cst.MO.N_yr)
     NaN
     cst.MO.C_OPS_HR * cst.MO.t_mis
+    mean([((cst.MO.C_OPS_HR * cst.MO.t_mis) / (N2lbs(ac.initial.W_pay) * 2 * m2nmi(ac.a2a.R))), ((cst.MO.C_OPS_HR * cst.MO.t_mis) / (N2lbs(ac.initial.W_pay) * 2 * m2nmi(ac.strike.R)))])
     ];
 
 aux_column = [
-    cst.MO.t_mis
+    cst.aux.block_time_a2a
+    cst.aux.block_time_strike
     cst.aux.fuel_density
     cst.aux.fuel_price
     cst.aux.oil_density
