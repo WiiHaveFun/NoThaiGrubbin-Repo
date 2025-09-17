@@ -15,8 +15,8 @@ ac.initial.M_cruise = 0.84;                         % Cruise Mach number
 ac.initial.V_cruise = getV(ac.initial.h_cruise, ... % Cruise velocity (m/s)
                             ac.initial.M_cruise);
 ac.initial.M_loiter = 0.35;                         % Loiter Mach number
-ac.initial.V_climb = 151.2 .* 77.784;               % Climb speed (kts to m/s)
-ac.initial.climb_rate = 55.7 .* 77.784;             % Rate of climb (kts to m/s)
+ac.initial.V_climb = 151.2 .* 0.514444;             % Climb speed (kts to m/s)
+ac.initial.climb_rate = 55.7 .* 0.514444;           % Rate of climb (kts to m/s)
 ac.initial.climb_angle = deg2rad(13);               % Climb angle (deg to rad)
 % Aircraft geometry
 ac.initial.AR = 4;                                  % Aspect ratio
@@ -39,7 +39,7 @@ ac.initial.W_pay = 2460 .* 4.44822;                 % Payload weight (lb to N)
 % Air-to-air mission parameters
 ac.a2a.R = 764.286 .* 1852;                         % Combat radius (nm to m)
 ac.a2a.M_dash = 2.0;                                % Dash Mach number
-ac.a2a.t_combat = 3.07143 .* 60;                          % Combat time (min to s)
+ac.a2a.t_combat = 3.07143 .* 60;                    % Combat time (min to s)
 ac.a2a.t_loiter = 20 .* 60;                         % Loiter time (min to s)
 ac.a2a.h_combat = 10000 .* 0.3048;                  % Cruise altitude (ft to m)
 ac.a2a.num_120 = 6;                                 % Number of AIM-120 missiles
@@ -47,7 +47,7 @@ ac.a2a.num_9x = 2;                                  % Number of AIM-9x missiles
 
 % Strike mission parameters
 % Altitudes
-ac.strike.R = 890 .* 1852;                         % Combat radius (nm to m)
+ac.strike.R = 890 .* 1852;                          % Combat radius (nm to m)
 ac.strike.M_dash = 0.90;                            % Combat dash Mach number
 ac.strike.V_dash = getV(0, ac.strike.M_dash);       % Combat dash velocity (m/s)
 ac.strike.R_combat = 100 .* 1852;                   % Combat dash distance (nm to m)
