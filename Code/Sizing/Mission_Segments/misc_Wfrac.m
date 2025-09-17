@@ -17,4 +17,3 @@ switch segment
     case "landing"
         Wfrac = 0.995;
 end
-end
