@@ -5,9 +5,9 @@ function TW = dash(WS, M, h, CD0, K, Wfrac, Tfrac)
 % Convert to wing loading at mission segment start
 WS = WS .* Wfrac;
 
-[~, a, ~, rho] = atmoscoesa(h);
-V = M .* a;
-q = 0.5 .* rho .* V.^2;
+[~, ~, P, ~] = atmoscoesa(h);
+gamma = 1.4;
+q = 0.5.*gamma.*P.*M.^2;
 
 % Dash constraint
 TW = q .* CD0 ./ WS + WS .* (K ./ q);

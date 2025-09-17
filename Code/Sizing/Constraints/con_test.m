@@ -1,13 +1,14 @@
-CD0 = 0.01;
+CD0 = 0.02;
 K = 0.1;
 
-WS = linspace(1,5000,200);
+WS = linspace(1,7000,200);
 TW = linspace(0,1.5,200);
-TW1 = turn_rate(WS, deg2rad(8), 6096, CD0, K, 0.7, 0.7);
+TW1 = turn_rate(WS, deg2rad(10), 6096, CD0, K, 0.7, 0.7);
 TW2 = climb_rate(WS, 1.016, 80, 0, CD0, K, true, true, 2, 1.0, 1.0);
 TW3 = climb_rate(WS, 2.54, 80, 0, CD0, K, true, false, 2, 1.0, 1.0);
 TW4 = climb_rate(WS, 2.54, 80, 0, CD0, K, true, true, 2, 0.7, 1.0);
-TW5 = dash(WS, 2.0, 9144, CD0, K, 0.6, 0.7);
+TW5 = dash(WS, 1.6, 9144, 0.03, 0.3, 0.7, 0.6);
+% TW5 = dash(WS, 0.9, 0, CD0, K, 0.7, 1.0);
 TW6 = cruise(WS, 247, 12192, CD0, K, 0.9, 0.5);
 TW7 = cruise(WS, 247, 12192, CD0, K, 0.4, 0.5);
 [WS8, TW8] = catapult(WS, TW, 90000.*4.44822, CD0, K, 2, 1, 1);
@@ -28,5 +29,5 @@ plot(WS, TW7);
 plot(WS8, TW8);
 xline(WS1);
 xline(WS2, "b");
-xlim([0, 5000]);
+xlim([0, 7000]);
 ylim([0, 1.5]);
