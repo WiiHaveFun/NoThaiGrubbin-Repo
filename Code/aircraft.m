@@ -27,14 +27,15 @@ ac.initial.T_mil = ac.initial.num_eng .* ...        % Military thrust (lb to N)
                    14447 .* 4.44822;             
 ac.initial.T_max = ac.initial.num_eng .* ...        % Maximum thrust (lb to N)
                    21496 .* 4.44822;
-% Aircraft weights
-ac.initial.W0 = 60000 .* 4.44822;                   % Takeoff weight (lb to N)
-ac.initial.We = 30000 .* 4.44822;                   % Empty weight (lb to N)
-ac.initial.Wf = 24800 .* 4.44822;                   % Fuel weight (lb to N)
-ac.initial.Wf_ext = 10000 .* 4.44822;                 % External Fuel weight (lb to N)
-ac.initial.W_crew = ac.initial.num_crew .* ...      % Crew weight (lb to N)
-                    200 .* 4.44822;                 
-ac.initial.W_pay = 2460 .* 4.44822;                 % Payload weight (lb to N)
+% Weights are specified for each mission
+% % Aircraft weights
+% ac.initial.W0 = 60000 .* 4.44822;                   % Takeoff weight (lb to N)
+% ac.initial.We = 30000 .* 4.44822;                   % Empty weight (lb to N)
+% ac.initial.Wf = 24800 .* 4.44822;                   % Fuel weight (lb to N)
+% ac.initial.Wf_ext = 10000 .* 4.44822;                 % External Fuel weight (lb to N)
+% ac.initial.W_crew = ac.initial.num_crew .* ...      % Crew weight (lb to N)
+%                     200 .* 4.44822;                 
+% ac.initial.W_pay = 2460 .* 4.44822;                 % Payload weight (lb to N)
 
 % Air-to-air mission parameters
 ac.a2a.R = 764.286 .* 1852;                         % Combat radius (nm to m)
@@ -44,6 +45,17 @@ ac.a2a.t_loiter = 20 .* 60;                         % Loiter time (min to s)
 ac.a2a.h_combat = 10000 .* 0.3048;                  % Cruise altitude (ft to m)
 ac.a2a.num_120 = 6;                                 % Number of AIM-120 missiles
 ac.a2a.num_9x = 2;                                  % Number of AIM-9x missiles
+% Weights
+ac.a2a.W0 = 60000 .* 4.44822;                       % Takeoff weight (lb to N)
+ac.a2a.We = 30000 .* 4.44822;                       % Empty weight (lb to N)
+ac.a2a.Wf = 24800 .* 4.44822;                       % Fuel weight (lb to N)
+ac.a2a.Wf_ext = 10000 .* 4.44822;                   % External Fuel weight (lb to N)
+ac.a2a.W_crew = ac.initial.num_crew .* ...          % Crew weight (lb to N)
+                    200 .* 4.44822;                 
+ac.a2a.W_pay = 2460 .* 4.44822;                     % Payload weight (lb to N)
+% Mission segment weight fractions
+ac.a2a.Wfracs = [];
+ac.a2a.segments = [];
 
 % Strike mission parameters
 % Altitudes
@@ -56,5 +68,13 @@ ac.strike.t_combat = ac.strike.R_combat ./ ...      % Combat dash time (s)
 ac.strike.t_loiter = 20 .* 60;                      % Loiter time (min to s)
 ac.strike.num_JDAM = 4;                             % Number of MK-83 JDAMs
 ac.strike.num_9x = 2;                               % Number of AIM-9x missiles
+% Weights
+ac.strike.W0 = 60000 .* 4.44822;                    % Takeoff weight (lb to N)
+ac.strike.We = 30000 .* 4.44822;                    % Empty weight (lb to N)
+ac.strike.Wf = 24800 .* 4.44822;                    % Fuel weight (lb to N)
+ac.strike.Wf_ext = 10000 .* 4.44822;                % External Fuel weight (lb to N)
+ac.strike.W_crew = ac.initial.num_crew .* ...       % Crew weight (lb to N)
+                    200 .* 4.44822;                 
+ac.strike.W_pay = 4424 .* 4.44822;                  % Payload weight (lb to N)
 
 end

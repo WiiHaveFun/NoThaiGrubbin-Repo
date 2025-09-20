@@ -50,13 +50,23 @@ set(gcf, 'PaperUnits', 'inches', 'PaperPosition', [0 0 width height]);
 saveas(gcf, "a2a_weight.svg");
 
 %%
+clc
 ac = aircraft();
 
 % Wfrac_reg.A = 0.8570 .* 0.224809.^-0.0557;
 % Wfrac_reg.C = -0.0557;
 
-Wfrac_reg.A = 2.3400 .* 0.224809.^-0.1300;
-Wfrac_reg.C = -0.1300;
+% Wfrac_reg.A = 2.3400 .* 0.224809.^-0.1300;
+% Wfrac_reg.C = -0.1300;
 
-[ac] = iterate_W0(ac, Wfrac_reg, @a2a_Ffrac);
-disp(ac.initial.W0./4.44822);
+Wefrac_reg = empty_weight_frac_reg("Raymer");
+
+[ac] = iterate_W0(ac, Wefrac_reg, @a2a_Ffrac);
+disp(ac.a2a.We./4.44822);
+disp(ac.a2a.Wfracs);
+% disp(ac.a2a.segments);
+
+[ac] = iterate_W0(ac, Wefrac_reg, @strike_Ffrac);
+disp(ac.strike.We./4.44822);
+disp(ac.strike.Wfracs);
+% disp(ac.strike.segments);
