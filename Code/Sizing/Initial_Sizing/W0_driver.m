@@ -26,7 +26,7 @@ for i = 1:n
         ac.a2a.R = a2a_R(i, j);
         ac.a2a.t_combat = a2a_t_combat(i, j);
         [ac] = iterate_W0(ac, Wfrac_reg, @a2a_Ffrac);
-        W0(i, j) = ac.initial.W0;
+        W0(i, j) = ac.a2a.W0;
     end
 end
 
@@ -62,11 +62,11 @@ ac = aircraft();
 Wefrac_reg = empty_weight_frac_reg("Raymer");
 
 [ac] = iterate_W0(ac, Wefrac_reg, @a2a_Ffrac);
-disp(ac.a2a.We./4.44822);
-disp(ac.a2a.Wfracs);
+disp(ac.a2a.W0./4.44822);
+% disp(ac.a2a.Wfracs);
 % disp(ac.a2a.segments);
 
 [ac] = iterate_W0(ac, Wefrac_reg, @strike_Ffrac);
-disp(ac.strike.We./4.44822);
-disp(ac.strike.Wfracs);
+disp(ac.strike.W0./4.44822);
+% disp(ac.strike.Wfracs);
 % disp(ac.strike.segments);
