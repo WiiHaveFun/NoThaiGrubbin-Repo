@@ -7,13 +7,19 @@ g = 9.81;
 % Convert to wing loading at mission segment start
 WS = WS .* Wfrac;
 
-[~, ~, ~, rho] = atmoscoesa(h);
+[~, a, ~, rho] = atmoscoesa(h);
 
 options = optimoptions("fsolve", "Display", "none");
 TW = zeros(size(WS));
+Tfrac = zeros(size(WS));
 for i = 1:length(WS)
     out = fsolve(@(x) turn_rate_fun(x, WS(i)), [1, 50], options);
     TW(i) = out(1);
+    V = out(2);
+    Tfrac(i) = get_thrust_frac(V./a, h, 1.08, true, false);
+    if Tfrac(i) < 0
+        Tfrac(i) = NaN;
+    end
 end
 
 % Convert to SLS TWR
