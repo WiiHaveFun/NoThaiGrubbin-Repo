@@ -1,9 +1,13 @@
-function Tfrac = get_thrust_frac(M, h, TR, is_max)
+function Tfrac = get_thrust_frac(M, h, TR, is_max, is_tropical)
 
 
 
 [T, ~, P, ~] = atmoscoesa(h);
 [Tstd, ~, Pstd, ~] = atmoscoesa(0);
+
+if is_tropical
+   T = T + 17.11; % Sea level at 89.8 F
+end
 
 theta = T ./ Tstd;
 delta = P ./ Pstd;
@@ -19,9 +23,12 @@ if is_max
         Tfrac = delta0 .* (1 - 3.5.*(theta0 - TR)./theta0);
     end
 else
+    %% Review the 0.6 since we have military thrust
     if theta0 <= TR
-        Tfrac = 0.6.*delta0;
+        % Tfrac = 0.6.*delta0;
+        Tfrac = delta0;
     else
-        Tfrac = 0.6.*delta0 .* (1 - 3.8.*(theta0 - TR)./theta0);
+        % Tfrac = 0.6.*delta0 .* (1 - 3.8.*(theta0 - TR)./theta0);
+        Tfrac = delta0 .* (1 - 3.8.*(theta0 - TR)./theta0);
     end
 end
