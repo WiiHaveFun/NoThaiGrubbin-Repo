@@ -48,8 +48,8 @@ ac.a2a.h_dash = 30000 .* 0.3048;                    % Combat altitude (ft to m)
 ac.a2a.num_120 = 6;                                 % Number of AIM-120 missiles
 ac.a2a.num_9x = 2;                                  % Number of AIM-9x missiles
 ac.a2a.turn_rate = deg2rad(10);                     % Turn rate (deg/s to rad/s)
-ac.a2a.max_g = 9;                                   % Maximum vertical load factor
-ac.a2a.max_g_V = 300;                               % Velocity for max load factor (m/s)
+ac.a2a.max_g = 8;                                   % Maximum vertical load factor
+ac.a2a.max_g_V = getV(ac.a2a.h_combat, 0.95);       % Velocity for max load factor (m/s)
 % Weights
 ac.a2a.W0 = 60000 .* 4.44822;                       % Takeoff weight (lb to N)
 ac.a2a.We = 30000 .* 4.44822;                       % Empty weight (lb to N)
@@ -74,7 +74,7 @@ ac.strike.h_combat = 0;                             % Combat altitude (ft to m)
 ac.strike.num_JDAM = 4;                             % Number of MK-83 JDAMs
 ac.strike.num_9x = 2;                               % Number of AIM-9x missiles
 ac.strike.max_g = 9;                                % Maximum vertical load factor
-ac.strike.max_g_V = 300;                            % Velocity for max load factor (m/s)
+ac.strike.max_g_V = getV(ac.strike.h_combat, 0.95); % Velocity for max load factor (m/s)
 % Weights
 ac.strike.W0 = 60000 .* 4.44822;                    % Takeoff weight (lb to N)
 ac.strike.We = 30000 .* 4.44822;                    % Empty weight (lb to N)
