@@ -50,8 +50,8 @@ M = contourc(WS, TW, Wm, [W, W]);
 num_vert = M(2, 1);
 
 % Convert to takeoff TWR and wing loading
-TWc = M(2, 2:2+num_vert) .* Wfrac ./ Tfrac;
-WSc = M(1, 2:2+num_vert) ./ Wfrac;
+TWc = M(2, 2:1+num_vert) .* Wfrac ./ Tfrac;
+WSc = M(1, 2:1+num_vert) ./ Wfrac;
 
 % function R = climb_velocity(V, TW, WS)
 %     Vg = 200 ./ 196.9; % 200 ft/min to m/s
