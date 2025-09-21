@@ -7,7 +7,8 @@ R = 287;
 T = 305.2611; % Tropical day (89.8 F)
 rho = P ./ (R .* T);
 
-WS = 0.5.*rho .* (Vmax(W.*Wfrac) ./ (1.05.*1.1)).^2 .* CLmax;
+% Add 15 knots for WOD
+WS = 0.5.*rho .* (((Vmax(W.*Wfrac))./(1.05.*1.1)) + 15.*0.514444).^2 .* CLmax;
 
 % Convert to takeoff wing loading
 WS = WS ./ Wfrac;
