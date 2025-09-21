@@ -10,6 +10,7 @@ Wfrac_reg.C = -0.1300;
 fprintf("AEP: $%g Million\n", cst.unit.AEP / 1e6);
 fprintf("COC/hr: $%g\n", cst.MO.C_OPS_HR);
 
+%{
 cost_column = [
     cst.MO.C_crewpr / (cst.MO.N_mission * cst.MO.N_yr)
     cst.COC.a2a_weapons
@@ -45,7 +46,8 @@ EFCW_column = [
     cst.EFCW.AIM120_price
     cst.EFCW.AIM9X_price  % Incorrect column compared to sheet, two missiles
     cst.EFCW.life_support
-    cst.EFCW.C_avionics
+    cst.EFCW.C_avionicscst.EFCW.C_avionics/cst.unit.AEP
     cst.EFCW.surface_treat_per_FH * cst.MO.t_mis
     cst.EFCW.sub_tech
     ];
+%}
