@@ -20,7 +20,7 @@ ac.initial.V_climb = 151.2 .* 0.514444;             % Climb speed (kts to m/s)
 ac.initial.climb_rate = 55.7 .* 0.514444;           % Rate of climb (kts to m/s)
 ac.initial.climb_angle = deg2rad(13);               % Climb angle (deg to rad)
 % Aircraft geometry
-ac.initial.AR = 3.14;                                  % Aspect ratio
+ac.initial.AR = 4;                                  % Aspect ratio
 % Engine performance
 ac.initial.TSFC_dry = 0.68 ./ 3600;                 % Dry thrust specific fuel consumption (lb/lb-s to N/N-s)
 ac.initial.TSFC_wet = 1.90 ./ 3600;
@@ -39,9 +39,9 @@ ac.initial.T_max = ac.initial.num_eng .* ...        % Maximum thrust (lb to N)
 % ac.initial.W_pay = 2460 .* 4.44822;                 % Payload weight (lb to N)
 
 % Air-to-air mission parameters
-ac.a2a.R = 800 .* 1852;                         % Combat radius (nm to m)
+ac.a2a.R = 785.714 .* 1852;                         % Combat radius (nm to m)
 ac.a2a.M_dash = 1.6;                                % Dash Mach number
-ac.a2a.t_combat = 2.85714 .* 60;                    % Combat time (min to s)
+ac.a2a.t_combat = 2.64286 .* 60;                    % Combat time (min to s)
 ac.a2a.t_loiter = 20 .* 60;                         % Loiter time (min to s)
 ac.a2a.h_combat = 10000 .* 0.3048;                  % Combat altitude (ft to m)
 ac.a2a.h_dash = 30000 .* 0.3048;                    % Combat altitude (ft to m)
@@ -63,7 +63,7 @@ ac.a2a.Wfracs = [];
 ac.a2a.segments = [];
 
 % Strike mission parameters
-ac.strike.R = 945 .* 1852;                          % Combat radius (nm to m)
+ac.strike.R = 1080 .* 1852;                          % Combat radius (nm to m)
 ac.strike.M_dash = 0.90;                            % Combat dash Mach number
 ac.strike.V_dash = getV(0, ac.strike.M_dash);       % Combat dash velocity (m/s)
 ac.strike.R_combat = 100 .* 1852;                   % Combat dash distance (nm to m)
