@@ -14,7 +14,7 @@ cst.aux.fuel_density = 6.739;  % Fuel density (lb/gal)
 cst.aux.fuel_price = inflation(2025, 4.05);  % Fuel price (USD/gal)
 cst.aux.oil_density = 7.15;  % Lubricating oil density (lb/gal)
 cst.aux.oil_price = inflation(2025, 14.58);  % Lubricating oil price (USD/gal)
-cst.aux.price_engine = ac.initial.num_eng * inflation(2012, 4000000);  % F414-GE-400 total price (USD)
+cst.aux.price_engine = ac.initial.num_eng * inflation(2000, 5000000);  % F110-GE-132 total price (USD)
 
 cst.aux.avg_missiles = ((mission_mix_a2a) * (ac.a2a.num_120 + ac.a2a.num_9x)) + ((1 - mission_mix_a2a) * ac.strike.num_9x);  % Average missiles carried
 
@@ -24,7 +24,7 @@ cst.EFCW.AIM9X_price = inflation(2022, 516144);  % Cost per AIM-9X (USD)
 cst.EFCW.JDAM_price = inflation(2007, 22000) + inflation(2001, 3026);  % Cost per JDAM (USD)
 cst.EFCW.life_support = inflation(1999, 195000);  % Life support cost (USD), ejection seat only
 
-cst.EFCW.mass_avionics = 5000;  % Avionics weight (lb), RFP, 5400 for 40% cost
+cst.EFCW.mass_avionics = 2500;  % Avionics weight (lb), RFP, 5400 for 40% cost
 cst.EFCW.C_lb_avionics = inflation(2012, 8000);  % Avionics price per pound (USD/lb), Raymer 18.4.2, 4000-8000, using 8000
 cst.EFCW.C_avionics = cst.EFCW.mass_avionics * cst.EFCW.C_lb_avionics;  % Avionics cost (USD), 0.05(AEP)-0.40(AEP), Roskam VIII Appendix C
 
