@@ -191,20 +191,6 @@ set(gca, 'TickLabelInterpreter', 'latex');
 
 set(gcf, 'Units', 'Inches', 'OuterPosition', [8.097222222222221,6.861111111111111,width,height]);
 
-% label(p1, "Dash", 'location', 'right', 'interpreter', 'latex', 'slope', 'FontSize', fontsize);
-% label(p2, "Sustained Turn", 'location', 'right', 'interpreter', 'latex', 'slope', 'FontSize', fontsize);
-% label(p3, "Vertical Load Factor", 'location', 'center', 'interpreter', 'latex', 'slope', 'FontSize', fontsize);
-% label(p4, "Cruise 1", 'location', 'right', 'interpreter', 'latex', 'slope', 'FontSize', fontsize);
-% label(p5, "Cruise 2", 'location', 'right', 'interpreter', 'latex', 'slope', 'FontSize', fontsize);
-% label(p6, "Ceiling", 'location', 'right', 'interpreter', 'latex', 'slope', 'FontSize', fontsize);
-% label(p7, "SEROC Takeoff", 'location', 'right', 'interpreter', 'latex', 'slope', 'FontSize', fontsize);
-% label(p8, "SEROC Approach", 'location', 'right', 'interpreter', 'latex', 'slope', 'FontSize', fontsize);
-% label(p9, "Climb 1", 'location', 'right', 'interpreter', 'latex', 'slope', 'FontSize', fontsize);
-% label(p10, "Climb 2", 'location', 'right', 'interpreter', 'latex', 'slope', 'FontSize', fontsize);
-% label(p11, "Takeoff", 'location', 'right', 'interpreter', 'latex', 'slope', 'FontSize', fontsize);
-% label(p12, "Landing", 'location', 'center', 'interpreter', 'latex', 'slope', 'FontSize', fontsize);
-% label(p13, "Catapult", 'location', 'center', 'interpreter', 'latex', 'slope', 'FontSize', fontsize);
-% label(p14, "Recovery", 'location', 'center', 'interpreter', 'latex', 'slope', 'FontSize', fontsize);
 dn = 5;
 label_line(p1, 180, dn, "M1.6 Dash", "interpreter", "latex", "FontSize", fontsize);
 label_line(p2, 101, dn, "10 deg/s Sustained Turn", "interpreter", "latex", "FontSize", fontsize);
@@ -275,21 +261,6 @@ ylabel("$T/W$", "Interpreter", "latex", "FontSize", fontsize);
 set(gca, 'TickLabelInterpreter', 'latex');
 
 set(gcf, 'Units', 'Inches', 'OuterPosition', [8.097222222222221,6.861111111111111,width,height]);
-
-% label(p1, "Dash", 'location', 'right', 'interpreter', 'latex', 'slope', 'FontSize', fontsize);
-% label(p2, "Vertical Load Factor", 'location', 'center', 'interpreter', 'latex', 'slope', 'FontSize', fontsize);
-% label(p3, "Cruise 1", 'location', 'right', 'interpreter', 'latex', 'slope', 'FontSize', fontsize);
-% label(p4, "Cruise 2", 'location', 'right', 'interpreter', 'latex', 'slope', 'FontSize', fontsize);
-% label(p5, "Ceiling", 'location', 'right', 'interpreter', 'latex', 'slope', 'FontSize', fontsize);
-% label(p6, "SEROC Takeoff", 'location', 'right', 'interpreter', 'latex', 'slope', 'FontSize', fontsize);
-% label(p7, "SEROC Approach", 'location', 'right', 'interpreter', 'latex', 'slope', 'FontSize', fontsize);
-% label(p8, "Climb 1", 'location', 'right', 'interpreter', 'latex', 'slope', 'FontSize', fontsize);
-% label(p9, "Climb 2", 'location', 'right', 'interpreter', 'latex', 'slope', 'FontSize', fontsize);
-% label(p10, "Climb 3", 'location', 'right', 'interpreter', 'latex', 'slope', 'FontSize', fontsize);
-% label(p11, "Takeoff", 'location', 'right', 'interpreter', 'latex', 'slope', 'FontSize', fontsize);
-% label(p12, "Landing", 'location', 'center', 'interpreter', 'latex', 'slope', 'FontSize', fontsize);
-% label(p13, "Catapult", 'location', 'center', 'interpreter', 'latex', 'slope', 'FontSize', fontsize);
-% label(p14, "Recovery", 'location', 'center', 'interpreter', 'latex', 'slope', 'FontSize', fontsize);
 
 dn = 5;
 label_line(p1, 180, dn, "M0.9 Dash", "interpreter", "latex", "FontSize", fontsize);
