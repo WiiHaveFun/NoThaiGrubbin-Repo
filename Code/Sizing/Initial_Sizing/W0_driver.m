@@ -70,3 +70,14 @@ disp(ac.a2a.W0./4.44822);
 disp(ac.strike.W0./4.44822);
 % disp(ac.strike.Wfracs);
 % disp(ac.strike.segments);
+
+%%
+clc
+ac = aircraft();
+
+T0 = ac.initial.T_max;
+S = 957 .* 0.092903;
+[ac] = iterate_W0_TS(ac, Wefrac_reg, @a2a_Ffrac, T0, S);
+disp(ac.a2a.W0./4.44822);
+disp(ac.a2a.We./4.44822);
+disp(ac.polar.clean);

@@ -8,6 +8,7 @@ function ac = aircraft()
 % Aircraft parameters
 ac.initial.num_crew = 1;
 ac.initial.num_eng = 2;
+ac.initial.num_drop_tanks = 2;
 % Altitudes
 ac.initial.h_cruise = 40000 .* 0.3048;              % Cruise altitude (ft to m)
 ac.initial.h_ceiling = 50000 .* 0.3048;             % Ceiling altitude (ft to m)
@@ -21,6 +22,13 @@ ac.initial.climb_rate = 55.7 .* 0.514444;           % Rate of climb (kts to m/s)
 ac.initial.climb_angle = deg2rad(13);               % Climb angle (deg to rad)
 % Aircraft geometry
 ac.initial.AR = 4;                                  % Aspect ratio
+ac.initial.Sref = 900 .* 0.092903;                  % Planform area (ft^2 to m^2)
+% Aircraft aerodynamics
+ac.polar.clean = simple_polar("clean", ac.initial.num_drop_tanks);
+ac.polar.half = simple_polar("half_flaps", ac.initial.num_drop_tanks);
+ac.polar.full = simple_polar("full_flaps", ac.initial.num_drop_tanks);
+ac.polar.half_gear = simple_polar("half_flaps_gear", ac.initial.num_drop_tanks);
+ac.polar.full_gear = simple_polar("full_flaps_gear", ac.initial.num_drop_tanks);
 % Engine performance
 ac.initial.TSFC_dry = 0.68 ./ 3600;                 % Dry thrust specific fuel consumption (lb/lb-s to N/N-s)
 ac.initial.TSFC_wet = 1.90 ./ 3600;
@@ -63,7 +71,7 @@ ac.a2a.Wfracs = [];
 ac.a2a.segments = [];
 
 % Strike mission parameters
-ac.strike.R = 1080 .* 1852;                          % Combat radius (nm to m)
+ac.strike.R = 900 .* 1852;                          % Combat radius (nm to m)
 ac.strike.M_dash = 0.90;                            % Combat dash Mach number
 ac.strike.V_dash = getV(0, ac.strike.M_dash);       % Combat dash velocity (m/s)
 ac.strike.R_combat = 100 .* 1852;                   % Combat dash distance (nm to m)
