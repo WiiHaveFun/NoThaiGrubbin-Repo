@@ -18,7 +18,7 @@ d_climb = get_climb_dist(ac.initial.climb_angle, ac.initial.h_cruise);
 segments = [segments, "cruise_1"];
 Wfracs = [Wfracs, Wfrac];
 % LDmax = sub_LDmax_est(ac.initial.AR, ac.initial.M_cruise);
-LDmax = 0.5 * sqrt(pi .* ac.initial.AR .* ac.polar.clean.e ./ ac.polar.clean.CD0);
+LDmax = 0.5 * sqrt(pi .* ac.initial.AR .* ac.polar.strike.clean.e ./ ac.polar.strike.clean.CD0);
 Wfrac = Wfrac .* cruise_Wfrac(ac.strike.R - d_climb, ac.initial.V_cruise, ac.initial.TSFC_dry, 0.943.*LDmax);
 % Descent to combat
 segments = [segments, "descent_1"];

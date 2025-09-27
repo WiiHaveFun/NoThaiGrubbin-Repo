@@ -18,7 +18,7 @@ for i = 1:length(WS)
     V = out(2);
     Tfrac(i) = get_thrust_frac(V./a, h, 1.08, true, false);
     if Tfrac(i) < 0
-        Tfrac(i) = NaN;
+        Tfrac(i) = 0.01;
     end
 end
 

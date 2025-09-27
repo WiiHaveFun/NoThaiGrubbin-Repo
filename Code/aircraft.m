@@ -21,14 +21,19 @@ ac.initial.V_climb = 151.2 .* 0.514444;             % Climb speed (kts to m/s)
 ac.initial.climb_rate = 55.7 .* 0.514444;           % Rate of climb (kts to m/s)
 ac.initial.climb_angle = deg2rad(13);               % Climb angle (deg to rad)
 % Aircraft geometry
-ac.initial.AR = 4;                                  % Aspect ratio
-ac.initial.Sref = 900 .* 0.092903;                  % Planform area (ft^2 to m^2)
+ac.initial.AR = 4.5;                                  % Aspect ratio
+ac.initial.Sref = 800 .* 0.092903;                  % Planform area (ft^2 to m^2)
 % Aircraft aerodynamics
-ac.polar.clean = simple_polar("clean", ac.initial.num_drop_tanks);
-ac.polar.half = simple_polar("half_flaps", ac.initial.num_drop_tanks);
-ac.polar.full = simple_polar("full_flaps", ac.initial.num_drop_tanks);
-ac.polar.half_gear = simple_polar("half_flaps_gear", ac.initial.num_drop_tanks);
-ac.polar.full_gear = simple_polar("full_flaps_gear", ac.initial.num_drop_tanks);
+ac.polar.a2a.clean = simple_polar("clean", ac.initial.num_drop_tanks);
+ac.polar.a2a.half = simple_polar("half_flaps", ac.initial.num_drop_tanks);
+ac.polar.a2a.full = simple_polar("full_flaps", ac.initial.num_drop_tanks);
+ac.polar.a2a.half_gear = simple_polar("half_flaps_gear", ac.initial.num_drop_tanks);
+ac.polar.a2a.full_gear = simple_polar("full_flaps_gear", ac.initial.num_drop_tanks);
+ac.polar.strike.clean = simple_polar("clean", ac.initial.num_drop_tanks);
+ac.polar.strike.half = simple_polar("half_flaps", ac.initial.num_drop_tanks);
+ac.polar.strike.full = simple_polar("full_flaps", ac.initial.num_drop_tanks);
+ac.polar.strike.half_gear = simple_polar("half_flaps_gear", ac.initial.num_drop_tanks);
+ac.polar.strike.full_gear = simple_polar("full_flaps_gear", ac.initial.num_drop_tanks);
 % Engine performance
 ac.initial.TSFC_dry = 0.68 ./ 3600;                 % Dry thrust specific fuel consumption (lb/lb-s to N/N-s)
 ac.initial.TSFC_wet = 1.90 ./ 3600;
@@ -47,9 +52,9 @@ ac.initial.T_max = ac.initial.num_eng .* ...        % Maximum thrust (lb to N)
 % ac.initial.W_pay = 2460 .* 4.44822;                 % Payload weight (lb to N)
 
 % Air-to-air mission parameters
-ac.a2a.R = 785.714 .* 1852;                         % Combat radius (nm to m)
-ac.a2a.M_dash = 1.6;                                % Dash Mach number
-ac.a2a.t_combat = 2.64286 .* 60;                    % Combat time (min to s)
+ac.a2a.R = 750 .* 1852;                         % Combat radius (nm to m)
+ac.a2a.M_dash = 1.7;                                % Dash Mach number
+ac.a2a.t_combat = 3 .* 60;                    % Combat time (min to s)
 ac.a2a.t_loiter = 20 .* 60;                         % Loiter time (min to s)
 ac.a2a.h_combat = 10000 .* 0.3048;                  % Combat altitude (ft to m)
 ac.a2a.h_dash = 30000 .* 0.3048;                    % Combat altitude (ft to m)

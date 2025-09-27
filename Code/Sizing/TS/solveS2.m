@@ -1,28 +1,51 @@
-function [ac, flag] = iterate_W0_TS(ac, Wfrac_reg, mission_fun, T0, S)
-% ITERATE_W0  Iteratively calculates takeoff weight for a mission.
-%   [ac, W0] = ITERATE_W0(ac, Wfrac_fun, mission_fun) calculates takeoff weight.
+function S = solveS2(ac, T0, Wfrac_reg, mission_fun, con_fun, Wfrac_idx, varargin)
 
-options = optimoptions("fsolve", "Display", "none", "Algorithm", "trust-region-dogleg");
-% options = optimoptions("fmincon", ...
-%         "Display", "none", ...
-%         "Algorithm", "interior-point");
-if isequal(mission_fun, @a2a_Ffrac)
-    [ac.a2a.W0, ~, flag, ~] = fsolve(@(W0) W0_residual(ac, Wfrac_reg, mission_fun, T0, S, W0), ac.a2a.W0, options);
-    % obj = @(W0) W0_residual(ac, Wfrac_reg, mission_fun, T0, S, W0).^2;
-    % [ac.a2a.W0, ~, flag, ~] = fmincon(obj, ac.a2a.W0, [], [], [], [], 1, [], [], options);
-    % ac.a2a.We = ac.a2a.W0 .* (Wfrac_reg.A .* ac.a2a.W0.^Wfrac_reg.C);
-    [~, ac] = W0_residual(ac, Wfrac_reg, mission_fun, T0, S, ac.a2a.W0);  
-    [Ffrac, ac.a2a.Wfracs, ac.a2a.segments] = mission_fun(ac);
-    ac.a2a.Wf = ac.a2a.W0 .* Ffrac;
-elseif isequal(mission_fun, @strike_Ffrac)
-    ac.strike.W0 = fsolve(@(W0) W0_residual(ac, Wfrac_reg, mission_fun, T0, S, W0), ac.strike.W0, options);
-    % ac.strike.We = ac.strike.W0 .* (Wfrac_reg.A .* ac.strike.W0.^Wfrac_reg.C);
-    [~, ac] = W0_residual(ac, Wfrac_reg, mission_fun, T0, S, ac.strike.W0);
-    [Ffrac, ac.strike.Wfracs, ac.strike.segments] = mission_fun(ac);
-    ac.strike.Wf = ac.strike.W0 .* Ffrac;
+
+
+options = optimoptions("fsolve", "Display", "final", "MaxFunctionEvaluations", 2000);
+x0 = [1; 1];
+[x, ~, flag, ~] = fsolve(@(x) residual(x, ac, T0, Wfrac_reg, mission_fun, con_fun, Wfrac_idx, varargin{:}), x0, options);
+if flag <= 0
+    S = NaN;
 else
-    fprintf("Error. Invalid mission function.\n");
+    S = x(1) .* ac.initial.Sref;
 end
+end
+
+function R = residual(x, ac, T0, Wfrac_reg, mission_fun, con_fun, Wfrac_idx, varargin)
+    R = zeros(2, 1);
+    S = x(1) .* ac.initial.Sref;
+    if isequal(mission_fun, @a2a_Ffrac)
+        W0 = x(2) .* ac.a2a.W0;
+        
+        [R(1), ac] = W0_residual(ac, Wfrac_reg, mission_fun, T0, S, W0);
+        [~, ac.a2a.Wfracs, ac.a2a.segments] = mission_fun(ac);
+    elseif isequal(mission_fun, @strike_Ffrac)
+        W0 = x(2) .* ac.strike.W0;
+        
+        [R(1), ac] = W0_residual(ac, Wfrac_reg, mission_fun, T0, S, W0);
+        [~, ac.strike.Wfracs, ac.strike.segments] = mission_fun(ac);
+    end
+    
+    R(2) = S_residual(ac, S, mission_fun, con_fun, Wfrac_idx, varargin{:});
+end
+
+function R = S_residual(ac, S, mission_fun, con_fun, Wfrac_idx, varargin)
+    if isequal(mission_fun, @a2a_Ffrac)
+        if isequal(con_fun, @recovery)
+            WS = con_fun(ac.a2a.W0, varargin{:}, ac.a2a.Wfracs(Wfrac_idx));
+        else
+            WS = con_fun(varargin{:}, ac.a2a.Wfracs(Wfrac_idx));
+        end
+        R = S - ac.a2a.W0 ./ WS;
+    elseif isequal(mission_fun, @strike_Ffrac)
+        if isequal(con_fun, @recovery)
+            WS = con_fun(ac.strike.W0, varargin{:}, ac.strike.Wfracs(Wfrac_idx));
+        else
+            WS = con_fun(varargin{:}, ac.strike.Wfracs(Wfrac_idx));
+        end
+        R = S - ac.strike.W0 ./ WS;
+    end
 end
 
 function [R, ac] = W0_residual(ac, Wfrac_reg, mission_fun, T0, S, W0)
@@ -43,7 +66,6 @@ function [R, ac] = W0_residual(ac, Wfrac_reg, mission_fun, T0, S, W0)
         ac.polar.a2a.half_gear = simple_polar_2("half_flaps_gear", ac.a2a.W0, S, ac.initial.num_drop_tanks);
         ac.polar.a2a.full_gear = simple_polar_2("full_flaps_gear", ac.a2a.W0, S, ac.initial.num_drop_tanks);
 
-        % This makes solutions hard to converge
         ac.initial.T_max = T0;
         ac.initial.T_mil = 0.6 .* T0;
         ac.initial.Sref = S;
@@ -65,6 +87,9 @@ function [R, ac] = W0_residual(ac, Wfrac_reg, mission_fun, T0, S, W0)
         ac.polar.strike.half_gear = simple_polar_2("half_flaps_gear", ac.strike.W0, S, ac.initial.num_drop_tanks);
         ac.polar.strike.full_gear = simple_polar_2("full_flaps_gear", ac.strike.W0, S, ac.initial.num_drop_tanks);
 
+        ac.initial.T_max = T0;
+        ac.initial.T_mil = 0.6 .* T0;
+        ac.initial.Sref = S;
         [Ffrac, ~, ~] = mission_fun(ac);
         R = W0 - (ac.strike.W_crew + ac.strike.W_pay) - ac.strike.We - W0.*Ffrac;
     end

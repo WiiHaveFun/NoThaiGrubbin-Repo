@@ -26,6 +26,96 @@ K_half_gear = getK(ac, p_half_gear);
 K_full_gear = getK(ac, p_full_gear);
 
 %% A2A constraints
+n = 10;
+S = linspace(750 .* 0.092903, 850 .* 0.092903, n);
+T0 = linspace(40000 .* 4.44822, 80000 .* 4.44822, n);
+
+T0_a2a_dash = zeros(size(n, 1));
+T0_a2a_turn_rate = zeros(size(n, 1));
+
+T0_a2a_cruise_1 = zeros(size(n, 1));
+T0_a2a_cruise_2 = zeros(size(n, 1));
+T0_a2a_ceiling = zeros(size(n, 1));
+
+T0_a2a_climb_to = zeros(size(n, 1));
+T0_a2a_climb_ap = zeros(size(n, 1));
+T0_a2a_climb_1 = zeros(size(n, 1));
+T0_a2a_climb_2 = zeros(size(n, 1));
+
+T0_a2a_takeoff = zeros(size(n, 1));
+
+for i = 1:n
+    % Dash
+    Tfrac = get_thrust_frac(ac.a2a.M_dash, ac.a2a.h_dash, 1.08, true, false);
+    T0_a2a_dash(i) = solveT3(ac, S(i), Wefrac_reg, @a2a_Ffrac, @dash, 4, Tfrac);
+    % Turn rate
+    T0_a2a_turn_rate(i) = solveT3(ac, S(i), Wefrac_reg, @a2a_Ffrac, @turn_rate, 6, []);
+
+
+    % Cruise 1 and 2
+    Tfrac = get_thrust_frac(ac.initial.M_cruise, ac.initial.h_cruise, 1.08, false, false);
+    T0_a2a_cruise_1(i) = solveT3(ac, S(i), Wefrac_reg, @a2a_Ffrac, @turn_rate, 3, Tfrac);
+    T0_a2a_cruise_2(i) = solveT3(ac, S(i), Wefrac_reg, @a2a_Ffrac, @turn_rate, 8, []);
+    % Ceiling
+    Tfrac = get_thrust_frac(ac.initial.M_cruise, ac.initial.h_ceiling, 1.08, true, false);
+    T0_a2a_ceiling = solveT3(ac, S(i), Wefrac_reg, @a2a_Ffrac, @ceiling, 3, Tfrac);
+
+    % SEROC takeoff
+    Tfrac = get_thrust_frac(0, 0, 1.08, true, true);
+    T0_a2a_climb_to(i) = solveT3(ac, S(i), Wefrac_reg, @a2a_Ffrac, @seroc_to, 1, Tfrac);
+    % SEROC approach
+    Tfrac = get_thrust_frac(0, 0, 1.08, true, true);
+    T0_a2a_climb_ap(i) = solveT3(ac, S(i), Wefrac_reg, @a2a_Ffrac, @seroc_ap, [], Tfrac);
+    % % Climb 1
+    % Tfrac = get_thrust_frac(0, 0, 1.08, false, false);
+    % T0_a2a_climb_1(i) = solveT3(ac, S(i), Wefrac_reg, @a2a_Ffrac, @climb_1, [], Tfrac);
+    % % Climb 2
+    % Tfrac = get_thrust_frac(0, 0, 1.08, false, false);
+    % T0_a2a_climb_2(i) = solveT3(ac, S(i), Wefrac_reg, @a2a_Ffrac, @climb_2, [], Tfrac);
+
+    % Takeoff
+    Tfrac = get_thrust_frac(0, 0, 1.08, true, true);
+    T0_a2a_takeoff(i) = solveT3(ac, S(i), Wefrac_reg, @a2a_Ffrac, @takeoff, [], Tfrac);
+    end
+
+% N to lb
+T0_a2a_dash = T0_a2a_dash ./ 4.44822;
+T0_a2a_turn_rate = T0_a2a_turn_rate ./ 4.44822;
+T0_a2a_cruise_1 = T0_a2a_cruise_1 ./ 4.44822;
+T0_a2a_cruise_2 = T0_a2a_cruise_2 ./ 4.44822;
+T0_a2a_ceiling = T0_a2a_ceiling ./ 4.44822;
+T0_a2a_climb_to = T0_a2a_climb_to ./ 4.44822;
+T0_a2a_climb_ap = T0_a2a_climb_ap ./ 4.44822;
+% T0_a2a_climb_1 = T0_a2a_climb_1 ./ 4.44822;
+% T0_a2a_climb_2 = T0_a2a_climb_2 ./ 4.44822;
+T0_a2a_takeoff = T0_a2a_takeoff ./ 4.44822;
+
+%% Plot A2A
+S_plot = S ./ 0.092903;
+T0_plot = T0 ./ 4.44822;
+
+figure(1);
+clf;
+p1 = plot(S_plot, T0_a2a_dash, "--r");
+hold on;
+p2 = plot(S_plot, T0_a2a_turn_rate, "--", "color", "#F9A603");
+
+p4 = plot(S_plot, T0_a2a_cruise_1, "-", "color", "#0000FF");
+p5 = plot(S_plot, T0_a2a_cruise_2, "-", "color", "#6BADCE");
+p6 = plot(S_plot, T0_a2a_ceiling, "--", "color", "#734F96");
+
+p7 = plot(S_plot, T0_a2a_climb_to, "--", "color", "#1A2421");
+p8 = plot(S_plot, T0_a2a_climb_ap, "--", "color", "#0B6623");
+% p9 = plot(S, T0_a2a_climb_1, "-", "color", "#028A0F");
+% p10 = plot(S, T0_a2a_climb_2, "-", "color", "#028A0F");
+
+p11 = plot(S_plot, T0_a2a_takeoff, "--", "color", "#222021");
+
+scatter(ac.initial.Sref ./ 0.092903, ac.initial.T_max ./ 4.44822, 100, [252, 106, 3]./255, "filled");
+
+ylim([0, 80000]);
+xlim([700, 900]);
+%% A2A constraints
 n = 200;
 WS = linspace(1,10000,n);
 TW = linspace(0,1.5,n);
