@@ -143,7 +143,7 @@ WS_strike_recovery = WS_strike_recovery .* 0.020885434273039;
 WS2 = WS .* 0.020885434273039;
 
 % Design Point
-WSdesign = 4000 .* 0.020885434273039;
+WSdesign = ac.a2a.W0 ./ ac.initial.Sref .* 0.020885434273039;
 TWmax = ac.initial.T_max./ac.a2a.W0;
 TWmil = ac.initial.T_mil./ac.a2a.W0;
 
@@ -215,7 +215,7 @@ saveas(gcf, "/Users/michaelchen/UMich/Class/F25/Aero_481/Figures/sizing_a2a.svg"
 
 %% Plot Strike
 % Design Point
-WSdesign = 4000 .* 0.020885434273039;
+WSdesign = ac.strike.W0 ./ ac.initial.Sref .* 0.020885434273039;
 TWmax = ac.initial.T_max./ac.strike.W0;
 TWmil = ac.initial.T_mil./ac.strike.W0;
 

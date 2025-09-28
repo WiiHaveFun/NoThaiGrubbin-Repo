@@ -103,7 +103,7 @@ ac.strike.segments = [];
 % Point constraints
 ac.pt.seroc_to = 200 .* 0.00508;                    % Approach SEROC (ft/min to m/s)
 ac.pt.seroc_ap = 500 .* 0.00508;                    % Takeoff SEROC (ft/min to m/s)
-ac.pt.seroc_to_V = 132 .* 0.514444;                 % Approach SEROC velocity (kts to m/s)
+ac.pt.seroc_to_V = 156 .* 0.514444;                 % Approach SEROC velocity (kts to m/s)
 ac.pt.seroc_ap_V = 113 .* 0.514444;                   % Takeoff SEROC velocity (kts to m/s)
 
 end

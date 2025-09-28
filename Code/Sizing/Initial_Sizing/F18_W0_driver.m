@@ -2,10 +2,16 @@
 clc
 ac = aircraft();
 ac.initial.AR = 3.99;
-ac.initial.W_pay = 2946 .* 4.44822;
+ac.a2a.W_pay = 2946 .* 4.44822;
+ac.initial.T_max = 2 .* 21946 .* 4.44822;
+ac.initial.TSFC_wet = 1.844 ./ 3600;
+ac.initial.T_mil = 2 .* 14447 .* 4.44822;
+ac.initial.TSFC_dry = 0.82 ./ 3600;
+ac.initial.Sref = 500 .* 0.092903;
 
+ac.a2a.turn_rate = deg2rad(8);
 ac.a2a.R = 475 .* 1852;
-ac.a2a.M_dash = 1.8;
+ac.a2a.M_dash = 1.6;
 ac.a2a.t_combat = 2 .* 60; 
 
 % 1 crew
@@ -25,11 +31,12 @@ Wfrac_reg.A = 2.3400 .* 0.224809.^-0.1300;
 Wfrac_reg.C = -0.1300;
 
 [ac] = iterate_W0(ac, Wfrac_reg, @a2a_Ffrac);
-disp(ac.initial.W0./4.44822)
+disp(ac.a2a.W0./4.44822)
+[ac] = iterate_W0_TS(ac, Wfrac_reg, @a2a_Ffrac, ac.initial.T_max, ac.initial.Sref);
+disp(ac.a2a.W0./4.44822)
 
 %% F-18E/F Validation, Strike
-ac.initial.W_pay = 5422 .* 4.44822;
-
+ac.strike.W_pay = 5422 .* 4.44822;
 ac.strike.R = 388 .* 1852;
 ac.strike.M_dash = 0.9;
 ac.strike.V_dash = getV(0, ac.strike.M_dash);
@@ -53,4 +60,6 @@ Wfrac_reg.A = 2.3400 .* 0.224809.^-0.1300;
 Wfrac_reg.C = -0.1300;
 
 [ac] = iterate_W0(ac, Wfrac_reg, @strike_Ffrac);
-disp(ac.initial.W0./4.44822)
+disp(ac.strike.W0./4.44822)
+[ac] = iterate_W0_TS(ac, Wfrac_reg, @strike_Ffrac, ac.initial.T_max, ac.initial.Sref);
+disp(ac.strike.W0./4.44822)

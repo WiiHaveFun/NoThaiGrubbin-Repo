@@ -4,7 +4,7 @@ width = 6.5;
 height = 8;
 
 %% Weights and weight fractions
-ac = aircraft();
+% ac = aircraft();
 Wefrac_reg = empty_weight_frac_reg("Raymer");
 
 % TODO enforce identical polars or separate polars by mission
@@ -13,8 +13,8 @@ Wefrac_reg = empty_weight_frac_reg("Raymer");
 
 %% A2A constraints
 n = 20;
-S = linspace(400 .* 0.092903, 1000 .* 0.092903, n);
-T0 = linspace(40000 .* 4.44822, 80000 .* 4.44822, n);
+S = linspace(300 .* 0.092903, 1000 .* 0.092903, n);
+T0 = linspace(30000 .* 4.44822, 80000 .* 4.44822, n);
 
 T0_a2a_dash = zeros(size(n, 1));
 T0_a2a_turn_rate = zeros(size(n, 1));
@@ -122,12 +122,12 @@ p4 = plot(S_plot, T0_a2a_cruise_1, "-", "color", "#0000FF");
 p5 = plot(S_plot, T0_a2a_cruise_2, "-", "color", "#6BADCE");
 p6 = plot(S_plot, T0_a2a_ceiling, "--", "color", "#734F96");
 
-p7 = plot(S_plot, T0_a2a_climb_to, "--", "color", "#1A2421");
+p7 = plot(S_plot(~isnan(T0_a2a_climb_to)), T0_a2a_climb_to(~isnan(T0_a2a_climb_to)), "--", "color", "#1A2421");
 p8 = plot(S_plot, T0_a2a_climb_ap, "--", "color", "#0B6623");
 p9 = plot(S_plot, T0_a2a_climb_1, "-", "color", "#028A0F");
 p10 = plot(S_plot, T0_a2a_climb_2, "-", "color", "#028A0F");
 
-p11 = plot(S_plot, T0_a2a_takeoff, "--", "color", "#222021");
+p11 = plot(S_plot(~isnan(T0_a2a_takeoff)), T0_a2a_takeoff(~isnan(T0_a2a_takeoff)), "--", "color", "#222021");
 p12 = plot(S_a2a_landing, T0_plot, "-", "color", "#A52A2A");
 
 p13 = plot(S_a2a_catapult, T0_plot, "--", "color", "#7F00FF");
@@ -136,7 +136,7 @@ p14 = plot(S_a2a_recovery, T0_plot, "-", "color", "#000000");
 scatter(ac.initial.Sref ./ 0.092903, ac.initial.T_max ./ 4.44822, 100, [252, 106, 3]./255, "filled");
 
 ylim([0, 80000]);
-xlim([400, 1000]);
+xlim([300, 1000]);
 xlabel("$S (ft^2)$", "Interpreter", "latex", "FontSize", fontsize);
 ylabel("$T (lb)$", "Interpreter", "latex", "FontSize", fontsize);
 set(gca, 'TickLabelInterpreter', 'latex');
@@ -157,12 +157,12 @@ label_line(p10, 950, dn, "Climb 2", "interpreter", "latex", "FontSize", fontsize
 label_line(p11, 970, dn, "Takeoff", "interpreter", "latex", "FontSize", fontsize);
 label_line(p12, 500, dn, "Landing", "interpreter", "latex", "FontSize", fontsize);
 label_line(p13, 850, dn, "Catapult", "interpreter", "latex", "FontSize", fontsize);
-label_line(p14, 540, dn, "Recovery", "interpreter", "latex", "FontSize", fontsize);
+label_line(p14, 540, -dn, "Recovery", "interpreter", "latex", "FontSize", fontsize);
 
 %% Strike constraints
 n = 20;
-S = linspace(400 .* 0.092903, 1000 .* 0.092903, n);
-T0 = linspace(40000 .* 4.44822, 80000 .* 4.44822, n);
+S = linspace(300 .* 0.092903, 1000 .* 0.092903, n);
+T0 = linspace(20000 .* 4.44822, 80000 .* 4.44822, n);
 
 T0_strike_dash = zeros(size(n, 1));
 S_strike_max_g = zeros(size(n, 1));
@@ -286,7 +286,7 @@ p14 = plot(S_strike_recovery, T0_plot, "-", "color", "#000000");
 scatter(ac.initial.Sref ./ 0.092903, ac.initial.T_max ./ 4.44822, 100, [252, 106, 3]./255, "filled");
 
 ylim([0, 80000]);
-xlim([400, 1000]);
+xlim([300, 1000]);
 xlabel("$S (ft^2)$", "Interpreter", "latex", "FontSize", fontsize);
 ylabel("$T (lb)$", "Interpreter", "latex", "FontSize", fontsize);
 set(gca, 'TickLabelInterpreter', 'latex');

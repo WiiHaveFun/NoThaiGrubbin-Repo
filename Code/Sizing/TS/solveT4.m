@@ -1,12 +1,13 @@
-function T0 = solveT2(ac, S, Wfrac_reg, mission_fun, con_fun, Tfrac)
+function T0 = solveT4(ac, S, Wfrac_reg, mission_fun, con_fun, Tfrac)
 
 
 
 options = optimoptions("fsolve", "Display", "none");
-x0 = [0.1; 1];
+x0 = [0.1; 0.5];
 [x, ~, flag, ~] = fsolve(@(x) residual(x, ac, S, Wfrac_reg, mission_fun, con_fun, Tfrac), x0);
 if flag <= 0
-    T0 = NaN;
+    % T0 = NaN;
+    T0 = x(1) .* ac.initial.T_max;
 else
     T0 = x(1) .* ac.initial.T_max;
 end

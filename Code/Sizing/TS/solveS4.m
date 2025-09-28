@@ -6,7 +6,8 @@ options = optimoptions("fsolve", "Display", "none");
 x0 = [1; 1];
 [x, ~, flag, ~] = fsolve(@(x) residual(x, ac, T0, Wfrac_reg, mission_fun, con_fun, Tfrac), x0, options);
 if flag <= 0
-    S = NaN;
+    % S = NaN;
+    S = x(1) .* ac.initial.Sref;
 else
     S = x(1) .* ac.initial.Sref;
 end
