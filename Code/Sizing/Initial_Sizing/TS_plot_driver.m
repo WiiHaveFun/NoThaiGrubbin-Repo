@@ -46,6 +46,7 @@ T0_a2a_climb_2 = zeros(size(n, 1));
 T0_a2a_takeoff = zeros(size(n, 1));
 S_a2a_landing = zeros(size(n, 1));
 
+S_a2a_catapult = zeros(size(n, 1));
 S_a2a_recovery = zeros(size(n, 1));
 
 for i = 1:n
@@ -55,7 +56,7 @@ for i = 1:n
     % Turn rate
     T0_a2a_turn_rate(i) = solveT4(ac, S(i), Wefrac_reg, @a2a_Ffrac, @turn_rate, []);
     % Vertical load factor
-    S_a2a_max_g(i) = solveS4(ac, T0(i), Wefrac_reg, @a2a_Ffrac, @max_g);
+    S_a2a_max_g(i) = solveS4(ac, T0(i), Wefrac_reg, @a2a_Ffrac, @max_g, []);
 
     % Cruise 1 and 2
     Tfrac = get_thrust_frac(ac.initial.M_cruise, ac.initial.h_cruise, 1.08, false, false);
@@ -82,10 +83,13 @@ for i = 1:n
     Tfrac = get_thrust_frac(0, 0, 1.08, true, true);
     T0_a2a_takeoff(i) = solveT4(ac, S(i), Wefrac_reg, @a2a_Ffrac, @takeoff, Tfrac);
     % Landing
-    S_a2a_landing(i) = solveS4(ac, T0(i), Wefrac_reg, @a2a_Ffrac, @landing);
+    S_a2a_landing(i) = solveS4(ac, T0(i), Wefrac_reg, @a2a_Ffrac, @landing, []);
 
+    % Catapult
+    Tfrac = get_thrust_frac(0, 0, 1.08, true, true);
+    S_a2a_catapult(i) = solveS4(ac, T0(i), Wefrac_reg, @a2a_Ffrac, @catapult2, Tfrac);
     % Recovery
-    S_a2a_recovery(i) = solveS3(ac, T0(i), Wefrac_reg, @a2a_Ffrac, @recovery);
+    S_a2a_recovery(i) = solveS4(ac, T0(i), Wefrac_reg, @a2a_Ffrac, @recovery, []);
     end
 
 % N to lb
@@ -103,6 +107,7 @@ T0_a2a_takeoff = T0_a2a_takeoff ./ 4.44822;
 % m^2 to ft^2
 S_a2a_max_g = S_a2a_max_g ./ 0.092903;
 S_a2a_landing = S_a2a_landing ./ 0.092903;
+S_a2a_catapult = S_a2a_catapult ./ 0.092903;
 S_a2a_recovery = S_a2a_recovery ./ 0.092903;
 
 %% Plot A2A
@@ -128,6 +133,7 @@ p10 = plot(S_plot, T0_a2a_climb_2, "-", "color", "#028A0F");
 p11 = plot(S_plot, T0_a2a_takeoff, "--", "color", "#222021");
 p12 = plot(S_a2a_landing, T0_plot, "-", "color", "#A52A2A");
 
+p14 = plot(S_a2a_catapult, T0_plot, "--", "color", "#7F00FF");
 p14 = plot(S_a2a_recovery, T0_plot, "-", "color", "#000000");
 
 scatter(ac.initial.Sref ./ 0.092903, ac.initial.T_max ./ 4.44822, 100, [252, 106, 3]./255, "filled");

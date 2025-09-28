@@ -1,10 +1,10 @@
-function S = solveS2(ac, T0, Wfrac_reg, mission_fun, con_fun)
+function S = solveS2(ac, T0, Wfrac_reg, mission_fun, con_fun, Tfrac)
 
 
 
 options = optimoptions("fsolve", "Display", "final", "MaxFunctionEvaluations", 2000);
 x0 = [1; 1];
-[x, ~, flag, ~] = fsolve(@(x) residual(x, ac, T0, Wfrac_reg, mission_fun, con_fun), x0, options);
+[x, ~, flag, ~] = fsolve(@(x) residual(x, ac, T0, Wfrac_reg, mission_fun, con_fun, Tfrac), x0, options);
 if flag <= 0
     S = NaN;
 else
@@ -12,7 +12,7 @@ else
 end
 end
 
-function R = residual(x, ac, T0, Wfrac_reg, mission_fun, con_fun)
+function R = residual(x, ac, T0, Wfrac_reg, mission_fun, con_fun, Tfrac)
     R = zeros(2, 1);
     S = x(1) .* ac.initial.Sref;
     if isequal(mission_fun, @a2a_Ffrac)
@@ -27,10 +27,10 @@ function R = residual(x, ac, T0, Wfrac_reg, mission_fun, con_fun)
         [~, ac.strike.Wfracs, ac.strike.segments] = mission_fun(ac);
     end
     
-    R(2) = S_residual(ac, S, mission_fun, con_fun);
+    R(2) = S_residual(ac, T0, S, mission_fun, con_fun, Tfrac);
 end
 
-function R = S_residual(ac, S, mission_fun, con_fun)
+function R = S_residual(ac, T0, S, mission_fun, con_fun, Tfrac)
     if isequal(mission_fun, @a2a_Ffrac)
         if isequal(con_fun, @max_g)
             polar = ac.polar.a2a.clean;
@@ -39,6 +39,10 @@ function R = S_residual(ac, S, mission_fun, con_fun)
             Wfrac_land_a2a = (ac.a2a.We + 0.25.*ac.a2a.Wf + 0.5.*ac.a2a.W_pay) ./ ac.a2a.W0;
             polar = ac.polar.a2a.full_gear;
             WS = landing(2000, 0, polar.CLmax, Wfrac_land_a2a);
+        elseif isequal(con_fun, @catapult2)
+            TW = T0 ./ ac.a2a.W0;
+            polar = ac.polar.a2a.full_gear;
+            WS = catapult2(TW, ac.a2a.W0, polar.CD0, getK(ac, polar), polar.CLmax, ac.a2a.Wfracs(1), Tfrac);
         elseif isequal(con_fun, @recovery)
             Wfrac_land_a2a = (ac.a2a.We + 0.25.*ac.a2a.Wf + 0.5.*ac.a2a.W_pay) ./ ac.a2a.W0;
             polar = ac.polar.a2a.full_gear;
