@@ -4,7 +4,7 @@ width = 6.5;
 height = 8;
 
 %% Weights and weight fractions
-% ac = aircraft();
+ac = aircraft();
 Wefrac_reg = empty_weight_frac_reg("Raymer");
 
 % TODO enforce identical polars or separate polars by mission

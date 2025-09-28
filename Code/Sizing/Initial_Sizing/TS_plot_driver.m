@@ -4,7 +4,7 @@ width = 6.5;
 height = 8;
 
 %% Weights and weight fractions
-% ac = aircraft();
+ac = aircraft();
 Wefrac_reg = empty_weight_frac_reg("Raymer");
 
 % TODO enforce identical polars or separate polars by mission
@@ -35,47 +35,62 @@ S_a2a_landing = zeros(size(n, 1));
 S_a2a_catapult = zeros(size(n, 1));
 S_a2a_recovery = zeros(size(n, 1));
 
-for i = 1:n
+x_1_prev = [1, 0.5];
+x_2_prev = [1, 0.5];
+x_3_prev = [1, 0.5];
+x_4_prev = [1, 0.5];
+x_5_prev = [1, 0.5];
+x_6_prev = [1, 0.5];
+x_7_prev = [1, 0.5];
+x_8_prev = [1, 0.5];
+x_9_prev = [1, 0.5];
+x_10_prev = [1, 0.5];
+x_11_prev = [1, 0.5];
+x_12_prev = [1, 0.5];
+x_13_prev = [1, 0.5];
+x_14_prev = [1, 0.5];
+
+for i = n:-1:1
     % Dash
     Tfrac = get_thrust_frac(ac.a2a.M_dash, ac.a2a.h_dash, 1.08, true, false);
-    T0_a2a_dash(i) = solveT4(ac, S(i), Wefrac_reg, @a2a_Ffrac, @dash, Tfrac);
+    [T0_a2a_dash(i), x_1_prev] = solveT4(ac, S(i), Wefrac_reg, @a2a_Ffrac, @dash, Tfrac, x_1_prev);
     % Turn rate
-    T0_a2a_turn_rate(i) = solveT4(ac, S(i), Wefrac_reg, @a2a_Ffrac, @turn_rate, []);
+    [T0_a2a_turn_rate(i), x_2_prev] = solveT4(ac, S(i), Wefrac_reg, @a2a_Ffrac, @turn_rate, [], x_2_prev);
     % Vertical load factor
-    S_a2a_max_g(i) = solveS4(ac, T0(i), Wefrac_reg, @a2a_Ffrac, @max_g, []);
+    [S_a2a_max_g(i), x_3_prev] = solveS4(ac, T0(i), Wefrac_reg, @a2a_Ffrac, @max_g, [], x_3_prev);
 
     % Cruise 1 and 2
     Tfrac = get_thrust_frac(ac.initial.M_cruise, ac.initial.h_cruise, 1.08, false, false);
-    T0_a2a_cruise_1(i) = solveT4(ac, S(i), Wefrac_reg, @a2a_Ffrac, @cruise_1, Tfrac);
-    T0_a2a_cruise_2(i) = solveT4(ac, S(i), Wefrac_reg, @a2a_Ffrac, @cruise_2, Tfrac);
+    [T0_a2a_cruise_1(i), x_4_prev] = solveT4(ac, S(i), Wefrac_reg, @a2a_Ffrac, @cruise_1, Tfrac, x_4_prev);
+    [T0_a2a_cruise_2(i), x_5_prev] = solveT4(ac, S(i), Wefrac_reg, @a2a_Ffrac, @cruise_2, Tfrac, x_5_prev);
     % Ceiling
     Tfrac = get_thrust_frac(ac.initial.M_cruise, ac.initial.h_ceiling, 1.08, true, false);
-    T0_a2a_ceiling(i) = solveT4(ac, S(i), Wefrac_reg, @a2a_Ffrac, @ceiling, Tfrac);
+    [T0_a2a_ceiling(i), x_6_prev] = solveT4(ac, S(i), Wefrac_reg, @a2a_Ffrac, @ceiling, Tfrac, x_6_prev);
 
     % SEROC takeoff
     Tfrac = get_thrust_frac(0, 0, 1.08, true, true);
-    T0_a2a_climb_to(i) = solveT4(ac, S(i), Wefrac_reg, @a2a_Ffrac, @seroc_to, Tfrac);
+    [T0_a2a_climb_to(i), x_7_prev] = solveT4(ac, S(i), Wefrac_reg, @a2a_Ffrac, @seroc_to, Tfrac, x_7_prev);
     % SEROC approach
     Tfrac = get_thrust_frac(0, 0, 1.08, true, true);
-    T0_a2a_climb_ap(i) = solveT4(ac, S(i), Wefrac_reg, @a2a_Ffrac, @seroc_ap, Tfrac);
+    [T0_a2a_climb_ap(i), x_8_prev] = solveT4(ac, S(i), Wefrac_reg, @a2a_Ffrac, @seroc_ap, Tfrac, x_8_prev);
     % Climb 1
     Tfrac = get_thrust_frac(0, 0, 1.08, false, false);
-    T0_a2a_climb_1(i) = solveT4(ac, S(i), Wefrac_reg, @a2a_Ffrac, @climb_1, Tfrac);
+    [T0_a2a_climb_1(i), x_9_prev] = solveT4(ac, S(i), Wefrac_reg, @a2a_Ffrac, @climb_1, Tfrac, x_9_prev);
     % Climb 2
     Tfrac = get_thrust_frac(0, 0, 1.08, false, false);
-    T0_a2a_climb_2(i) = solveT4(ac, S(i), Wefrac_reg, @a2a_Ffrac, @climb_2, Tfrac);
+    [T0_a2a_climb_2(i), x_10_prev] = solveT4(ac, S(i), Wefrac_reg, @a2a_Ffrac, @climb_2, Tfrac, x_10_prev);
 
     % Takeoff
     Tfrac = get_thrust_frac(0, 0, 1.08, true, true);
-    T0_a2a_takeoff(i) = solveT4(ac, S(i), Wefrac_reg, @a2a_Ffrac, @takeoff, Tfrac);
+    [T0_a2a_takeoff(i), x_11_prev] = solveT4(ac, S(i), Wefrac_reg, @a2a_Ffrac, @takeoff, Tfrac, x_11_prev);
     % Landing
-    S_a2a_landing(i) = solveS4(ac, T0(i), Wefrac_reg, @a2a_Ffrac, @landing, []);
+    [S_a2a_landing(i), x_12_prev] = solveS4(ac, T0(i), Wefrac_reg, @a2a_Ffrac, @landing, [], x_12_prev);
 
     % Catapult
     Tfrac = get_thrust_frac(0, 0, 1.08, true, true);
-    S_a2a_catapult(i) = solveS4(ac, T0(i), Wefrac_reg, @a2a_Ffrac, @catapult2, Tfrac);
+    [S_a2a_catapult(i), x_13_prev] = solveS4(ac, T0(i), Wefrac_reg, @a2a_Ffrac, @catapult2, Tfrac, x_13_prev);
     % Recovery
-    S_a2a_recovery(i) = solveS4(ac, T0(i), Wefrac_reg, @a2a_Ffrac, @recovery, []);
+    [S_a2a_recovery(i), x_14_prev] = solveS4(ac, T0(i), Wefrac_reg, @a2a_Ffrac, @recovery, [], x_14_prev);
 end
 
 % N to lb
@@ -183,48 +198,63 @@ S_strike_landing = zeros(size(n, 1));
 S_strike_catapult = zeros(size(n, 1));
 S_strike_recovery = zeros(size(n, 1));
 
-for i = 1:n
+x_1_prev = [1, 0.5];
+x_2_prev = [1, 0.5];
+x_3_prev = [1, 0.5];
+x_4_prev = [1, 0.5];
+x_5_prev = [1, 0.5];
+x_6_prev = [1, 0.5];
+x_7_prev = [1, 0.5];
+x_8_prev = [1, 0.5];
+x_9_prev = [1, 0.5];
+x_10_prev = [1, 0.5];
+x_11_prev = [1, 0.5];
+x_12_prev = [1, 0.5];
+x_13_prev = [1, 0.5];
+x_14_prev = [1, 0.5];
+
+for i = n:-1:1
     % Dash
     Tfrac = get_thrust_frac(ac.strike.M_dash, ac.strike.h_combat, 1.08, true, false);
-    T0_strike_dash(i) = solveT4(ac, S(i), Wefrac_reg, @strike_Ffrac, @dash, Tfrac);
+    [T0_strike_dash(i), x_1_prev] = solveT4(ac, S(i), Wefrac_reg, @strike_Ffrac, @dash, Tfrac, x_1_prev);
     % Vertical load factor
-    S_strike_max_g(i) = solveS4(ac, T0(i), Wefrac_reg, @strike_Ffrac, @max_g, []);
+    [S_strike_max_g(i), x_2_prev] = solveS4(ac, T0(i), Wefrac_reg, @strike_Ffrac, @max_g, [], x_2_prev);
 
     % Cruise 1 and 2
     Tfrac = get_thrust_frac(ac.initial.M_cruise, ac.initial.h_cruise, 1.08, false, false);
-    T0_strike_cruise_1(i) = solveT4(ac, S(i), Wefrac_reg, @strike_Ffrac, @cruise_1, Tfrac);
-    T0_strike_cruise_2(i) = solveT4(ac, S(i), Wefrac_reg, @strike_Ffrac, @cruise_2, Tfrac);
+    [T0_strike_cruise_1(i), x_3_prev] = solveT4(ac, S(i), Wefrac_reg, @strike_Ffrac, @cruise_1, Tfrac, x_3_prev);
+    [T0_strike_cruise_2(i), x_4_prev] = solveT4(ac, S(i), Wefrac_reg, @strike_Ffrac, @cruise_2, Tfrac, x_4_prev);
     % Ceiling
     Tfrac = get_thrust_frac(ac.initial.M_cruise, ac.initial.h_ceiling, 1.08, true, false);
-    T0_strike_ceiling(i) = solveT4(ac, S(i), Wefrac_reg, @strike_Ffrac, @ceiling, Tfrac);
+    [T0_strike_ceiling(i), x_5_prev] = solveT4(ac, S(i), Wefrac_reg, @strike_Ffrac, @ceiling, Tfrac, x_5_prev);
 
     % SEROC takeoff
     Tfrac = get_thrust_frac(0, 0, 1.08, true, true);
-    T0_strike_climb_to(i) = solveT4(ac, S(i), Wefrac_reg, @strike_Ffrac, @seroc_to, Tfrac);
+    [T0_strike_climb_to(i), x_6_prev] = solveT4(ac, S(i), Wefrac_reg, @strike_Ffrac, @seroc_to, Tfrac, x_6_prev);
     % SEROC approach
     Tfrac = get_thrust_frac(0, 0, 1.08, true, true);
-    T0_strike_climb_ap(i) = solveT4(ac, S(i), Wefrac_reg, @strike_Ffrac, @seroc_ap, Tfrac);
+    [T0_strike_climb_ap(i), x_7_prev] = solveT4(ac, S(i), Wefrac_reg, @strike_Ffrac, @seroc_ap, Tfrac, x_7_prev);
     % Climb 1
     Tfrac = get_thrust_frac(0, 0, 1.08, false, false);
-    T0_strike_climb_1(i) = solveT4(ac, S(i), Wefrac_reg, @strike_Ffrac, @climb_1, Tfrac);
+    [T0_strike_climb_1(i), x_8_prev] = solveT4(ac, S(i), Wefrac_reg, @strike_Ffrac, @climb_1, Tfrac, x_8_prev);
     % Climb 2
     Tfrac = get_thrust_frac(ac.strike.M_dash, 0, 1.08, false, false);
-    T0_strike_climb_2(i) = solveT4(ac, S(i), Wefrac_reg, @strike_Ffrac, @climb_2, Tfrac);
+    [T0_strike_climb_2(i), x_9_prev] = solveT4(ac, S(i), Wefrac_reg, @strike_Ffrac, @climb_2, Tfrac, x_9_prev);
     % Climb 3
     Tfrac = get_thrust_frac(0, 0, 1.08, false, false);
-    T0_strike_climb_3(i) = solveT4(ac, S(i), Wefrac_reg, @strike_Ffrac, @climb_3, Tfrac);
+    [T0_strike_climb_3(i), x_10_prev] = solveT4(ac, S(i), Wefrac_reg, @strike_Ffrac, @climb_3, Tfrac, x_10_prev);
 
     % Takeoff
     Tfrac = get_thrust_frac(0, 0, 1.08, true, true);
-    T0_strike_takeoff(i) = solveT4(ac, S(i), Wefrac_reg, @strike_Ffrac, @takeoff, Tfrac);
+    [T0_strike_takeoff(i), x_11_prev] = solveT4(ac, S(i), Wefrac_reg, @strike_Ffrac, @takeoff, Tfrac, x_11_prev);
     % Landing
-    S_strike_landing(i) = solveS4(ac, T0(i), Wefrac_reg, @strike_Ffrac, @landing, []);
+    [S_strike_landing(i), x_12_prev] = solveS4(ac, T0(i), Wefrac_reg, @strike_Ffrac, @landing, [], x_12_prev);
 
     % Catapult
     Tfrac = get_thrust_frac(0, 0, 1.08, true, true);
-    S_strike_catapult(i) = solveS4(ac, T0(i), Wefrac_reg, @strike_Ffrac, @catapult2, Tfrac);
+    [S_strike_catapult(i), x_13_prev] = solveS4(ac, T0(i), Wefrac_reg, @strike_Ffrac, @catapult2, Tfrac, x_13_prev);
     % Recovery
-    S_strike_recovery(i) = solveS4(ac, T0(i), Wefrac_reg, @strike_Ffrac, @recovery, []);
+    [S_strike_recovery(i), x_14_prev] = solveS4(ac, T0(i), Wefrac_reg, @strike_Ffrac, @recovery, [], x_14_prev);
 end
 
 % N to lb

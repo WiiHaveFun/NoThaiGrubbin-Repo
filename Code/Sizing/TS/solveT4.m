@@ -1,9 +1,11 @@
-function T0 = solveT4(ac, S, Wfrac_reg, mission_fun, con_fun, Tfrac)
+function [T0, x] = solveT4(ac, S, Wfrac_reg, mission_fun, con_fun, Tfrac, x0)
 
 
 
 options = optimoptions("fsolve", "Display", "none");
-x0 = [0.1; 0.5];
+if isempty(x0)
+    x0 = [0.1; 0.5];
+end
 [x, ~, flag, ~] = fsolve(@(x) residual(x, ac, S, Wfrac_reg, mission_fun, con_fun, Tfrac), x0);
 if flag <= 0
     % T0 = NaN;
