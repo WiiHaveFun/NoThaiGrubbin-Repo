@@ -24,3 +24,23 @@ hold on;
 plot(V, polyval(p, V), "-b", "LineWidth", 1);
 
 set(gca, 'YDir', 'normal');
+
+%% Fit function
+p = polyfit(pos(:, 2), pos(:, 1), 5);
+save("catapult_p2.mat", "p");
+
+%% Plot
+xmin = 50;
+xmax = 190;
+ymin = 0;
+ymax = 100;
+
+W0 = linspace(40, 100, 100);
+
+figure(1);
+clf;
+imagesc([xmin xmax], [ymin ymax], img);
+hold on;
+plot(polyval(p, W0), W0, "-b", "LineWidth", 1);
+
+set(gca, 'YDir', 'normal');

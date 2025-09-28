@@ -68,6 +68,7 @@ WS_a2a_landing = landing(2000, 0, p_full_gear.CLmax, Wfrac_land_a2a);
 % Catapult launch
 Tfrac = get_thrust_frac(0, 0, 1.08, true, true);
 [WS_a2a_catapult, TW_a2a_catapult] = catapult(WS, TW, ac.a2a.W0, p_full_gear.CD0, K_full_gear, p_full_gear.CLmax, ac.a2a.Wfracs(1), Tfrac);
+WS_a2a_catapult2 = catapult2(TW, ac.a2a.W0, p_full_gear.CD0, K_full_gear, p_full_gear.CLmax, ac.a2a.Wfracs(1), Tfrac);
 % Recovery
 WS_a2a_recovery = recovery(ac.a2a.W0, p_full_gear.CLmax, Wfrac_land_a2a);
 
@@ -81,6 +82,8 @@ WS_a2a_max_g = WS_a2a_max_g .* 0.020885434273039;
 WS_a2a_landing = WS_a2a_landing .* 0.020885434273039;
 WS_a2a_catapult = WS_a2a_catapult .* 0.020885434273039;
 WS_a2a_recovery = WS_a2a_recovery .* 0.020885434273039;
+WS_a2a_catapult2 = WS_a2a_catapult2 .* 0.020885434273039;
+
 
 %% Strike constraints
 % Dash
@@ -164,6 +167,7 @@ p11 = plot(WS2, TW_a2a_takeoff, "--", "color", "#222021");
 p12 = plot(WS_a2a_landing.*ones(n, 1), TW, "-", "color", "#A52A2A");
 
 p13 = plot(WS_a2a_catapult, TW_a2a_catapult, "--", "color", "#7F00FF");
+plot(WS_a2a_catapult2, TW, ":", "color", "#7F00FF");
 p14 = plot(WS_a2a_recovery.*ones(n, 1), TW, "-", "color", "#000000");
 
 scatter(WSdesign, TWmax, 100, [252, 106, 3]./255, "filled");
