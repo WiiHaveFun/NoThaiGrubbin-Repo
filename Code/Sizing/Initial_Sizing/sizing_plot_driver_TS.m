@@ -54,10 +54,10 @@ Tfrac = get_thrust_frac(0, 0, 1.08, true, true);
 TW_a2a_climb_ap = climb_rate(WS, ac.pt.seroc_ap, ac.pt.seroc_ap_V, 0, p_full_gear.CD0, K_full_gear, true, true, ac.initial.num_eng, true, Wfrac_land_a2a, Tfrac);
 % Climb 1
 Tfrac = get_thrust_frac(0, 0, 1.08, false, false);
-TW_a2a_climb_1 = climb_rate(WS, 2.54, ac.initial.V_climb, 0, p_clean.CD0, K_clean, false, false, ac.initial.num_eng, false, ac.a2a.Wfracs(2), Tfrac);
+TW_a2a_climb_1 = climb_rate(WS, 10.*2.54, ac.initial.V_climb, 0, p_clean.CD0, K_clean, false, false, ac.initial.num_eng, false, ac.a2a.Wfracs(2), Tfrac);
 % Climb 2
 Tfrac = get_thrust_frac(0, 0, 1.08, false, false);
-TW_a2a_climb_2 = climb_rate(WS, 2.54, ac.initial.V_climb, ac.a2a.h_combat, p_clean.CD0, K_clean, false, false, ac.initial.num_eng, false, ac.a2a.Wfracs(7), Tfrac);
+TW_a2a_climb_2 = climb_rate(WS, 10.*2.54, ac.initial.V_climb, ac.a2a.h_combat, p_clean.CD0, K_clean, false, false, ac.initial.num_eng, false, ac.a2a.Wfracs(7), Tfrac);
 
 
 % Takeoff % TODO set ground roll distance, BPR, mu, 

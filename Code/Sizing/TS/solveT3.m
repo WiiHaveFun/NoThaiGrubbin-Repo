@@ -31,10 +31,10 @@ while true
         TW = climb_rate(WS, ac.pt.seroc_ap, ac.pt.seroc_ap_V, 0, polar.CD0, getK(ac, polar), true, true, ac.initial.num_eng, true, Wfrac_land_a2a, Tfrac);
     elseif isequal(con_fun, @climb_1)
         polar = ac.polar.a2a.clean;
-        TW = climb_rate(WS, 2.54, ac.initial.V_climb, 0, polar.CD0, getK(ac, polar), false, false, ac.initial.num_eng, false, ac.a2a.Wfracs(2), Tfrac);
+        TW = climb_rate(WS, 10.*2.54, ac.initial.V_climb, 0, polar.CD0, getK(ac, polar), false, false, ac.initial.num_eng, false, ac.a2a.Wfracs(2), Tfrac);
     elseif isequal(con_fun, @climb_2)
         polar = ac.polar.a2a.clean;
-        TW = climb_rate(WS, 2.54, ac.initial.V_climb, ac.a2a.h_combat, polar.CD0, getK(ac, polar), false, false, ac.initial.num_eng, false, ac.a2a.Wfracs(7), Tfrac);
+        TW = climb_rate(WS, 10.*2.54, ac.initial.V_climb, ac.a2a.h_combat, polar.CD0, getK(ac, polar), false, false, ac.initial.num_eng, false, ac.a2a.Wfracs(7), Tfrac);
     elseif isequal(con_fun, @takeoff)
         polar = ac.polar.a2a.half_gear;
         TW = takeoff(WS, 762, 0, polar.CD0, polar.CLmax, 0.68, 0.025, ac.a2a.Wfracs(1), Tfrac);
