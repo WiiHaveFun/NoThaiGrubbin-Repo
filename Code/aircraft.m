@@ -22,7 +22,8 @@ ac.initial.climb_rate = 55.7 .* 0.514444;           % Rate of climb (kts to m/s)
 ac.initial.climb_angle = deg2rad(13);               % Climb angle (deg to rad)
 % Aircraft geometry
 ac.initial.AR = 4;                                  % Aspect ratio
-ac.initial.Sref = 850 .* 0.092903;                  % Planform area (ft^2 to m^2)
+ac.initial.b = 58 .* 0.3048;                        % Wing span (ft to m)
+ac.initial.Sref = 650 .* 0.092903;                  % Planform area (ft^2 to m^2)
 % Aircraft aerodynamics
 ac.polar.a2a.clean = simple_polar("clean", ac.initial.num_drop_tanks);
 ac.polar.a2a.half = simple_polar("half_flaps", ac.initial.num_drop_tanks);
