@@ -9,6 +9,8 @@ Wefrac_reg = empty_weight_frac_reg("Raymer");
 
 % TODO enforce identical polars or separate polars by mission
 [ac] = iterate_W0_TS(ac, Wefrac_reg, @a2a_Ffrac, ac.initial.T_max, ac.initial.Sref);
+% ac.initial.T_max
+% ac.initial.Sref
 [ac] = iterate_W0_TS(ac, Wefrac_reg, @strike_Ffrac, ac.initial.T_max, ac.initial.Sref);
 
 %% A2A constraints
@@ -173,7 +175,7 @@ p14 = plot(S_a2a_recovery, T0_plot, "-", "color", "#000000");
 scatter(ac.initial.Sref ./ 0.092903, ac.initial.T_max ./ 4.44822, 100, [252, 106, 3]./255, "filled");
 
 % AEP(imag(AEP)~=0) = NaN;
-contour(S_grid, T0_grid, AEP./1e6, "-k", "ShowText", "on", "EdgeAlpha", 0.2);
+% contour(S_grid, T0_grid, AEP./1e6, "-k", "ShowText", "on", "EdgeAlpha", 0.2);
 
 shadeRegion({S_plot, S_plot, S_a2a_catapult}, {T0_a2a_dash, T0_a2a_takeoff, T0_plot}, {'lower', 'lower', 'upper'}, [450, 1000, 100]);
 text(700, 5e4, "Feasible", "HorizontalAlignment", "center", "Interpreter", "latex", "FontSize", fontsize);
@@ -354,7 +356,7 @@ p14 = plot(S_strike_recovery, T0_plot, "-", "color", "#000000");
 
 scatter(ac.initial.Sref ./ 0.092903, ac.initial.T_max ./ 4.44822, 100, [252, 106, 3]./255, "filled");
 
-contour(S_grid, T0_grid, AEP./1e6, "-k", "ShowText", "on", "EdgeAlpha", 0.2);
+% contour(S_grid, T0_grid, AEP./1e6, "-k", "ShowText", "on", "EdgeAlpha", 0.2);
 
 shadeRegion({S_plot, S_plot, S_strike_catapult}, {T0_strike_climb_to, T0_strike_takeoff, T0_plot}, {'lower', 'lower', 'upper'}, [450, 1000, 100]);
 text(700, 5e4, "Feasible", "HorizontalAlignment", "center", "Interpreter", "latex", "FontSize", fontsize);

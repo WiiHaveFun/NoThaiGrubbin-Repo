@@ -23,7 +23,7 @@ ac.initial.climb_angle = deg2rad(13);               % Climb angle (deg to rad)
 % Aircraft geometry
 ac.initial.AR = 4;                                  % Aspect ratio
 ac.initial.b = 58 .* 0.3048;                        % Wing span (ft to m)
-ac.initial.Sref = 650 .* 0.092903;                  % Planform area (ft^2 to m^2)
+ac.initial.Sref = 750 .* 0.092903;                  % Planform area (ft^2 to m^2)
 % Aircraft aerodynamics
 ac.polar.a2a.clean = simple_polar("clean", ac.initial.num_drop_tanks);
 ac.polar.a2a.half = simple_polar("half_flaps", ac.initial.num_drop_tanks);
@@ -55,7 +55,7 @@ ac.initial.T_max = ac.initial.num_eng .* ...        % Maximum thrust (lb to N)
 % Air-to-air mission parameters
 ac.a2a.R = 800 .* 1852;                         % Combat radius (nm to m)
 ac.a2a.M_dash = 1.7;                                % Dash Mach number
-ac.a2a.t_combat = 3 .* 60;                    % Combat time (min to s)
+ac.a2a.t_combat = 2 .* 60;                    % Combat time (min to s)
 ac.a2a.t_loiter = 20 .* 60;                         % Loiter time (min to s)
 ac.a2a.h_combat = 10000 .* 0.3048;                  % Combat altitude (ft to m)
 ac.a2a.h_dash = 30000 .* 0.3048;                    % Combat altitude (ft to m)
@@ -77,7 +77,7 @@ ac.a2a.Wfracs = [];
 ac.a2a.segments = [];
 
 % Strike mission parameters
-ac.strike.R = 1010 .* 1852;                          % Combat radius (nm to m)
+ac.strike.R = 850 .* 1852;                          % Combat radius (nm to m)
 ac.strike.M_dash = 0.90;                            % Combat dash Mach number
 ac.strike.V_dash = getV(0, ac.strike.M_dash);       % Combat dash velocity (m/s)
 ac.strike.R_combat = 100 .* 1852;                   % Combat dash distance (nm to m)

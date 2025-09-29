@@ -2,7 +2,7 @@ function [S, x] = solveS4(ac, T0, Wfrac_reg, mission_fun, con_fun, Tfrac, x0)
 
 
 
-options = optimoptions("fsolve", "Display", "none");
+options = optimoptions("fsolve", "Display", "final");
 if isempty(x0)
     x0 = [1; 0.5];
 end
@@ -18,9 +18,10 @@ end
 function R = residual(x, ac, T0, Wfrac_reg, mission_fun, con_fun, Tfrac)
     R = zeros(2, 1);
     S = x(1) .* ac.initial.Sref;
+    
     if isequal(mission_fun, @a2a_Ffrac)
         W0 = x(2) .* ac.a2a.W0;
-        
+
         [R(1), ac] = W0_residual(ac, Wfrac_reg, mission_fun, T0, S, W0);
         [~, ac.a2a.Wfracs, ac.a2a.segments] = mission_fun(ac);
     elseif isequal(mission_fun, @strike_Ffrac)
@@ -29,7 +30,7 @@ function R = residual(x, ac, T0, Wfrac_reg, mission_fun, con_fun, Tfrac)
         [R(1), ac] = W0_residual(ac, Wfrac_reg, mission_fun, T0, S, W0);
         [~, ac.strike.Wfracs, ac.strike.segments] = mission_fun(ac);
     end
-    
+
     R(2) = S_residual(ac, T0, S, mission_fun, con_fun, Tfrac);
 end
 
