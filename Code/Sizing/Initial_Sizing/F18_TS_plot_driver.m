@@ -4,7 +4,7 @@ width = 6.5;
 height = 8;
 
 %% Weights and weight fractions
-ac = aircraft();
+F18_W0_driver;
 Wefrac_reg = empty_weight_frac_reg("Raymer");
 
 % TODO enforce identical polars or separate polars by mission
@@ -126,7 +126,7 @@ S_a2a_recovery = S_a2a_recovery ./ 0.092903;
 AEP = zeros(n);
 for i = 1:n
     for j = 1:n
-        ac = aircraft();
+        F18_W0_driver;
         [ac] = iterate_W0_TS(ac, Wefrac_reg, @a2a_Ffrac, T0(j), S(i));
         [ac] = iterate_W0_TS(ac, Wefrac_reg, @strike_Ffrac, T0(j), S(i));
         cst = cost(ac);
@@ -135,7 +135,7 @@ for i = 1:n
 end
 
 %% Weights and weight fractions
-ac = aircraft();
+F18_W0_driver;
 Wefrac_reg = empty_weight_frac_reg("Raymer");
 
 % TODO enforce identical polars or separate polars by mission
@@ -173,11 +173,11 @@ p14 = plot(S_a2a_recovery, T0_plot, "-", "color", "#000000");
 scatter(ac.initial.Sref ./ 0.092903, ac.initial.T_max ./ 4.44822, 100, [252, 106, 3]./255, "filled");
 
 % AEP(imag(AEP)~=0) = NaN;
-contour(S_grid, T0_grid, AEP./1e6, "-k", "ShowText", "on", "EdgeAlpha", 0.2);
+% contour(S_grid, T0_grid, AEP./1e6, "-k", "ShowText", "on");
 
-shadeRegion({S_plot, S_plot, S_a2a_catapult}, {T0_a2a_dash, T0_a2a_takeoff, T0_plot}, {'lower', 'lower', 'upper'}, [450, 1000, 100]);
+shadeRegion({S_plot, S_a2a_max_g, S_plot, S_plot, S_a2a_catapult}, {T0_a2a_dash, T0_plot, T0_a2a_climb_to, T0_a2a_takeoff, T0_plot}, {'lower', 'upper', 'lower', 'lower', 'upper'}, [300, 1000, 100]);
 text(700, 5e4, "Feasible", "HorizontalAlignment", "center", "Interpreter", "latex", "FontSize", fontsize);
-text(ac.initial.Sref ./ 0.092903, ac.initial.T_max ./ 4.44822, "Design Point (Max)~~~", "HorizontalAlignment", "right", "Interpreter", "latex", "FontSize", fontsize);
+text(ac.initial.Sref ./ 0.092903, ac.initial.T_max ./ 4.44822, "~~~F/A-18E/F", "HorizontalAlignment", "left", "Interpreter", "latex", "FontSize", fontsize);
 
 ylim([0, 80000]);
 xlim([300, 1000]);
@@ -188,25 +188,25 @@ set(gca, 'TickLabelInterpreter', 'latex');
 set(gcf, 'Units', 'Inches', 'OuterPosition', [8.097222222222221,6.861111111111111,width,height]);
 
 dn = 5;
-label_line(p1, 900, dn, "M1.7 Dash", "interpreter", "latex", "FontSize", fontsize);
-label_line(p2, 850, dn, "10 deg/s Sustained Turn", "interpreter", "latex", "FontSize", fontsize);
-label_line(p3, 460, dn, "8g Vertical Load Factor", "interpreter", "latex", "FontSize", fontsize);
+label_line(p1, 550, -dn, "M1.6 Dash", "interpreter", "latex", "FontSize", fontsize);
+label_line(p2, 550, -dn, "8 deg/s Sustained Turn", "interpreter", "latex", "FontSize", fontsize);
+label_line(p3, 470, dn, "8g Vertical Load Factor", "interpreter", "latex", "FontSize", fontsize);
 label_line(p4, 700, dn, "Cruise 1", "interpreter", "latex", "FontSize", fontsize);
 label_line(p5, 850, -dn, "Cruise 2", "interpreter", "latex", "FontSize", fontsize);
 label_line(p6, 750, -dn, "50,000 ft Ceiling", "interpreter", "latex", "FontSize", fontsize);
-label_line(p7, 900, dn, "SEROC Takeoff", "interpreter", "latex", "FontSize", fontsize);
-label_line(p8, 900, dn, "SEROC Approach", "interpreter", "latex", "FontSize", fontsize);
+label_line(p7, 700, dn, "SEROC Takeoff", "interpreter", "latex", "FontSize", fontsize);
+label_line(p8, 600, dn, "SEROC Approach", "interpreter", "latex", "FontSize", fontsize);
 label_line(p9, 850, dn, "Climb 1", "interpreter", "latex", "FontSize", fontsize);
 label_line(p10, 950, -dn, "Climb 2", "interpreter", "latex", "FontSize", fontsize);
 label_line(p11, 900, dn, "Takeoff", "interpreter", "latex", "FontSize", fontsize);
-label_line(p12, 400, dn, "Landing", "interpreter", "latex", "FontSize", fontsize);
-label_line(p13, 700, dn, "Catapult", "interpreter", "latex", "FontSize", fontsize);
+label_line(p12, 380, dn, "Landing", "interpreter", "latex", "FontSize", fontsize);
+label_line(p13, 600, dn, "Catapult", "interpreter", "latex", "FontSize", fontsize);
 label_line(p14, 430, dn, "Recovery", "interpreter", "latex", "FontSize", fontsize);
 
-saveas(gcf, "/Users/michaelchen/UMich/Class/F25/Aero_481/Figures/TS_a2a.svg");
+saveas(gcf, "/Users/michaelchen/UMich/Class/F25/Aero_481/Figures/F18_TS_a2a.svg");
 
 %% Weights and weight fractions
-ac = aircraft();
+F18_W0_driver;
 Wefrac_reg = empty_weight_frac_reg("Raymer");
 
 % TODO enforce identical polars or separate polars by mission
@@ -354,11 +354,11 @@ p14 = plot(S_strike_recovery, T0_plot, "-", "color", "#000000");
 
 scatter(ac.initial.Sref ./ 0.092903, ac.initial.T_max ./ 4.44822, 100, [252, 106, 3]./255, "filled");
 
-contour(S_grid, T0_grid, AEP./1e6, "-k", "ShowText", "on", "EdgeAlpha", 0.2);
+% contour(S_grid, T0_grid, AEP./1e6, "-k", "ShowText", "on", "EdgeAlpha", 0.2);
 
-shadeRegion({S_plot, S_plot, S_strike_catapult}, {T0_strike_climb_to, T0_strike_takeoff, T0_plot}, {'lower', 'lower', 'upper'}, [450, 1000, 100]);
+shadeRegion({S_plot, S_plot, S_strike_catapult}, {T0_strike_climb_to, T0_strike_takeoff, T0_plot}, {'lower', 'lower', 'upper'}, [300, 1000, 100]);
 text(700, 5e4, "Feasible", "HorizontalAlignment", "center", "Interpreter", "latex", "FontSize", fontsize);
-text(ac.initial.Sref ./ 0.092903, ac.initial.T_max ./ 4.44822, "Design Point (Max)~~~", "HorizontalAlignment", "right", "Interpreter", "latex", "FontSize", fontsize);
+text(ac.initial.Sref ./ 0.092903, ac.initial.T_max ./ 4.44822, "~~~F/A-18E/F", "HorizontalAlignment", "left", "Interpreter", "latex", "FontSize", fontsize);
 
 ylim([0, 80000]);
 xlim([300, 1000]);
@@ -369,19 +369,19 @@ set(gca, 'TickLabelInterpreter', 'latex');
 set(gcf, 'Units', 'Inches', 'OuterPosition', [8.097222222222221+width,6.861111111111111,width,height]);
 
 dn = 5;
-label_line(p1, 900, dn, "M0.9 Dash", "interpreter", "latex", "FontSize", fontsize);
+label_line(p1, 400, -dn, "M0.9 Dash", "interpreter", "latex", "FontSize", fontsize);
 label_line(p2, 400, dn, "8g Vertical Load Factor", "interpreter", "latex", "FontSize", fontsize);
 label_line(p3, 450, dn, "Cruise 1", "interpreter", "latex", "FontSize", fontsize);
-label_line(p4, 450, -dn, "Cruise 2", "interpreter", "latex", "FontSize", fontsize);
+label_line(p4, 400, dn, "Cruise 2", "interpreter", "latex", "FontSize", fontsize);
 label_line(p5, 780, dn, "50,000 ft Ceiling", "interpreter", "latex", "FontSize", fontsize);
 label_line(p6, 900, dn, "SEROC Takeoff", "interpreter", "latex", "FontSize", fontsize);
 label_line(p7, 900, dn, "SEROC Approach", "interpreter", "latex", "FontSize", fontsize);
 label_line(p8, 800, dn, "Climb 1", "interpreter", "latex", "FontSize", fontsize);
-label_line(p9, 950, -dn, "Climb 2", "interpreter", "latex", "FontSize", fontsize);
+label_line(p9, 700, dn, "Climb 2", "interpreter", "latex", "FontSize", fontsize);
 label_line(p10, 900, -dn, "Climb 3", "interpreter", "latex", "FontSize", fontsize);
-label_line(p11, 950, dn, "Takeoff", "interpreter", "latex", "FontSize", fontsize);
-label_line(p12, 410, dn, "Landing", "interpreter", "latex", "FontSize", fontsize);
-label_line(p13, 720, dn, "Catapult", "interpreter", "latex", "FontSize", fontsize);
+label_line(p11, 800, dn, "Takeoff", "interpreter", "latex", "FontSize", fontsize);
+label_line(p12, 450, dn, "Landing", "interpreter", "latex", "FontSize", fontsize);
+label_line(p13, 600, dn, "Catapult", "interpreter", "latex", "FontSize", fontsize);
 label_line(p14, 450, dn, "Recovery", "interpreter", "latex", "FontSize", fontsize);
 
-saveas(gcf, "/Users/michaelchen/UMich/Class/F25/Aero_481/Figures/TS_strike.svg");
+saveas(gcf, "/Users/michaelchen/UMich/Class/F25/Aero_481/Figures/F18_TS_strike.svg");

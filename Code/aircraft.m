@@ -76,7 +76,7 @@ ac.a2a.Wfracs = [];
 ac.a2a.segments = [];
 
 % Strike mission parameters
-ac.strike.R = 1020 .* 1852;                          % Combat radius (nm to m)
+ac.strike.R = 1010 .* 1852;                          % Combat radius (nm to m)
 ac.strike.M_dash = 0.90;                            % Combat dash Mach number
 ac.strike.V_dash = getV(0, ac.strike.M_dash);       % Combat dash velocity (m/s)
 ac.strike.R_combat = 100 .* 1852;                   % Combat dash distance (nm to m)
