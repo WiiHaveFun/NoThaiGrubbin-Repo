@@ -8,22 +8,21 @@ Wfrac_reg.C = -0.1300;
 [cst] = cost(ac);
 
 fprintf("AEP: $%g Million\n", cst.unit.AEP / 1e6);
-fprintf("COC/hr: $%g\n", cst.MO.C_OPS_HR);
+fprintf("COC: $%g Million\n", cst.MO.C_OPS / (cst.MO.N_yr * cst.MO.N_serv * 1e6));
 
-%{
 cost_column = [
-    cst.MO.C_crewpr / (cst.MO.N_mission * cst.MO.N_yr)
+    cst.MO.C_crewpr / (cst.MO.N_yr * cst.MO.N_serv)
     cst.COC.a2a_weapons
     cst.COC.strike_weapons
-    cst.MO.W_F_used * (cst.MO.FP / cst.MO.FD)
-    (cst.MO.F_OL - 1) * (cst.MO.W_F_used * (cst.MO.FP / cst.MO.FD))
+    cst.MO.W_F_used * (cst.MO.FP / cst.MO.FD) * cst.MO.N_mission
+    (cst.MO.F_OL - 1) * (cst.MO.W_F_used * (cst.MO.FP / cst.MO.FD)) * cst.MO.N_mission
     0
     0
-    cst.MO.airframe_total / (cst.MO.N_mission * cst.MO.N_yr)
-    cst.MO.engine_total / (cst.MO.N_mission * cst.MO.N_yr)
+    cst.MO.airframe_total / (cst.MO.N_yr * cst.MO.N_serv)
+    cst.MO.engine_total / (cst.MO.N_yr * cst.MO.N_serv)
     NaN
-    cst.MO.C_OPS_HR * cst.MO.t_mis
-    mean([((cst.MO.C_OPS_HR * cst.MO.t_mis) / (N2lbs(ac.initial.W_pay) * 2 * m2nmi(ac.a2a.R))), ((cst.MO.C_OPS_HR * cst.MO.t_mis) / (N2lbs(ac.initial.W_pay) * 2 * m2nmi(ac.strike.R)))])
+    cst.MO.C_OPS / (cst.MO.N_yr * cst.MO.N_serv)
+    (cst.MO.C_OPS_HR * cst.MO.t_mis) / ((cst.aux.mission_mix_a2a * N2lbs(ac.a2a.W_pay) * m2nmi(ac.a2a.R) * 2) + ((1 - cst.aux.mission_mix_a2a) * N2lbs(ac.strike.W_pay) * m2nmi(ac.strike.R) * 2))
     ];
 
 aux_column = [
@@ -33,21 +32,25 @@ aux_column = [
     cst.aux.fuel_price
     cst.aux.oil_density
     cst.aux.oil_price
+    cst.unit.R_e_r
+    cst.unit.R_m_m
     cst.MO.R_m_ml
     cst.unit.AEP
     cst.aux.price_engine
-    ac.initial.W_pay
-    mean([2*ac.a2a.R, 2*ac.strike.R])
-    cst.aux.avg_missiles
+    N2lbs(ac.strike.W_pay)
+    N2lbs(ac.a2a.W_pay)
+    2*m2nmi(ac.strike.R)
+    2*m2nmi(ac.a2a.R)
+    ac.strike.num_9x
+    (ac.a2a.num_120 + ac.a2a.num_9x)
     ];
 
 EFCW_column = [
     cst.EFCW.JDAM_price
     cst.EFCW.AIM120_price
-    cst.EFCW.AIM9X_price  % Incorrect column compared to sheet, two missiles
+    cst.EFCW.AIM9X_price
     cst.EFCW.life_support
-    cst.EFCW.C_avionicscst.EFCW.C_avionics/cst.unit.AEP
-    cst.EFCW.surface_treat_per_FH * cst.MO.t_mis
+    cst.EFCW.C_avionics
+    cst.EFCW.surface_treat_per_FH * cst.MO.t_mis * cst.MO.N_mission
     cst.EFCW.sub_tech
     ];
-%}
