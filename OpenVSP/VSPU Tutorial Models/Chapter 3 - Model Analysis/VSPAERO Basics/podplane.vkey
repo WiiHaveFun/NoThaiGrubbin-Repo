@@ -1,0 +1,17 @@
+# VSPGEOM v3 Tag Key File
+C:/Users/tsher/OneDrive/Documents/Aircraft Design/OpenVSP/VSPU Tutorial Models/Chapter 3 - Model Analysis/VSPAERO Basics/podplane.vspgeom
+4
+
+# part#,geom#,surf#,gname,gid,thick,plate,copy#,geomcopy#
+1,3,0,Pod_S,AUXYESVCDV,1,0,1,4
+2,0,0,Wing_S,VZUXVGFGIE,1,0,1,1
+4,1,0,HTail_S,DYPGPHIYIS,1,0,1,2
+6,2,0,VTail_S,COPCAAJOYQ,1,0,1,3
+
+4
+
+# tag#,part#,ssname1,ssname2,...,ssid1,ssid2,...
+1,1
+2,2
+3,4
+4,6
