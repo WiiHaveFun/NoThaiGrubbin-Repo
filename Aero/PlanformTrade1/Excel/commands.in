@@ -1,0 +1,14 @@
+LOAD F-67A.avl
+OPER
+A
+C 0.2543
+X
+ST
+cruisest.txt
+O
+FS
+cruisefs.txt
+O
+
+
+Quit

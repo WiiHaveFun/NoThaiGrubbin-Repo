@@ -1,0 +1,37 @@
+F-67A
+# Trapezoidal Swept Wing
+# Thomas Sheridan, 10/3/2025
+
+0.84                  ! Mach
+0      0      0       ! iYsym  iZsym  Zsym
+60.387 3.9221 17.678  ! Sref Cref Bref
+0.0000 0.0000 0.0000  ! Xref   Yref   Zref
+
+SURFACE
+Wing
+
+# Nchord    Cspace    Nspan    Sspace
+20 1.0 40 1.0
+
+YDUPLICATE
+0.0
+
+SECTION
+# Xle  Yle    Zle    chord  angle
+0.0000 0.0000 0.0000 5.6933 0.0000
+
+AFILE
+C:\Users\tsher\OneDrive\Documents\AE481\NoThaiGrubbin-Repo\Aero\PlanformTrade1\Excel\NACA65-206.dat
+
+CDCL
+0.0000  0.0000  0.0000  0.0000  0.0000  0.0000
+
+SECTION
+# Xle  Yle    Zle    chord  angle
+5.2603 8.8388 0.0000 1.1387 2.0000
+
+AFILE
+C:\Users\tsher\OneDrive\Documents\AE481\NoThaiGrubbin-Repo\Aero\PlanformTrade1\Excel\NACA65-206.dat
+
+CDCL
+0.0000  0.0000  0.0000  0.0000  0.0000  0.0000
