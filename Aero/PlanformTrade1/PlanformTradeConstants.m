@@ -29,7 +29,7 @@ Cp_crit_cruise = (2./(gamma.*M_cruise.^2)) .* (((1+0.5.*(gamma-1).*M_cruise.^2)/
 
 %% Takeoff/Landing
 V_TO = 140./1.944;
-[rho_TO, p_TO, T_TO] = stdatmfull(0);
+[rho_TO, ~, T_TO] = stdatmfull(0);
 mu_TO = sutherlands(T_TO);
 Re_TO = (rho_TO.*V_TO.*c_geom)./mu_TO;
 
@@ -38,6 +38,15 @@ Re_min_TO = (rho_TO.*V_TO.*c_min)./mu_TO;
 
 a_TO = sqrt(gamma.*R.*T_TO);
 M_TO = V_TO./a_TO;
+
+%% Dash
+M_dash = 1.7;
+h_dash = 30e3./3.281;
+[rho_dash, ~, T_dash] = stdatmfull(h_dash);
+mu_dash = sutherlands(T_dash);
+a_dash = sqrt(gamma.*R.*T_dash);
+V_dash = M_dash.*a_dash;
+Re_dash = (rho_dash.*V_dash.*c_geom)./mu_dash;
 
 %% Initial Values
 taper_initial = 0.2;

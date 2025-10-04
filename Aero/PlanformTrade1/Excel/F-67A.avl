@@ -4,7 +4,7 @@ F-67A
 
 0.84                  ! Mach
 0      0      0       ! iYsym  iZsym  Zsym
-68.7477 4.7087 16.7632  ! Sref Cref Bref
+68.7477 5.2202 16.7632  ! Sref Cref Bref
 0.0000 0.0000 0.0000  ! Xref   Yref   Zref
 
 SURFACE
@@ -18,20 +18,20 @@ YDUPLICATE
 
 SECTION
 # Xle  Yle    Zle    chord  angle
-0.0000 0.0000 0.0000 6.8352 0.0000
+0.0000 0.0000 0.0000 7.8116 0.0000
 
 AFILE
 C:\Users\tsher\OneDrive\Documents\AE481\NoThaiGrubbin-Repo\Aero\PlanformTrade1\Excel\NACA65-206.dat
 
 CDCL
--0.0202 0.0069 0.1844 0.0061 0.6871 0.0071
+-0.0040 0.0075 0.1473 0.0070 0.6118 0.0074
 
 SECTION
 # Xle  Yle    Zle    chord  angle
-6.2062 8.3816 0.0000 1.3670 -1.0000
+4.9059 8.3816 0.0000 0.3906 0.0000
 
 AFILE
 C:\Users\tsher\OneDrive\Documents\AE481\NoThaiGrubbin-Repo\Aero\PlanformTrade1\Excel\NACA65-206.dat
 
 CDCL
--0.0157 0.0081 0.2357 0.0071 0.6905 0.0086
+-0.0078 0.0099 0.2858 0.0090 0.6013 0.0098
