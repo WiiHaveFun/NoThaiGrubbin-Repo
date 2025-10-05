@@ -11,7 +11,7 @@ SURFACE
 Wing
 
 # Nchord    Cspace    Nspan    Sspace
-20 1.0 40 1.0
+10 1.0 20 1.0
 
 YDUPLICATE
 0.0
@@ -21,7 +21,7 @@ SECTION
 0.0000 0.0000 0.0000 6.6147 0.0000
 
 AFILE
-C:\Users\tsher\OneDrive\Documents\AE481\NoThaiGrubbin-Repo\Aero\PlanformTrade1\Excel\NACA65-206.dat
+C:\Users\tsher\OneDrive\Documents\AE481\NoThaiGrubbin-Repo\Aero\PlanformTrade1\opt_5pt.dat
 
 CDCL
 -0.1303 0.0085 0.0954 0.0075 0.4105 0.0081
@@ -31,7 +31,7 @@ SECTION
 5.7134 8.3816 0.0000 1.5875 -3.0000
 
 AFILE
-C:\Users\tsher\OneDrive\Documents\AE481\NoThaiGrubbin-Repo\Aero\PlanformTrade1\Excel\NACA65-206.dat
+C:\Users\tsher\OneDrive\Documents\AE481\NoThaiGrubbin-Repo\Aero\PlanformTrade1\opt_5pt.dat
 
 CDCL
 -0.1357 0.0089 0.0918 0.0079 0.3965 0.0093
