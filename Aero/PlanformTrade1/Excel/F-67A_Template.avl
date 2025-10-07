@@ -11,7 +11,7 @@ SURFACE
 Wing
 
 # Nchord    Cspace    Nspan    Sspace
-10 1.0 20 1.0
+20 1.0 40 1.0
 
 YDUPLICATE
 0.0
@@ -21,7 +21,7 @@ SECTION
 0.0000 0.0000 0.0000 5.6933 0.0000
 
 AFILE
-C:\Users\tsher\OneDrive\Documents\AE481\NoThaiGrubbin-Repo\Aero\PlanformTrade1\opt_5pt.dat
+C:\Users\tsher\OneDrive\Documents\AE481\NoThaiGrubbin-Repo\Aero\PlanformTrade1\opt_5pt_3mm_newcl.dat
 
 CDCL
 0.0000  0.0000  0.0000  0.0000  0.0000  0.0000
@@ -31,7 +31,7 @@ SECTION
 5.2603 8.8388 0.0000 1.1387 2.0000
 
 AFILE
-C:\Users\tsher\OneDrive\Documents\AE481\NoThaiGrubbin-Repo\Aero\PlanformTrade1\opt_5pt.dat
+C:\Users\tsher\OneDrive\Documents\AE481\NoThaiGrubbin-Repo\Aero\PlanformTrade1\opt_5pt_3mm_newcl.dat
 
 CDCL
 0.0000  0.0000  0.0000  0.0000  0.0000  0.0000

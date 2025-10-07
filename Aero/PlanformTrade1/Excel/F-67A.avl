@@ -4,34 +4,34 @@ F-67A
 
 0.0                   ! Mach
 0      0      0       ! iYsym  iZsym  Zsym
-68.7477 4.6146 16.7632  ! Sref Cref Bref
+65.0321 3.9648 18.2880  ! Sref Cref Bref
 0.0000 0.0000 0.0000  ! Xref   Yref   Zref
 
 SURFACE
 Wing
 
 # Nchord    Cspace    Nspan    Sspace
-10 1.0 20 1.0
+20 1.0 40 1.0
 
 YDUPLICATE
 0.0
 
 SECTION
 # Xle  Yle    Zle    chord  angle
-0.0000 0.0000 0.0000 6.6147 0.0000
+0.0000 0.0000 0.0000 5.6444 0.0000
 
 AFILE
-C:\Users\tsher\OneDrive\Documents\AE481\NoThaiGrubbin-Repo\Aero\PlanformTrade1\opt_5pt.dat
+C:\Users\tsher\OneDrive\Documents\AE481\NoThaiGrubbin-Repo\Aero\PlanformTrade1\opt_5pt_3mm_newcl.dat
 
 CDCL
--0.1303 0.0085 0.0954 0.0075 0.4105 0.0081
+-0.2599 0.0123 -0.0131 0.0064 0.6490 0.0137
 
 SECTION
 # Xle  Yle    Zle    chord  angle
-5.7134 8.3816 0.0000 1.5875 -3.0000
+6.1128 9.1440 0.0000 1.4676 -1.0000
 
 AFILE
-C:\Users\tsher\OneDrive\Documents\AE481\NoThaiGrubbin-Repo\Aero\PlanformTrade1\opt_5pt.dat
+C:\Users\tsher\OneDrive\Documents\AE481\NoThaiGrubbin-Repo\Aero\PlanformTrade1\opt_5pt_3mm_newcl.dat
 
 CDCL
--0.1357 0.0089 0.0918 0.0079 0.3965 0.0093
+-0.2702 0.0136 -0.0131 0.0076 0.6051 0.0130
