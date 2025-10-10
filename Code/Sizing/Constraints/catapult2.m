@@ -13,6 +13,7 @@ TW = TW ./ Wfrac .* Tfrac;
 
 % Catapult endspeed for the given weight W
 V = polyval(p, W ./ 4.44822 ./ 1000) .* 0.514444;
+V(V < 0) = 0;
 % Required wing loading for 0.9 CLmax
 WS2 = 0.5.*rho.*V.^2.*0.9.*CLmax;
 

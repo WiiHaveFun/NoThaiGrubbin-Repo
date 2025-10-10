@@ -5,6 +5,8 @@ height = 8;
 
 %% Weights and weight fractions
 ac = aircraft();
+ac.initial.T_max = ac.initial.T_max*0.9;
+ac.initial.T_mil = ac.initial.T_mil*0.9;
 Wefrac_reg = empty_weight_frac_reg("Raymer");
 
 % TODO enforce identical polars or separate polars by mission
@@ -27,7 +29,7 @@ K_full_gear = getK(ac, p_full_gear);
 
 %% A2A constraints
 n = 200;
-WS = linspace(1,10000,n);
+WS = linspace(1,12000,n);
 TW = linspace(0,1.5,n);
 
 % Dash
@@ -54,10 +56,10 @@ Tfrac = get_thrust_frac(0, 0, 1.08, true, true);
 TW_a2a_climb_ap = climb_rate(WS, ac.pt.seroc_ap, ac.pt.seroc_ap_V, 0, p_full_gear.CD0, K_full_gear, true, true, ac.initial.num_eng, true, Wfrac_land_a2a, Tfrac);
 % Climb 1
 Tfrac = get_thrust_frac(0, 0, 1.08, false, false);
-TW_a2a_climb_1 = climb_rate(WS, 10.*2.54, ac.initial.V_climb, 0, p_clean.CD0, K_clean, false, false, ac.initial.num_eng, false, ac.a2a.Wfracs(2), Tfrac);
+TW_a2a_climb_1 = climb_rate(WS, 2.54, ac.initial.V_climb, 0, p_clean.CD0, K_clean, false, false, ac.initial.num_eng, false, ac.a2a.Wfracs(2), Tfrac);
 % Climb 2
 Tfrac = get_thrust_frac(0, 0, 1.08, false, false);
-TW_a2a_climb_2 = climb_rate(WS, 10.*2.54, ac.initial.V_climb, ac.a2a.h_combat, p_clean.CD0, K_clean, false, false, ac.initial.num_eng, false, ac.a2a.Wfracs(7), Tfrac);
+TW_a2a_climb_2 = climb_rate(WS, 2.54, ac.initial.V_climb, ac.a2a.h_combat, p_clean.CD0, K_clean, false, false, ac.initial.num_eng, false, ac.a2a.Wfracs(7), Tfrac);
 
 
 % Takeoff % TODO set ground roll distance, BPR, mu, 
@@ -68,14 +70,15 @@ WS_a2a_landing = landing(2000, 0, p_full_gear.CLmax, Wfrac_land_a2a);
 
 % Catapult launch
 Tfrac = get_thrust_frac(0, 0, 1.08, true, true);
-[WS_a2a_catapult, TW_a2a_catapult] = catapult(WS, TW, ac.a2a.W0, p_full_gear.CD0, K_full_gear, p_full_gear.CLmax, ac.a2a.Wfracs(1), Tfrac);
+% [WS_a2a_catapult, TW_a2a_catapult] = catapult(WS, TW, ac.a2a.W0, p_full_gear.CD0, K_full_gear, p_full_gear.CLmax, ac.a2a.Wfracs(1), Tfrac);
+WS_a2a_catapult = catapult2(TW, ac.a2a.W0, p_full_gear.CD0, K_full_gear, p_full_gear.CLmax, ac.a2a.Wfracs(1), Tfrac);
 % Recovery
 WS_a2a_recovery = recovery(ac.a2a.W0, p_full_gear.CLmax, Wfrac_land_a2a);
 
 % Fill in catapult
-WS_temp = linspace(1, WS_a2a_catapult(1), 50);
-WS_a2a_catapult = [WS_temp(1:end-1), WS_a2a_catapult];
-TW_a2a_catapult = [TW_a2a_catapult(1).*ones(1, length(WS_temp)-1), TW_a2a_catapult];
+% WS_temp = linspace(1, WS_a2a_catapult(1), 50);
+% WS_a2a_catapult = [WS_temp(1:end-1), WS_a2a_catapult];
+% TW_a2a_catapult = [TW_a2a_catapult(1).*ones(1, length(WS_temp)-1), TW_a2a_catapult];
 
 % N/m^2 to lb/ft^2
 WS_a2a_max_g = WS_a2a_max_g .* 0.020885434273039;
@@ -175,7 +178,8 @@ p10 = plot(WS2, TW_a2a_climb_2, "-", "color", "#028A0F");
 p11 = plot(WS2, TW_a2a_takeoff, "--", "color", "#222021");
 p12 = plot(WS_a2a_landing.*ones(n, 1), TW, "-", "color", "#A52A2A");
 
-p13 = plot(WS_a2a_catapult, TW_a2a_catapult, "--", "color", "#7F00FF");
+% p13 = plot(WS_a2a_catapult, TW_a2a_catapult, "--", "color", "#7F00FF");
+p13 = plot(WS_a2a_catapult, TW, "--", "color", "#7F00FF");
 p14 = plot(WS_a2a_recovery.*ones(n, 1), TW, "-", "color", "#000000");
 
 scatter(WSdesign, TWmax, 100, [252, 106, 3]./255, "filled");
@@ -184,14 +188,18 @@ scatter(WSdesign, TWmil, 100, "black", "filled");
 % Highlight feasible region
 WSmask = WS2 <= min([WS_a2a_max_g, WS_a2a_landing, max(WS_a2a_catapult), WS_a2a_recovery]);
 feasibleWS = WS2(WSmask);
-TW_a2a_catapult_interp = interp1(unique(WS_a2a_catapult), TW_a2a_catapult(1:length(unique(WS_a2a_catapult))), feasibleWS);
+% TW_a2a_catapult_interp = interp1(unique(WS_a2a_catapult), TW_a2a_catapult(1:length(unique(WS_a2a_catapult))), feasibleWS);
+% TW_env = max([TW_a2a_dash(WSmask); TW_a2a_turn_rate(WSmask); TW_a2a_cruise_1(WSmask); ...
+%               TW_a2a_cruise_2(WSmask); TW_a2a_ceiling(WSmask); TW_a2a_climb_to(WSmask); ...
+%               TW_a2a_climb_ap(WSmask); TW_a2a_climb_1(WSmask); TW_a2a_climb_2(WSmask); ...
+%               TW_a2a_takeoff(WSmask); TW_a2a_catapult_interp; TW_a2a_catapult(WSmask);]);
 TW_env = max([TW_a2a_dash(WSmask); TW_a2a_turn_rate(WSmask); TW_a2a_cruise_1(WSmask); ...
               TW_a2a_cruise_2(WSmask); TW_a2a_ceiling(WSmask); TW_a2a_climb_to(WSmask); ...
               TW_a2a_climb_ap(WSmask); TW_a2a_climb_1(WSmask); TW_a2a_climb_2(WSmask); ...
-              TW_a2a_takeoff(WSmask); TW_a2a_catapult_interp; TW_a2a_catapult(WSmask);]);
+              TW_a2a_takeoff(WSmask)]);
 fill([feasibleWS, feasibleWS(end:-1:1)], [TW_env, 1.5.*ones(size(TW_env))], "g", "FaceAlpha", "0.05", "EdgeColor", "none");
 
-text(70, 1.25, "Feasible", "HorizontalAlignment", "center", "Interpreter", "latex", "FontSize", fontsize);
+text(100, 1, "Feasible", "HorizontalAlignment", "center", "Interpreter", "latex", "FontSize", fontsize);
 text(WSdesign, TWmax, "Design Point (Max)~~~", "HorizontalAlignment", "right", "Interpreter", "latex", "FontSize", fontsize);
 text(WSdesign, TWmil, "Design Point (Mil)~~~", "HorizontalAlignment", "right", "Interpreter", "latex", "FontSize", fontsize);
 
@@ -204,20 +212,22 @@ set(gca, 'TickLabelInterpreter', 'latex');
 set(gcf, 'Units', 'Inches', 'OuterPosition', [8.097222222222221,6.861111111111111,width,height]);
 
 dn = 5;
-label_line(p1, 180, dn, "M1.6 Dash", "interpreter", "latex", "FontSize", fontsize);
-label_line(p2, 101, dn, "10 deg/s Sustained Turn", "interpreter", "latex", "FontSize", fontsize);
+label_line(p1, 180, dn, "M1.7 Dash", "interpreter", "latex", "FontSize", fontsize);
+label_line(p2, 140, dn, "10 deg/s Sustained Turn", "interpreter", "latex", "FontSize", fontsize);
 label_line(p3, 180, dn, "8g Vertical Load Factor~~", "interpreter", "latex", "FontSize", fontsize);
-label_line(p4, 180, dn, "Cruise 1", "interpreter", "latex", "FontSize", fontsize);
-label_line(p5, 100, dn, "Cruise 2", "interpreter", "latex", "FontSize", fontsize);
+label_line(p4, 130, dn, "Cruise 1", "interpreter", "latex", "FontSize", fontsize);
+label_line(p5, 130, dn, "Cruise 2", "interpreter", "latex", "FontSize", fontsize);
 label_line(p6, 180, dn, "50,000 ft Ceiling", "interpreter", "latex", "FontSize", fontsize);
 label_line(p7, 180, dn, "SEROC Takeoff", "interpreter", "latex", "FontSize", fontsize);
 label_line(p8, 180, dn, "SEROC Approach", "interpreter", "latex", "FontSize", fontsize);
 label_line(p9, 170, dn, "Climb 1", "interpreter", "latex", "FontSize", fontsize);
 label_line(p10, 170, dn, "Climb 2", "interpreter", "latex", "FontSize", fontsize);
-label_line(p11, 180, dn, "Takeoff", "interpreter", "latex", "FontSize", fontsize);
-label_line(p12, 180, dn, "Landing~~", "interpreter", "latex", "FontSize", fontsize);
-label_line(p13, 30, dn, "Catapult", "interpreter", "latex", "FontSize", fontsize);
+label_line(p11, 185, dn, "Takeoff", "interpreter", "latex", "FontSize", fontsize);
+label_line(p12, 180, -dn, "Landing~~", "interpreter", "latex", "FontSize", fontsize);
+label_line(p13, 100, dn, "Catapult", "interpreter", "latex", "FontSize", fontsize);
 label_line(p14, 180, dn, "Recovery~~", "interpreter", "latex", "FontSize", fontsize);
+
+grid on;
 
 saveas(gcf, "/Users/michaelchen/UMich/Class/F25/Aero_481/Figures/sizing_a2a.svg");
 
@@ -267,7 +277,7 @@ text(WSdesign, TWmax, "Design Point (Max)~~~", "HorizontalAlignment", "right", "
 text(WSdesign, TWmil, "Design Point (Mil)~~~", "HorizontalAlignment", "right", "Interpreter", "latex", "FontSize", fontsize);
 
 ylim([0, 1.5]);
-xlim([0, 200]);
+xlim([0, 220]);
 xlabel("$W/S (lb/ft^2)$", "Interpreter", "latex", "FontSize", fontsize);
 ylabel("$T/W$", "Interpreter", "latex", "FontSize", fontsize);
 set(gca, 'TickLabelInterpreter', 'latex');
@@ -275,20 +285,22 @@ set(gca, 'TickLabelInterpreter', 'latex');
 set(gcf, 'Units', 'Inches', 'OuterPosition', [8.097222222222221+width,6.861111111111111,width,height]);
 
 dn = 5;
-label_line(p1, 180, dn, "M0.9 Dash", "interpreter", "latex", "FontSize", fontsize);
+label_line(p1, 180, -dn, "M0.9 Dash", "interpreter", "latex", "FontSize", fontsize);
 label_line(p2, 180, dn, "8g Vertical Load Factor~~", "interpreter", "latex", "FontSize", fontsize);
 label_line(p3, 180, dn, "Cruise 1", "interpreter", "latex", "FontSize", fontsize);
-label_line(p4, 100, dn, "Cruise 2", "interpreter", "latex", "FontSize", fontsize);
+label_line(p4, 130, dn, "Cruise 2", "interpreter", "latex", "FontSize", fontsize);
 label_line(p5, 150, dn, "50,000 ft Ceiling", "interpreter", "latex", "FontSize", fontsize);
 label_line(p6, 150, dn, "SEROC Takeoff", "interpreter", "latex", "FontSize", fontsize);
 label_line(p7, 150, dn, "SEROC Approach", "interpreter", "latex", "FontSize", fontsize);
 label_line(p8, 180, dn, "Climb 1", "interpreter", "latex", "FontSize", fontsize);
-label_line(p9, 140, dn, "Climb 2", "interpreter", "latex", "FontSize", fontsize);
+label_line(p9, 130, dn, "Climb 2", "interpreter", "latex", "FontSize", fontsize);
 label_line(p10, 180, dn, "Climb 3", "interpreter", "latex", "FontSize", fontsize);
-label_line(p11, 150, dn, "Takeoff", "interpreter", "latex", "FontSize", fontsize);
-label_line(p12, 180, dn, "Landing~~", "interpreter", "latex", "FontSize", fontsize);
+label_line(p11, 130, dn, "Takeoff", "interpreter", "latex", "FontSize", fontsize);
+label_line(p12, 180, -dn, "Landing~~", "interpreter", "latex", "FontSize", fontsize);
 label_line(p13, 20, dn, "Catapult", "interpreter", "latex", "FontSize", fontsize);
 label_line(p14, 180, dn, "Recovery~~", "interpreter", "latex", "FontSize", fontsize);
+
+grid on;
 
 saveas(gcf, "/Users/michaelchen/UMich/Class/F25/Aero_481/Figures/sizing_strike.svg");
 

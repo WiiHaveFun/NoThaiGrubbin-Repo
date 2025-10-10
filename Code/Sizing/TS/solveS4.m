@@ -8,8 +8,8 @@ if isempty(x0)
 end
 [x, ~, flag, ~] = fsolve(@(x) residual(x, ac, T0, Wfrac_reg, mission_fun, con_fun, Tfrac), x0, options);
 if flag <= 0
-    % S = NaN;
-    S = x(1) .* ac.initial.Sref;
+    S = NaN;
+    % S = x(1) .* ac.initial.Sref;
 else
     S = x(1) .* ac.initial.Sref;
 end

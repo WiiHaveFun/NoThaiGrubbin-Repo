@@ -5,6 +5,8 @@ height = 8;
 
 %% Weights and weight fractions
 ac = aircraft();
+ac.initial.T_max = ac.initial.T_max*0.9;
+ac.initial.T_mil = ac.initial.T_mil*0.9;
 Wefrac_reg = empty_weight_frac_reg("Raymer");
 
 % TODO enforce identical polars or separate polars by mission
@@ -20,6 +22,7 @@ T0 = linspace(30000 .* 4.44822, 80000 .* 4.44822, n);
 
 T0_a2a_dash = zeros(size(n, 1));
 T0_a2a_turn_rate = zeros(size(n, 1));
+T0_a2a_turn_rate_2 = zeros(size(n, 1));
 S_a2a_max_g = zeros(size(n, 1));
 
 T0_a2a_cruise_1 = zeros(size(n, 1));
@@ -37,20 +40,21 @@ S_a2a_landing = zeros(size(n, 1));
 S_a2a_catapult = zeros(size(n, 1));
 S_a2a_recovery = zeros(size(n, 1));
 
-x_1_prev = [1, 0.5];
-x_2_prev = [1, 0.5];
-x_3_prev = [1, 0.5];
-x_4_prev = [1, 0.5];
-x_5_prev = [1, 0.5];
-x_6_prev = [1, 0.5];
-x_7_prev = [1, 0.5];
-x_8_prev = [1, 0.5];
-x_9_prev = [1, 0.5];
-x_10_prev = [1, 0.5];
-x_11_prev = [1, 0.5];
-x_12_prev = [1, 0.5];
-x_13_prev = [1, 0.5];
-x_14_prev = [1, 0.5];
+x_1_prev = [1, 1];
+x_2_prev = [1, 1];
+x_2_prev_2 = [1, 1];
+x_3_prev = [1, 1];
+x_4_prev = [1, 1];
+x_5_prev = [1, 1];
+x_6_prev = [1, 1];
+x_7_prev = [1, 1];
+x_8_prev = [1, 1];
+x_9_prev = [1, 1];
+x_10_prev = [1,1];
+x_11_prev = [1, 1];
+x_12_prev = [1, 1];
+x_13_prev = [1, 1];
+x_14_prev = [1, 1];
 
 for i = n:-1:1
     % Dash
@@ -58,6 +62,7 @@ for i = n:-1:1
     [T0_a2a_dash(i), x_1_prev] = solveT4(ac, S(i), Wefrac_reg, @a2a_Ffrac, @dash, Tfrac, x_1_prev);
     % Turn rate
     [T0_a2a_turn_rate(i), x_2_prev] = solveT4(ac, S(i), Wefrac_reg, @a2a_Ffrac, @turn_rate, [], x_2_prev);
+    [T0_a2a_turn_rate_2(n+1-i), x_2_prev_2] = solveT4(ac, S(n+1-i), Wefrac_reg, @a2a_Ffrac, @turn_rate, [], x_2_prev_2);
     % Vertical load factor
     [S_a2a_max_g(i), x_3_prev] = solveS4(ac, T0(i), Wefrac_reg, @a2a_Ffrac, @max_g, [], x_3_prev);
 
@@ -98,6 +103,7 @@ end
 % N to lb
 T0_a2a_dash = T0_a2a_dash ./ 4.44822;
 T0_a2a_turn_rate = T0_a2a_turn_rate ./ 4.44822;
+T0_a2a_turn_rate_2 = T0_a2a_turn_rate_2 ./ 4.44822;
 T0_a2a_cruise_1 = T0_a2a_cruise_1 ./ 4.44822;
 T0_a2a_cruise_2 = T0_a2a_cruise_2 ./ 4.44822;
 T0_a2a_ceiling = T0_a2a_ceiling ./ 4.44822;
@@ -109,6 +115,7 @@ T0_a2a_takeoff = T0_a2a_takeoff ./ 4.44822;
 
 T0_a2a_dash(imag(T0_a2a_dash) ~= 0) = NaN;
 T0_a2a_turn_rate(imag(T0_a2a_turn_rate) ~= 0) = NaN;
+T0_a2a_turn_rate_2(imag(T0_a2a_turn_rate_2) ~= 0) = NaN;
 T0_a2a_cruise_1(imag(T0_a2a_cruise_1) ~= 0) = NaN;
 T0_a2a_cruise_2(imag(T0_a2a_cruise_2) ~= 0) = NaN;
 T0_a2a_ceiling(imag(T0_a2a_ceiling) ~= 0) = NaN;
@@ -126,13 +133,16 @@ S_a2a_recovery = S_a2a_recovery ./ 0.092903;
 
 %%
 AEP = zeros(n);
+a2a_W0 = zeros(n);
 for i = 1:n
     for j = 1:n
         ac = aircraft();
-        [ac] = iterate_W0_TS(ac, Wefrac_reg, @a2a_Ffrac, T0(j), S(i));
-        [ac] = iterate_W0_TS(ac, Wefrac_reg, @strike_Ffrac, T0(j), S(i));
-        cst = cost(ac);
-        AEP(i, j) = cst.unit.AEP;
+        [ac] = iterate_W0_TS(ac, Wefrac_reg, @a2a_Ffrac, ac.initial.T_max, ac.initial.Sref);
+        [ac] = iterate_W0_TS_2(ac, Wefrac_reg, @a2a_Ffrac, T0(j), S(i));
+        a2a_W0(i, j) = ac.a2a.W0;
+        % [ac] = iterate_W0_TS(ac, Wefrac_reg, @strike_Ffrac, T0(j), S(i));
+        % cst = cost(ac);
+        % AEP(i, j) = cst.unit.AEP;
     end
 end
 
@@ -149,24 +159,30 @@ S_plot = S ./ 0.092903;
 T0_plot = T0 ./ 4.44822;
 
 [S_grid, T0_grid] = meshgrid(S_plot, T0_plot);
+% TW_grid = T0_grid ./ (a2a_W0 ./ 4.44822);
+% TW_grid(imag(TW_grid)~=0) = NaN;
+% WS_grid = a2a_W0 ./ 4.44822 ./ S_plot;
+% WS_grid(imag(WS_grid)~=0) = NaN;
+% a2a_W0(imag(a2a_W0)~=0) = NaN;
 
-figure(3);
+figure(5);
 clf;
 p1 = plot(S_plot, T0_a2a_dash, "--r");
 hold on;
 p2 = plot(S_plot, T0_a2a_turn_rate, "--", "color", "#F9A603");
+p2_2 = plot(S_plot, T0_a2a_turn_rate_2, "--", "color", "#F9A603");
 p3 = plot(S_a2a_max_g, T0_plot, "-", "color", "#808080");
 
 p4 = plot(S_plot, T0_a2a_cruise_1, "-", "color", "#0000FF");
 p5 = plot(S_plot, T0_a2a_cruise_2, "-", "color", "#6BADCE");
 p6 = plot(S_plot, T0_a2a_ceiling, "--", "color", "#734F96");
 
-p7 = plot(S_plot(~isnan(T0_a2a_climb_to)), T0_a2a_climb_to(~isnan(T0_a2a_climb_to)), "--", "color", "#1A2421");
+p7 = plot(S_plot, T0_a2a_climb_to, "--", "color", "#2EB774");
 p8 = plot(S_plot, T0_a2a_climb_ap, "--", "color", "#0B6623");
 p9 = plot(S_plot, T0_a2a_climb_1, "-", "color", "#028A0F");
 p10 = plot(S_plot, T0_a2a_climb_2, "-", "color", "#028A0F");
 
-p11 = plot(S_plot(~isnan(T0_a2a_takeoff)), T0_a2a_takeoff(~isnan(T0_a2a_takeoff)), "--", "color", "#222021");
+p11 = plot(S_plot, T0_a2a_takeoff, "--", "color", "#222021");
 p12 = plot(S_a2a_landing, T0_plot, "-", "color", "#A52A2A");
 
 p13 = plot(S_a2a_catapult, T0_plot, "--", "color", "#7F00FF");
@@ -176,8 +192,11 @@ scatter(ac.initial.Sref ./ 0.092903, ac.initial.T_max ./ 4.44822, 100, [252, 106
 
 % AEP(imag(AEP)~=0) = NaN;
 % contour(S_grid, T0_grid, AEP./1e6, "-k", "ShowText", "on", "EdgeAlpha", 0.2);
+% contour(S_grid, T0_grid, TW_grid, linspace(0, 2, 9), "-r", "ShowText", "on");
+% contour(S_grid, T0_grid, WS_grid, linspace(50, 120, 9), "-g", "ShowText", "on");
+% contour(S_grid, T0_grid, a2a_W0 ./ 4.44822 ./ 1e3, "-b", "ShowText", "on");
 
-shadeRegion({S_plot, S_plot, S_a2a_catapult}, {T0_a2a_dash, T0_a2a_takeoff, T0_plot}, {'lower', 'lower', 'upper'}, [450, 1000, 100]);
+shadeRegion({S_plot, S_plot, S_a2a_catapult}, {T0_a2a_dash, T0_a2a_takeoff, T0_plot}, {'lower', 'lower', 'upper'}, [300, 1000, 100]);
 text(700, 5e4, "Feasible", "HorizontalAlignment", "center", "Interpreter", "latex", "FontSize", fontsize);
 text(ac.initial.Sref ./ 0.092903, ac.initial.T_max ./ 4.44822, "Design Point (Max)~~~", "HorizontalAlignment", "right", "Interpreter", "latex", "FontSize", fontsize);
 
@@ -216,9 +235,9 @@ Wefrac_reg = empty_weight_frac_reg("Raymer");
 [ac] = iterate_W0_TS(ac, Wefrac_reg, @strike_Ffrac, ac.initial.T_max, ac.initial.Sref);
 
 %% Strike constraints
-n = 20;
+n = 100;
 S = linspace(300 .* 0.092903, 1000 .* 0.092903, n);
-T0 = linspace(20000 .* 4.44822, 80000 .* 4.44822, n);
+T0 = linspace(30000 .* 4.44822, 80000 .* 4.44822, n);
 
 T0_strike_dash = zeros(size(n, 1));
 S_strike_max_g = zeros(size(n, 1));
@@ -239,20 +258,20 @@ S_strike_landing = zeros(size(n, 1));
 S_strike_catapult = zeros(size(n, 1));
 S_strike_recovery = zeros(size(n, 1));
 
-x_1_prev = [1, 0.5];
-x_2_prev = [1, 0.5];
-x_3_prev = [1, 0.5];
-x_4_prev = [1, 0.5];
-x_5_prev = [1, 0.5];
-x_6_prev = [1, 0.5];
-x_7_prev = [1, 0.5];
-x_8_prev = [1, 0.5];
-x_9_prev = [1, 0.5];
-x_10_prev = [1, 0.5];
-x_11_prev = [1, 0.5];
-x_12_prev = [1, 0.5];
-x_13_prev = [1, 0.5];
-x_14_prev = [1, 0.5];
+x_1_prev = [1, 1];
+x_2_prev = [1, 1];
+x_3_prev = [1, 1];
+x_4_prev = [1, 1];
+x_5_prev = [1, 1];
+x_6_prev = [1, 1];
+x_7_prev = [1, 1];
+x_8_prev = [1, 1];
+x_9_prev = [1, 1];
+x_10_prev = [1, 1];
+x_11_prev = [1, 1];
+x_12_prev = [1, 1];
+x_13_prev = [1, 1];
+x_14_prev = [1, 1];
 
 for i = n:-1:1
     % Dash
@@ -342,7 +361,7 @@ p3 = plot(S_plot, T0_strike_cruise_1, "-", "color", "#0000FF");
 p4 = plot(S_plot, T0_strike_cruise_2, "-", "color", "#6BADCE");
 p5 = plot(S_plot, T0_strike_ceiling, "--", "color", "#734F96");
 
-p6 = plot(S_plot, T0_strike_climb_to, "--", "color", "#1A2421");
+p6 = plot(S_plot, T0_strike_climb_to, "--", "color", "#2EB774");
 p7 = plot(S_plot, T0_strike_climb_ap, "--", "color", "#0B6623");
 p8 = plot(S_plot, T0_strike_climb_1, "-", "color", "#028A0F");
 p9 = plot(S_plot, T0_strike_climb_2, "-", "color", "#028A0F");
@@ -358,7 +377,13 @@ scatter(ac.initial.Sref ./ 0.092903, ac.initial.T_max ./ 4.44822, 100, [252, 106
 
 % contour(S_grid, T0_grid, AEP./1e6, "-k", "ShowText", "on", "EdgeAlpha", 0.2);
 
-shadeRegion({S_plot, S_plot, S_strike_catapult}, {T0_strike_climb_to, T0_strike_takeoff, T0_plot}, {'lower', 'lower', 'upper'}, [450, 1000, 100]);
+shadeRegion({S_plot, S_strike_max_g, S_plot, S_plot, S_plot, S_plot, S_plot, S_plot, S_plot, S_plot, S_plot, S_strike_landing, S_strike_catapult, S_strike_recovery}, ...
+            {T0_strike_dash, T0_plot, T0_strike_cruise_1, T0_strike_cruise_2, T0_strike_ceiling, ...
+             T0_strike_climb_to, T0_strike_climb_ap, T0_strike_climb_1, T0_strike_climb_2, T0_strike_climb_3, ...
+             T0_strike_takeoff, T0_plot, T0_plot, T0_plot}, ...
+            {'lower', 'upper', 'lower', 'lower', 'lower', ...
+             'lower', 'lower', 'lower', 'lower', 'lower', ...
+             'lower', 'upper', 'upper', 'upper'}, [470, 1000, 1000]);
 text(700, 5e4, "Feasible", "HorizontalAlignment", "center", "Interpreter", "latex", "FontSize", fontsize);
 text(ac.initial.Sref ./ 0.092903, ac.initial.T_max ./ 4.44822, "Design Point (Max)~~~", "HorizontalAlignment", "right", "Interpreter", "latex", "FontSize", fontsize);
 

@@ -27,7 +27,7 @@ upperBounds = nan(length(xCells), length(xg));
 
 % --- interpolate each curve
 for i = 1:length(xCells)
-    yi = interp1(xCells{i}, yCells{i}, xg, 'linear', NaN);
+    yi = interp1(xCells{i}, yCells{i}, xg, 'linear', 'extrap');
     if strcmpi(types{i}, 'lower')
         lowerBounds(i,:) = yi;
     elseif strcmpi(types{i}, 'upper')

@@ -11,7 +11,7 @@ switch state
     case "clean"
         polar.CD0 = polar.CD0 + 0;
         polar.e = polar.e + 0;
-        polar.CLmax = 1.0;
+        polar.CLmax = 1.2;
     case "half_flaps"
         polar.CD0 = polar.CD0 + 0.02;
         polar.e = polar.e - 0.05;

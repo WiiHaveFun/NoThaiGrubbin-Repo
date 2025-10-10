@@ -1,0 +1,40 @@
+...Comp Geom...
+4 Num Comps
+25 Total Num Meshes
+17408 Total Num Tris
+
+Theo_Area   Wet_Area   Theo_Vol    Wet_Vol  Name
+ 1226.385   1174.082   1623.885   1623.885  FuselageGeom   
+  749.830    207.588    126.699     48.599  FuselageGeom   
+  968.009    610.749    293.999    257.003  Wing           
+  240.109      0.000     62.540      0.000  Wing           
+  240.109      0.000     62.540      0.000  Wing           
+  316.894    268.956     23.297     23.297  Tail           
+   78.895      0.000     19.407      0.000  Tail           
+   78.895      0.000     19.407      0.000  Tail           
+   92.155     92.155      5.516      5.516  VStab          
+   92.155     92.155      5.516      5.516  VStab          
+   45.172      0.000    -73.299    -73.299  VStab          
+   45.172      0.000    -73.299    -73.299  VStab          
+-------------------------------------------------
+ 4173.780   2445.686   2096.206   1824.056  Totals         
+
+Tag_Theo_Area   Tag_Wet_Area    Tag_Name
+     1226.385       1174.082    FuselageGeom_S_Surf0
+      447.384        100.034    FuselageGeom_V_Surf0
+      302.447        107.554    FuselageGeom_H_Surf0
+      484.004        305.375    Wing_S_Surf0   
+      484.004        305.375    Wing_S_Surf1   
+      240.109          0.000    Wing_C_Surf0   
+      240.109          0.000    Wing_C_Surf1   
+      158.447        134.476    Tail_S_Surf0   
+      158.447        134.479    Tail_S_Surf1   
+       78.895          0.000    Tail_C_Surf0   
+       78.895          0.000    Tail_C_Surf1   
+       92.155         92.155    VStab_S_Surf0  
+       92.155         92.155    VStab_S_Surf1  
+       45.172          0.000    VStab_C_Surf0  
+       45.172          0.000    VStab_C_Surf1  
+WARNING: 2 open meshes merged
+     Merged: Wing
+     Merged: Tail

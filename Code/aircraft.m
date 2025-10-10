@@ -21,9 +21,10 @@ ac.initial.V_climb = 151.2 .* 0.514444;             % Climb speed (kts to m/s)
 ac.initial.climb_rate = 55.7 .* 0.514444;           % Rate of climb (kts to m/s)
 ac.initial.climb_angle = deg2rad(13);               % Climb angle (deg to rad)
 % Aircraft geometry
-ac.initial.AR = 4;                                  % Aspect ratio
-ac.initial.b = 58 .* 0.3048;                        % Wing span (ft to m)
-ac.initial.Sref = 750 .* 0.092903;                  % Planform area (ft^2 to m^2)
+ac.initial.b = 60 .* 0.3048;                        % Wing span (ft to m)
+ac.initial.Sref = 670 .* 0.092903;                  % Planform area (ft^2 to m^2)
+% ac.initial.AR = 4;                                  % Aspect ratio
+ac.initial.AR = ac.initial.b.^2 ./ ac.initial.Sref; % Aspect ratio
 % Aircraft aerodynamics
 ac.polar.a2a.clean = simple_polar("clean", ac.initial.num_drop_tanks);
 ac.polar.a2a.half = simple_polar("half_flaps", ac.initial.num_drop_tanks);
@@ -38,10 +39,16 @@ ac.polar.strike.full_gear = simple_polar("full_flaps_gear", ac.initial.num_drop_
 % Engine performance
 ac.initial.TSFC_dry = 0.68 ./ 3600;                 % Dry thrust specific fuel consumption (lb/lb-s to N/N-s)
 ac.initial.TSFC_wet = 1.90 ./ 3600;
+% ac.initial.TSFC_dry = 0.67 ./ 3600;                 % Dry thrust specific fuel consumption (lb/lb-s to N/N-s)
+% ac.initial.TSFC_wet = 1.85 ./ 3600;
 ac.initial.T_mil = ac.initial.num_eng .* ...        % Military thrust (lb to N)
                    17669 .* 4.44822;             
 ac.initial.T_max = ac.initial.num_eng .* ...        % Maximum thrust (lb to N)
                    33093 .* 4.44822;
+% ac.initial.T_mil = ac.initial.num_eng .* ...        % Military thrust (lb to N)
+%                    17595 .* 4.44822;             
+% ac.initial.T_max = ac.initial.num_eng .* ...        % Maximum thrust (lb to N)
+%                    29474 .* 4.44822;
 % Weights are specified for each mission
 % % Aircraft weights
 % ac.initial.W0 = 60000 .* 4.44822;                   % Takeoff weight (lb to N)
@@ -53,9 +60,9 @@ ac.initial.T_max = ac.initial.num_eng .* ...        % Maximum thrust (lb to N)
 % ac.initial.W_pay = 2460 .* 4.44822;                 % Payload weight (lb to N)
 
 % Air-to-air mission parameters
-ac.a2a.R = 800 .* 1852;                         % Combat radius (nm to m)
+ac.a2a.R = 900 .* 1852;                         % Combat radius (nm to m)
 ac.a2a.M_dash = 1.7;                                % Dash Mach number
-ac.a2a.t_combat = 2 .* 60;                    % Combat time (min to s)
+ac.a2a.t_combat = 2.5 .* 60;                    % Combat time (min to s)
 ac.a2a.t_loiter = 20 .* 60;                         % Loiter time (min to s)
 ac.a2a.h_combat = 10000 .* 0.3048;                  % Combat altitude (ft to m)
 ac.a2a.h_dash = 30000 .* 0.3048;                    % Combat altitude (ft to m)
@@ -77,7 +84,7 @@ ac.a2a.Wfracs = [];
 ac.a2a.segments = [];
 
 % Strike mission parameters
-ac.strike.R = 850 .* 1852;                          % Combat radius (nm to m)
+ac.strike.R = 1020 .* 1852;                          % Combat radius (nm to m)
 ac.strike.M_dash = 0.90;                            % Combat dash Mach number
 ac.strike.V_dash = getV(0, ac.strike.M_dash);       % Combat dash velocity (m/s)
 ac.strike.R_combat = 100 .* 1852;                   % Combat dash distance (nm to m)
@@ -105,6 +112,6 @@ ac.strike.segments = [];
 ac.pt.seroc_to = 200 .* 0.00508;                    % Approach SEROC (ft/min to m/s)
 ac.pt.seroc_ap = 500 .* 0.00508;                    % Takeoff SEROC (ft/min to m/s)
 ac.pt.seroc_to_V = 156 .* 0.514444;                 % Approach SEROC velocity (kts to m/s)
-ac.pt.seroc_ap_V = 113 .* 0.514444;                   % Takeoff SEROC velocity (kts to m/s)
+ac.pt.seroc_ap_V = 144 .* 0.514444;                   % Takeoff SEROC velocity (kts to m/s)
 
 end

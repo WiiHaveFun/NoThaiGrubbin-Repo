@@ -2,14 +2,14 @@ function [T0, x] = solveT4(ac, S, Wfrac_reg, mission_fun, con_fun, Tfrac, x0)
 
 
 
-options = optimoptions("fsolve", "Display", "none");
+options = optimoptions("fsolve", "Display", "final");
 if isempty(x0)
-    x0 = [0.1; 0.5];
+    x0 = [1.0; 1.0];
 end
-[x, ~, flag, ~] = fsolve(@(x) residual(x, ac, S, Wfrac_reg, mission_fun, con_fun, Tfrac), x0);
+[x, ~, flag, ~] = fsolve(@(x) residual(x, ac, S, Wfrac_reg, mission_fun, con_fun, Tfrac), x0, options);
 if flag <= 0
-    % T0 = NaN;
-    T0 = x(1) .* ac.initial.T_max;
+    T0 = NaN;
+    % T0 = x(1) .* ac.initial.T_max;
 else
     T0 = x(1) .* ac.initial.T_max;
 end
@@ -118,11 +118,11 @@ function [R, ac] = W0_residual(ac, Wfrac_reg, mission_fun, T0, S, W0)
         ac.a2a.W0 = W0;
         Wfrac = Wfrac_reg.A .* ac.a2a.W0.^Wfrac_reg.C;
 
-        ac.a2a.We = ac.a2a.W0 .* Wfrac;
+        ac.a2a.We = W0 .* Wfrac;
         % Modify wing weight using areal density
         ac.a2a.We = ac.a2a.We + sigma_wing .* (S - ac.initial.Sref);
         % Modify engine weight using maximum thrust
-        ac.a2a.We = ac.a2a.We + get_Weng(T0) - get_Weng(ac.initial.T_max);
+        ac.a2a.We = ac.a2a.We + (get_Weng(T0) - get_Weng(ac.initial.T_max));
 
         % ac.initial.T_max = T0;
         % ac.initial.T_mil = 0.6 .* T0;
