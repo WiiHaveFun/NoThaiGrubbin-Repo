@@ -42,7 +42,7 @@ function R = S_residual(ac, T0, S, mission_fun, con_fun, Tfrac)
         elseif isequal(con_fun, @landing)
             Wfrac_land_a2a = (ac.a2a.We + 0.25.*ac.a2a.Wf + 0.5.*ac.a2a.W_pay) ./ ac.a2a.W0;
             polar = ac.polar.a2a.full_gear;
-            WS = landing(2000, 0, polar.CLmax, Wfrac_land_a2a);
+            WS = landing(2000, ac.initial.h_land, polar.CLmax, Wfrac_land_a2a);
         elseif isequal(con_fun, @catapult2)
             TW = T0 ./ ac.a2a.W0;
             polar = ac.polar.a2a.full_gear;
@@ -60,7 +60,7 @@ function R = S_residual(ac, T0, S, mission_fun, con_fun, Tfrac)
         elseif isequal(con_fun, @landing)
             Wfrac_land_strike = (ac.strike.We + 0.25.*ac.strike.Wf + 0.5.*ac.strike.W_pay) ./ ac.strike.W0;
             polar = ac.polar.strike.full_gear;
-            WS = landing(2000, 0, polar.CLmax, Wfrac_land_strike);
+            WS = landing(2000, ac.initial.h_land, polar.CLmax, Wfrac_land_strike);
         elseif isequal(con_fun, @catapult2)
             TW = T0 ./ ac.strike.W0;
             polar = ac.polar.strike.full_gear;

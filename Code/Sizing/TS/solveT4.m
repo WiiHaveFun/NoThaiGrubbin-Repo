@@ -64,7 +64,7 @@ function R = T0_residual(ac, T0, S, mission_fun, con_fun, Tfrac)
             TW = climb_rate(WS, 2.54, ac.initial.V_climb, ac.a2a.h_combat, polar.CD0, getK(ac, polar), false, false, ac.initial.num_eng, false, ac.a2a.Wfracs(7), Tfrac);
         elseif isequal(con_fun, @takeoff)
             polar = ac.polar.a2a.half_gear;
-            TW = takeoff(WS, 762, 0, polar.CD0, polar.CLmax, 0.68, 0.025, ac.a2a.Wfracs(1), Tfrac);
+            TW = takeoff(WS, 1000, ac.initial.h_land, polar.CD0, polar.CLmax, 0.68, 0.025, ac.a2a.Wfracs(1), Tfrac);
         end
         R = T0 - TW .* ac.a2a.W0;
     elseif isequal(mission_fun, @strike_Ffrac)
@@ -99,7 +99,7 @@ function R = T0_residual(ac, T0, S, mission_fun, con_fun, Tfrac)
             TW = climb_rate(WS, 2.54, ac.initial.V_climb, 0, polar.CD0, getK(ac, polar), false, false, ac.initial.num_eng, false, ac.strike.Wfracs(7), Tfrac);
         elseif isequal(con_fun, @takeoff)
             polar = ac.polar.strike.half_gear;
-            TW = takeoff(WS, 762, 0, polar.CD0, polar.CLmax, 0.68, 0.025, ac.strike.Wfracs(1), Tfrac);
+            TW = takeoff(WS, 1000, ac.initial.h_land, polar.CD0, polar.CLmax, 0.68, 0.025, ac.strike.Wfracs(1), Tfrac);
         end
         R = T0 - TW .* ac.strike.W0;
     end

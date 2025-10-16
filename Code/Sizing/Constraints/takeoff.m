@@ -5,7 +5,11 @@ function TW = takeoff(WS, Sg, h, CD0, CLmax, BPR, mu, Wfrac, Tfrac)
 % Convert to wing loading at mission segment start
 WS = WS .* Wfrac;
 
-[~, ~, ~, rho] = atmoscoesa(h);
+[~, ~, P, ~] = atmoscoesa(h);
+R = 287;
+T = 305.2611; % Tropical day (89.8 F)
+rho = P ./ (R .* T);
+
 rho_imp = rho .* 0.00194032; % to slug/ft^3
 Sg_imp = Sg .* 3.28084;
 

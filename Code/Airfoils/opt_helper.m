@@ -1,11 +1,11 @@
 %% Plot options
 fontsize = 10;
-width = 6.5;
-height = 4;
+width = 5.5;
+height = 3.5;
 
 %% Quick plot foil
 % data = readmatrix("/Users/michaelchen/UMich/Class/F25/Aero_481/ae481_docker/airfoil_opt/output_5pt/fc0_076_slices.dat");
-data = readmatrix("/Users/michaelchen/UMich/Class/F25/Aero_481/ae481_docker/airfoil_opt/output/fc0_062_slices.dat");
+data = readmatrix("/Users/michaelchen/UMich/Class/F25/Aero_481/ae481_docker/airfoil_opt/output_pdr/fc0_062_slices.dat");
 x = data(4:4+299, 1) ./ 4.70868;
 y = data(4:4+299, 2) ./ 4.70868;
 cp = data(4:4+299, 10);
@@ -35,7 +35,7 @@ set(gcf, 'Units', 'Inches', 'OuterPosition', [8.097222222222221,6.86111111111111
 
 saveas(gcf, "/Users/michaelchen/UMich/Class/F25/Aero_481/Figures/cp_opt.svg");
 
-data = readmatrix("/Users/michaelchen/UMich/Class/F25/Aero_481/ae481_docker/airfoil_opt/output/fc0_000_slices.dat");
+data = readmatrix("/Users/michaelchen/UMich/Class/F25/Aero_481/ae481_docker/airfoil_opt/output_pdr/fc0_000_slices.dat");
 x = data(4:4+299, 1) ./ 4.70868;
 y = data(4:4+299, 2) ./ 4.70868;
 cp = data(4:4+299, 10);
@@ -45,7 +45,7 @@ cp = data(4:4+299, 10);
 
 figure(1);
 hold on;
-plot(x, y, ":");
+plot(x, y, "-");
 % xline(0.0015)
 
 % data = readmatrix("/Users/michaelchen/UMich/Class/F25/Aero_481/ae481_docker/airfoil_opt/output_5pt/fc0_076_slices.dat");
@@ -53,8 +53,9 @@ plot(x, y, ":");
 % y = data(4:4+299, 2);
 % plot(x, y, "-");
 
-legend("MACA 67-5506", "NACA 65-206");
+legend("Optimized Airfoil", "NACA 65-206", "Location", "southeast", "Interpreter", "latex", "Fontsize", fontsize);
 saveas(gcf, "/Users/michaelchen/UMich/Class/F25/Aero_481/Figures/airfoil_opt.svg");
+exportgraphics(gca, "/Users/michaelchen/UMich/Class/F25/Aero_481/Figures/airfoil_opt.png", "Resolution", 300);
 
 %% Airfoil animation
 

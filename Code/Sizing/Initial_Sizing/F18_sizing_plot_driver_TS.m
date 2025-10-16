@@ -1,7 +1,7 @@
 %% Plot options
 fontsize = 10;
-width = 6.5;
-height = 8;
+width = 7;
+height = 5;
 
 %% Weights and weight fractions
 % ac = aircraft();
@@ -179,8 +179,8 @@ p12 = plot(WS_a2a_landing.*ones(n, 1), TW, "-", "color", "#A52A2A");
 p13 = plot(WS_a2a_catapult, TW_a2a_catapult, "--", "color", "#7F00FF");
 p14 = plot(WS_a2a_recovery.*ones(n, 1), TW, "-", "color", "#000000");
 
-scatter(WSdesign, TWmax, 100, [252, 106, 3]./255, "filled");
-scatter(WSdesign, TWmil, 100, "black", "filled");
+scatter(WSdesign, TWmax, 20, [252, 106, 3]./255, "filled");
+scatter(WSdesign, TWmil, 20, "black", "filled");
 
 % Highlight feasible region
 WSmask = WS2 <= min([WS_a2a_max_g, WS_a2a_landing, max(WS_a2a_catapult), WS_a2a_recovery]);
@@ -192,9 +192,9 @@ TW_env = max([TW_a2a_dash(WSmask); TW_a2a_turn_rate(WSmask); TW_a2a_cruise_1(WSm
               TW_a2a_takeoff(WSmask); TW_a2a_catapult_interp; TW_a2a_catapult(WSmask);]);
 fill([feasibleWS, feasibleWS(end:-1:1)], [TW_env, 1.5.*ones(size(TW_env))], "g", "FaceAlpha", "0.05", "EdgeColor", "none");
 
-text(70, 1.25, "Feasible", "HorizontalAlignment", "center", "Interpreter", "latex", "FontSize", fontsize);
-text(WSdesign, TWmax, "Design Point (Max)~~~", "HorizontalAlignment", "right", "Interpreter", "latex", "FontSize", fontsize);
-text(WSdesign, TWmil, "Design Point (Mil)~~~", "HorizontalAlignment", "right", "Interpreter", "latex", "FontSize", fontsize);
+text(100, 1.1, "Feasible", "HorizontalAlignment", "center", "Interpreter", "latex", "FontSize", fontsize);
+text(WSdesign, TWmax, "F/A-18E (Max)~~~", "HorizontalAlignment", "right", "Interpreter", "latex", "FontSize", fontsize);
+text(WSdesign, TWmil, "F/A-18E (Mil)~~~", "HorizontalAlignment", "right", "Interpreter", "latex", "FontSize", fontsize);
 
 ylim([0, 1.5]);
 xlim([0, 200]);
@@ -205,22 +205,23 @@ set(gca, 'TickLabelInterpreter', 'latex');
 set(gcf, 'Units', 'Inches', 'OuterPosition', [8.097222222222221,6.861111111111111,width,height]);
 
 dn = 5;
-label_line(p1, 180, dn, "M1.6 Dash", "interpreter", "latex", "FontSize", fontsize);
-label_line(p2, 101, dn, "10 deg/s Sustained Turn", "interpreter", "latex", "FontSize", fontsize);
+label_line(p1, 65, dn, "M1.6 Dash", "interpreter", "latex", "FontSize", fontsize);
+label_line(p2, 30, dn, "10 deg/s Sustained Turn", "interpreter", "latex", "FontSize", fontsize);
 label_line(p3, 180, dn, "8g Vertical Load Factor~~", "interpreter", "latex", "FontSize", fontsize);
-label_line(p4, 180, dn, "Cruise 1", "interpreter", "latex", "FontSize", fontsize);
-label_line(p5, 100, dn, "Cruise 2", "interpreter", "latex", "FontSize", fontsize);
-label_line(p6, 180, dn, "50,000 ft Ceiling", "interpreter", "latex", "FontSize", fontsize);
-label_line(p7, 180, dn, "SEROC Takeoff", "interpreter", "latex", "FontSize", fontsize);
-label_line(p8, 180, dn, "SEROC Approach", "interpreter", "latex", "FontSize", fontsize);
-label_line(p9, 170, dn, "Climb 1", "interpreter", "latex", "FontSize", fontsize);
-label_line(p10, 170, dn, "Climb 2", "interpreter", "latex", "FontSize", fontsize);
-label_line(p11, 180, dn, "Takeoff", "interpreter", "latex", "FontSize", fontsize);
+label_line(p4, 157, dn, "Cruise 1", "interpreter", "latex", "FontSize", fontsize);
+label_line(p5, 157, dn, "Cruise 2", "interpreter", "latex", "FontSize", fontsize);
+label_line(p6, 180, -dn, "50,000 ft Ceiling", "interpreter", "latex", "FontSize", fontsize);
+label_line(p7, 140, dn, "SEROC Takeoff", "interpreter", "latex", "FontSize", fontsize);
+label_line(p8, 150, dn, "SEROC Approach", "interpreter", "latex", "FontSize", fontsize);
+label_line(p9, 185, dn, "Climb 1", "interpreter", "latex", "FontSize", fontsize);
+label_line(p10, 185, dn, "Climb 2", "interpreter", "latex", "FontSize", fontsize);
+label_line(p11, 177, dn, "Takeoff", "interpreter", "latex", "FontSize", fontsize);
 label_line(p12, 180, dn, "Landing~~", "interpreter", "latex", "FontSize", fontsize);
-label_line(p13, 30, dn, "Catapult", "interpreter", "latex", "FontSize", fontsize);
+label_line(p13, 120, dn, "Catapult", "interpreter", "latex", "FontSize", fontsize);
 label_line(p14, 180, dn, "Recovery~~", "interpreter", "latex", "FontSize", fontsize);
 
 saveas(gcf, "/Users/michaelchen/UMich/Class/F25/Aero_481/Figures/F18_sizing_a2a.svg");
+exportgraphics(gca, "/Users/michaelchen/UMich/Class/F25/Aero_481/Figures/F18_sizing_a2a.png", "Resolution", 1000);
 
 %% Plot Strike
 % Design Point
@@ -250,8 +251,8 @@ p12 = plot(WS_strike_landing.*ones(n, 1), TW, "-", "color", "#A52A2A");
 p13 = plot(WS_strike_catapult, TW_strike_catapult, "--", "color", "#7F00FF");
 p14 = plot(WS_strike_recovery.*ones(n, 1), TW, "-", "color", "#000000");
 
-scatter(WSdesign, TWmax, 100, [252, 106, 3]./255, "filled");
-scatter(WSdesign, TWmil, 100, "black", "filled");
+scatter(WSdesign, TWmax, 20, [252, 106, 3]./255, "filled");
+scatter(WSdesign, TWmil, 20, "black", "filled");
 
 % Highlight feasible region
 WSmask = WS2 <= min([WS_strike_max_g, WS_strike_landing, max(WS_strike_catapult), WS_strike_recovery]);
@@ -263,12 +264,12 @@ TW_env = max([TW_strike_dash(WSmask); TW_strike_cruise_1(WSmask); ...
               TW_strike_takeoff(WSmask); TW_strike_catapult_interp; TW_strike_catapult(WSmask);]);
 fill([feasibleWS, feasibleWS(end:-1:1)], [TW_env, 1.5.*ones(size(TW_env))], "g", "FaceAlpha", "0.05", "EdgeColor", "none");
 
-text(60, 1, "Feasible", "HorizontalAlignment", "center", "Interpreter", "latex", "FontSize", fontsize);
-text(WSdesign, TWmax, "Design Point (Max)~~~", "HorizontalAlignment", "right", "Interpreter", "latex", "FontSize", fontsize);
-text(WSdesign, TWmil, "Design Point (Mil)~~~", "HorizontalAlignment", "right", "Interpreter", "latex", "FontSize", fontsize);
+text(90, 1, "Feasible", "HorizontalAlignment", "center", "Interpreter", "latex", "FontSize", fontsize);
+text(WSdesign, TWmax, "F/A-18E (Max)~~~", "HorizontalAlignment", "right", "Interpreter", "latex", "FontSize", fontsize);
+text(WSdesign, TWmil, "F/A-18E (Mil)~~~", "HorizontalAlignment", "right", "Interpreter", "latex", "FontSize", fontsize);
 
 ylim([0, 1.5]);
-xlim([0, 200]);
+xlim([0, 205]);
 xlabel("$W/S (lb/ft^2)$", "Interpreter", "latex", "FontSize", fontsize);
 ylabel("$T/W$", "Interpreter", "latex", "FontSize", fontsize);
 set(gca, 'TickLabelInterpreter', 'latex');
@@ -276,22 +277,23 @@ set(gca, 'TickLabelInterpreter', 'latex');
 set(gcf, 'Units', 'Inches', 'OuterPosition', [8.097222222222221+width,6.861111111111111,width,height]);
 
 dn = 5;
-label_line(p1, 180, dn, "M0.9 Dash", "interpreter", "latex", "FontSize", fontsize);
+label_line(p1, 180, -dn, "M0.9 Dash", "interpreter", "latex", "FontSize", fontsize);
 label_line(p2, 180, dn, "8g Vertical Load Factor~~", "interpreter", "latex", "FontSize", fontsize);
-label_line(p3, 180, dn, "Cruise 1", "interpreter", "latex", "FontSize", fontsize);
-label_line(p4, 100, dn, "Cruise 2", "interpreter", "latex", "FontSize", fontsize);
-label_line(p5, 150, dn, "50,000 ft Ceiling", "interpreter", "latex", "FontSize", fontsize);
-label_line(p6, 150, dn, "SEROC Takeoff", "interpreter", "latex", "FontSize", fontsize);
-label_line(p7, 150, dn, "SEROC Approach", "interpreter", "latex", "FontSize", fontsize);
-label_line(p8, 180, dn, "Climb 1", "interpreter", "latex", "FontSize", fontsize);
-label_line(p9, 140, dn, "Climb 2", "interpreter", "latex", "FontSize", fontsize);
-label_line(p10, 180, dn, "Climb 3", "interpreter", "latex", "FontSize", fontsize);
-label_line(p11, 150, dn, "Takeoff", "interpreter", "latex", "FontSize", fontsize);
+label_line(p3, 190, dn, "Cruise 1", "interpreter", "latex", "FontSize", fontsize);
+label_line(p4, 190, dn, "Cruise 2", "interpreter", "latex", "FontSize", fontsize);
+label_line(p5, 160, -dn, "50,000 ft Ceiling", "interpreter", "latex", "FontSize", fontsize);
+label_line(p6, 160, dn, "SEROC Takeoff", "interpreter", "latex", "FontSize", fontsize);
+label_line(p7, 165, dn, "SEROC Approach", "interpreter", "latex", "FontSize", fontsize);
+label_line(p8, 80, dn, "Climb 1", "interpreter", "latex", "FontSize", fontsize);
+label_line(p9, 120, dn, "Climb 2", "interpreter", "latex", "FontSize", fontsize);
+label_line(p10, 80, -dn, "Climb 3", "interpreter", "latex", "FontSize", fontsize);
+label_line(p11, 160, dn, "Takeoff", "interpreter", "latex", "FontSize", fontsize);
 label_line(p12, 180, dn, "Landing~~", "interpreter", "latex", "FontSize", fontsize);
 label_line(p13, 20, dn, "Catapult", "interpreter", "latex", "FontSize", fontsize);
 label_line(p14, 180, dn, "Recovery~~", "interpreter", "latex", "FontSize", fontsize);
 
 saveas(gcf, "/Users/michaelchen/UMich/Class/F25/Aero_481/Figures/F18_sizing_strike.svg");
+exportgraphics(gca, "/Users/michaelchen/UMich/Class/F25/Aero_481/Figures/F18_sizing_strike.png", "Resolution", 1000);
 
 %% Helper functions TODO turn into full function later
 function K = getK(ac, polar)

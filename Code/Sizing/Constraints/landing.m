@@ -3,7 +3,11 @@ function WS = landing(Sfl, h, CLmax, Wfrac)
 %   [WS] = LANDING(Nz, V, h, CLmax, Wfrac) calculates TWR for a dash speed
 %   and altitude.
 
-[~, ~, ~, rho] = atmoscoesa(h);
+[~, ~, P, ~] = atmoscoesa(h);
+R = 287;
+T = 305.2611; % Tropical day (89.8 F)
+rho = P ./ (R .* T);
+
 rho_imp = rho .* 0.00194032; % to slug/ft^3
 Sfl_imp = Sfl .* 3.28084;
 

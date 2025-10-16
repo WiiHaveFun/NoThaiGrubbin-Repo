@@ -12,6 +12,7 @@ ac.initial.num_drop_tanks = 2;
 % Altitudes
 ac.initial.h_cruise = 40000 .* 0.3048;              % Cruise altitude (ft to m)
 ac.initial.h_ceiling = 50000 .* 0.3048;             % Ceiling altitude (ft to m)
+ac.initial.h_land = 4000 .* 0.3048;                 % Highest elevation airfoield
 % Velocities and Mach numbers
 ac.initial.M_cruise = 0.84;                         % Cruise Mach number
 ac.initial.V_cruise = getV(ac.initial.h_cruise, ... % Cruise velocity (m/s)

@@ -9,7 +9,7 @@ import csv
 
 parser = argparse.ArgumentParser()
 parser.add_argument("--output", type=str, default="output")
-parser.add_argument("--gridFile", type=str, default="opt_pdr_1.cgns")
+parser.add_argument("--gridFile", type=str, default="naca_pdr_1.cgns")
 parser.add_argument("--task", choices=["analysis", "polar"], default="analysis")
 args = parser.parse_args()
 
@@ -35,7 +35,7 @@ aeroOptions = {
     "NKSwitchTol": 1e-4,
     # Termination Criteria
     "L2Convergence": 1e-15,
-    "nCycles": 10000,
+    "nCycles": 1000,
 }
 
 # Create solver
@@ -67,7 +67,7 @@ if args.task == "analysis":
 elif args.task == "polar":
     # Create an array of alpha values.
     # In this case we create 21 evenly spaced values from -10 - 10.
-    alphaList = np.linspace(-2, 3, 40)
+    alphaList = np.linspace(-2, 3, 80)
 
     # Create storage for the evaluated lift and drag coefficients
     CLList = []

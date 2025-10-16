@@ -1,0 +1,207 @@
+
+%%% Preamble Requirements %%%
+% \usepackage{geometry}
+% \usepackage{amsfonts}
+% \usepackage{amsmath}
+% \usepackage{amssymb}
+% \usepackage{tikz}
+
+% Optional packages such as sfmath set through python interface
+% \usepackage{sfmath}
+
+% \usetikzlibrary{arrows,chains,positioning,scopes,shapes.geometric,shapes.misc,shadows}
+
+%%% End Preamble Requirements %%%
+
+\input{"/Users/michaelchen/UMich/Class/F25/Aero 523/code/.venv/lib/python3.12/site-packages/pyxdsm/diagram_styles"}
+\begin{tikzpicture}
+
+\matrix[MatrixSetup]{
+%Row 0
+\node [DataIO] (left_output_human) {$\begin{array}{c}x_{\text{aircraft}}^* \\ x_{\text{mission}}^*\end{array}$};&
+\node [Optimization] (human) {$\text{Manual Iteration}$};&
+\node [DataInter] (human-W) {$\begin{array}{c}x_{\text{aircraft}} \\ x_{\text{mission}}\end{array}$};&
+\node [DataInter] (human-SP) {$\begin{array}{c}x_{\text{aircraft}} \\ x_{\text{mission}}\end{array}$};&
+\node [DataInter] (human-wing) {$\begin{array}{c}x_{\text{aircraft}} \\ x_{\text{mission}}\end{array}$};&
+\node [DataInter] (human-AF) {$x_{\text{mission}}$};&
+&
+&
+\node [DataInter] (human-RFP) {$\begin{array}{c}x_{\text{aircraft}} \\ x_{\text{mission}}\end{array}$};\\
+%Row 1
+\node [DataIO] (left_output_W) {$y_{\text{weights}}^*$};&
+&
+\node [ImplicitFunction] (W) {$\text{Weight Estimation}$};&
+\node [DataInter] (W-SP) {$y_{\text{weights}}$};&
+\node [DataInter] (W-wing) {$y_{\text{weights}}$};&
+\node [DataInter] (W-AF) {$y_{\text{weights}}$};&
+&
+\node [DataInter] (W-AVL) {$y_{\text{weights}}$};&
+\node [DataInter] (W-RFP) {$y_{\text{weights}}$};\\
+%Row 2
+&
+\node [DataInter] (SP-human) {$c_{\text{sizing}}$};&
+&
+\node [Function] (SP) {$\text{Sizing Constraints}$};&
+&
+&
+&
+&
+\\
+%Row 3
+\node [DataIO] (left_output_wing) {$y_\text{wing}^*$};&
+&
+&
+&
+\node [SubOptimization] (wing) {$\text{Wing Planform Sizing}$};&
+\node [DataInter] (wing-AF) {$y_\text{wing}$};&
+\node [DataInter] (wing-tail) {$y_\text{wing}$};&
+\node [DataInter] (wing-AVL) {$y_\text{wing}$};&
+\node [DataInter] (wing-RFP) {$y_\text{wing}$};\\
+%Row 4
+\node [DataIO] (left_output_AF) {$y_\text{airfoil}^*$};&
+&
+&
+&
+\node [DataInter] (AF-wing) {$\begin{array}{c}f_\text{airfoil} \\ y_\text{airfoil}\end{array}$};&
+\node [SubOptimization] (AF) {$\text{Airfoil Optimization}$};&
+&
+&
+\\
+%Row 5
+\node [DataIO] (left_output_tail) {$y_\text{tail}^*$};&
+&
+&
+&
+&
+&
+\node [SubOptimization] (tail) {$\text{Tail Sizing}$};&
+\node [DataInter] (tail-AVL) {$y_\text{tail}$};&
+\node [DataInter] (tail-RFP) {$y_\text{tail}$};\\
+%Row 6
+&
+&
+&
+&
+\node [DataInter] (AVL-wing) {$f_\text{cruise}$};&
+&
+\node [DataInter] (AVL-tail) {$c_\text{tail}$};&
+\node [Function] (AVL) {$\text{AVL}$};&
+\\
+%Row 7
+&
+\node [DataInter] (RFP-human) {$c_\text{RFP}$};&
+&
+&
+&
+&
+&
+&
+\node [Function] (RFP) {$\text{RFP Constraints}$};\\
+%Row 8
+&
+&
+&
+&
+&
+&
+&
+&
+\\
+};
+
+% XDSM process chains
+{ [start chain=process]
+ \begin{pgfonlayer}{process} 
+\chainin (human);
+\chainin (W) [join=by ProcessHVA];
+\chainin (SP) [join=by ProcessHVA];
+\chainin (human) [join=by ProcessHVA];
+\end{pgfonlayer}
+}{ [start chain=process]
+ \begin{pgfonlayer}{process} 
+\chainin (W);
+\chainin (wing) [join=by ProcessHVA];
+\chainin (AVL) [join=by ProcessHVA];
+\chainin (wing) [join=by ProcessHVA];
+\end{pgfonlayer}
+}{ [start chain=process]
+ \begin{pgfonlayer}{process} 
+\chainin (wing);
+\chainin (tail) [join=by ProcessHVA];
+\chainin (AVL) [join=by ProcessHVA];
+\chainin (tail) [join=by ProcessHVA];
+\end{pgfonlayer}
+}{ [start chain=process]
+ \begin{pgfonlayer}{process} 
+\chainin (wing);
+\chainin (AF) [join=by ProcessHVA];
+\chainin (wing) [join=by ProcessHVA];
+\end{pgfonlayer}
+}{ [start chain=process]
+ \begin{pgfonlayer}{process} 
+\chainin (wing);
+\chainin (RFP) [join=by ProcessHVA];
+\chainin (human) [join=by ProcessHVA];
+\end{pgfonlayer}
+}{ [start chain=process]
+ \begin{pgfonlayer}{process} 
+\chainin (tail);
+\chainin (RFP) [join=by ProcessHVA];
+\chainin (human) [join=by ProcessHVA];
+\end{pgfonlayer}
+}
+
+\begin{pgfonlayer}{data}
+\path
+% Horizontal edges
+(human) edge [DataLine] (human-W)
+(human) edge [DataLine] (human-SP)
+(W) edge [DataLine] (W-SP)
+(SP) edge [DataLine] (SP-human)
+(human) edge [DataLine] (human-wing)
+(W) edge [DataLine] (W-wing)
+(W) edge [DataLine] (W-AVL)
+(wing) edge [DataLine] (wing-AVL)
+(AVL) edge [DataLine] (AVL-wing)
+(human) edge [DataLine] (human-AF)
+(W) edge [DataLine] (W-AF)
+(wing) edge [DataLine] (wing-AF)
+(AF) edge [DataLine] (AF-wing)
+(wing) edge [DataLine] (wing-tail)
+(tail) edge [DataLine] (tail-AVL)
+(AVL) edge [DataLine] (AVL-tail)
+(human) edge [DataLine] (human-RFP)
+(W) edge [DataLine] (W-RFP)
+(wing) edge [DataLine] (wing-RFP)
+(tail) edge [DataLine] (tail-RFP)
+(RFP) edge [DataLine] (RFP-human)
+(human) edge [DataLine] (left_output_human)
+(W) edge [DataLine] (left_output_W)
+(wing) edge [DataLine] (left_output_wing)
+(tail) edge [DataLine] (left_output_tail)
+(AF) edge [DataLine] (left_output_AF)
+% Vertical edges
+(human-W) edge [DataLine] (W)
+(human-SP) edge [DataLine] (SP)
+(W-SP) edge [DataLine] (SP)
+(SP-human) edge [DataLine] (human)
+(human-wing) edge [DataLine] (wing)
+(W-wing) edge [DataLine] (wing)
+(W-AVL) edge [DataLine] (AVL)
+(wing-AVL) edge [DataLine] (AVL)
+(AVL-wing) edge [DataLine] (wing)
+(human-AF) edge [DataLine] (AF)
+(W-AF) edge [DataLine] (AF)
+(wing-AF) edge [DataLine] (AF)
+(AF-wing) edge [DataLine] (wing)
+(wing-tail) edge [DataLine] (tail)
+(tail-AVL) edge [DataLine] (AVL)
+(AVL-tail) edge [DataLine] (tail)
+(human-RFP) edge [DataLine] (RFP)
+(W-RFP) edge [DataLine] (RFP)
+(wing-RFP) edge [DataLine] (RFP)
+(tail-RFP) edge [DataLine] (RFP)
+(RFP-human) edge [DataLine] (human);
+\end{pgfonlayer}
+
+\end{tikzpicture}
