@@ -1,10 +1,10 @@
-clear; close all; clc;
+% clear; close all; clc;
 
-ac = aircraft();
-
-Wfrac_reg.A = 2.3400 .* 0.224809.^-0.1300;
-Wfrac_reg.C = -0.1300;
-[ac] = iterate_W0(ac, Wfrac_reg, @a2a_Ffrac);
+% ac = aircraft();
+% 
+% Wfrac_reg.A = 2.3400 .* 0.224809.^-0.1300;
+% Wfrac_reg.C = -0.1300;
+% [ac] = iterate_W0(ac, Wfrac_reg, @a2a_Ffrac);
 [cst] = cost(ac);
 
 fprintf("AEP: $%g Million\n", cst.unit.AEP / 1e6);

@@ -203,7 +203,7 @@ p14 = plot(S_a2a_recovery, T0_plot, "-", "color", "#000000");
 scatter(ac.initial.Sref ./ 0.092903, ac.initial.T_max ./ 4.44822, 20, [252, 106, 3]./255, "filled");
 
 % AEP(imag(AEP)~=0) = NaN;
-[C1, p15] = contour(S_grid, T0_grid, AEP./1e6, 90:5:130, "-k", "ShowText", "on", "EdgeAlpha", 0.2, "LabelSpacing", 400);
+[C1, p15] = contour(S_grid, T0_grid, 500.*AEP./1e9, 44:1:55, "-k", "ShowText", "on", "EdgeAlpha", 0.2, "LabelSpacing", 400);
 % contour(S_grid, T0_grid, TW_grid, linspace(0, 2, 9), "-r", "ShowText", "on");
 % contour(S_grid, T0_grid, WS_grid, linspace(50, 120, 9), "-g", "ShowText", "on");
 % contour(S_grid, T0_grid, a2a_W0 ./ 4.44822 ./ 1e3, "-b", "ShowText", "on");
@@ -213,7 +213,7 @@ shadeRegion({S_plot, S_plot, S_a2a_catapult, S_a2a_landing}, {T0_a2a_dash, T0_a2
 text(750, 6e4, "Feasible", "HorizontalAlignment", "center", "Interpreter", "latex", "FontSize", fontsize);
 text(ac.initial.Sref ./ 0.092903, ac.initial.T_max ./ 4.44822, "Design Point (Max)~~~", "HorizontalAlignment", "right", "Interpreter", "latex", "FontSize", fontsize);
 
-legend(p15, "Unit Cost (\$M 2025)", "Interpreter", "latex", "FontSize", fontsize);
+legend(p15, "Flyaway Cost 500 Units (\$B 2025)", "Interpreter", "latex", "FontSize", fontsize);
 
 ylim([0, 80000]);
 xlim([450, 1000]);
@@ -231,7 +231,7 @@ label_line(p4, 900, dn, "Cruise 1", "interpreter", "latex", "FontSize", fontsize
 label_line(p5, 900, -dn, "Cruise 2", "interpreter", "latex", "FontSize", fontsize);
 label_line(p6, 520, dn, "50,000 ft Ceiling", "interpreter", "latex", "FontSize", fontsize);
 label_line(p7, 780, dn, "SEROC Takeoff", "interpreter", "latex", "FontSize", fontsize);
-label_line(p8, 920, dn, "SEROC Approach", "interpreter", "latex", "FontSize", fontsize);
+label_line(p8, 900, dn, "SEROC Approach", "interpreter", "latex", "FontSize", fontsize);
 label_line(p9, 900, dn, "Climb 1", "interpreter", "latex", "FontSize", fontsize);
 label_line(p10, 900, -dn, "Climb 2", "interpreter", "latex", "FontSize", fontsize);
 label_line(p11, 700, dn, "Takeoff", "interpreter", "latex", "FontSize", fontsize);
@@ -398,7 +398,7 @@ p14 = plot(S_strike_recovery, T0_plot, "-", "color", "#000000");
 
 scatter(ac.initial.Sref ./ 0.092903, ac.initial.T_max ./ 4.44822, 20, [252, 106, 3]./255, "filled");
 
-[C1, p15] = contour(S_grid, T0_grid, AEP./1e6, 90:5:130, "-k", "ShowText", "on", "EdgeAlpha", 0.2, "LabelSpacing", 400);
+[C1, p15] = contour(S_grid, T0_grid, 500.*AEP./1e9, 44:1:55, "-k", "ShowText", "on", "EdgeAlpha", 0.2, "LabelSpacing", 400);
 clabel(C1, p15, "Interpreter", "latex", "FontSize", fontsize);
 
 shadeRegion({S_plot, S_strike_max_g, S_plot, S_plot, S_plot, S_plot, S_plot, S_plot, S_plot, S_plot, S_plot, S_strike_landing, S_strike_catapult, S_strike_recovery}, ...
@@ -411,7 +411,7 @@ shadeRegion({S_plot, S_strike_max_g, S_plot, S_plot, S_plot, S_plot, S_plot, S_p
 text(700, 5e4, "Feasible", "HorizontalAlignment", "center", "Interpreter", "latex", "FontSize", fontsize);
 text(ac.initial.Sref ./ 0.092903, ac.initial.T_max ./ 4.44822, "Design Point (Max)~~~", "HorizontalAlignment", "right", "Interpreter", "latex", "FontSize", fontsize);
 
-legend(p15, "Unit Cost (\$M 2025)", "Interpreter", "latex", "FontSize", fontsize);
+legend(p15, "Flyaway Cost 500 Units (\$B 2025)", "Interpreter", "latex", "FontSize", fontsize);
 
 ylim([0, 80000]);
 xlim([350, 1000]);
@@ -424,16 +424,16 @@ set(gcf, 'Units', 'Inches', 'OuterPosition', [8.097222222222221+width,6.86111111
 dn = 5;
 label_line(p1, 900, dn, "M0.9 Dash", "interpreter", "latex", "FontSize", fontsize);
 label_line(p2, 375, -2*dn, "8g Vertical Load Factor", "interpreter", "latex", "FontSize", fontsize);
-label_line(p3, 650, dn, "Cruise 1", "interpreter", "latex", "FontSize", fontsize);
-label_line(p4, 650, -dn, "Cruise 2", "interpreter", "latex", "FontSize", fontsize);
+label_line(p3, 680, dn, "Cruise 1", "interpreter", "latex", "FontSize", fontsize);
+label_line(p4, 680, -dn, "Cruise 2", "interpreter", "latex", "FontSize", fontsize);
 label_line(p5, 520, dn, "50,000 ft Ceiling", "interpreter", "latex", "FontSize", fontsize);
 label_line(p6, 900, dn, "SEROC Takeoff", "interpreter", "latex", "FontSize", fontsize);
 label_line(p7, 910, dn, "SEROC Approach", "interpreter", "latex", "FontSize", fontsize);
-label_line(p8, 650, dn, "Climb 1", "interpreter", "latex", "FontSize", fontsize);
-label_line(p9, 650, -dn, "Climb 2", "interpreter", "latex", "FontSize", fontsize);
-label_line(p10, 650, -dn, "Climb 3", "interpreter", "latex", "FontSize", fontsize);
+label_line(p8, 680, dn, "Climb 1", "interpreter", "latex", "FontSize", fontsize);
+label_line(p9, 680, -dn, "Climb 2", "interpreter", "latex", "FontSize", fontsize);
+label_line(p10, 680, -dn, "Climb 3", "interpreter", "latex", "FontSize", fontsize);
 label_line(p11, 770, dn, "Takeoff", "interpreter", "latex", "FontSize", fontsize);
-label_line(p12, 650, dn, "Landing", "interpreter", "latex", "FontSize", fontsize);
+label_line(p12, 640, dn, "Landing", "interpreter", "latex", "FontSize", fontsize);
 label_line(p13, 720, dn, "Catapult", "interpreter", "latex", "FontSize", fontsize);
 label_line(p14, 450, dn, "Recovery", "interpreter", "latex", "FontSize", fontsize);
 

@@ -201,6 +201,7 @@ cst.unit.C_PRO = cst.unit.F_pro_m * cst.unit.C_MAN;  % Total production profit, 
 
 cst.unit.C_ACQ = cst.unit.C_MAN + cst.unit.C_PRO;  % Total manufacturing cost after financing and profit, Roskam 4.2
 
-cst.unit.AEP = (cst.unit.C_MAN + cst.unit.C_RDTE + cst.unit.C_PRO) / cst.unit.N_m;  % Unit price per airplane, including profit and RDTE, Roskam 4.3
+% cst.unit.AEP = (cst.unit.C_MAN + cst.unit.C_RDTE + cst.unit.C_PRO) / cst.unit.N_m;  % Unit price per airplane, including profit and RDTE, Roskam 4.3
+cst.unit.AEP = (cst.unit.C_MAN + cst.unit.C_PRO) / cst.unit.N_m;  % Unit price per airplane, including profit and RDTE, Roskam 4.3
 
 end

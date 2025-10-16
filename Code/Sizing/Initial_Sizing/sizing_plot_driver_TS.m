@@ -238,7 +238,7 @@ label_line(p14, 180, dn, "Recovery~~", "interpreter", "latex", "FontSize", fonts
 % grid on;
 
 saveas(gcf, "/Users/michaelchen/UMich/Class/F25/Aero_481/Figures/sizing_a2a.svg");
-exportgraphics(gca, "/Users/michaelchen/UMich/Class/F25/Aero_481/Figures/sizing_a2a.png", "Resolution", 1000);
+% exportgraphics(gca, "/Users/michaelchen/UMich/Class/F25/Aero_481/Figures/sizing_a2a.png", "Resolution", 1000);
 
 %% Plot Strike
 % Design Point
@@ -321,7 +321,7 @@ label_line(p14, 180, dn, "Recovery~~", "interpreter", "latex", "FontSize", fonts
 % grid on;
 
 saveas(gcf, "/Users/michaelchen/UMich/Class/F25/Aero_481/Figures/sizing_strike.svg");
-exportgraphics(gca, "/Users/michaelchen/UMich/Class/F25/Aero_481/Figures/sizing_strike.png", "Resolution", 1000);
+% exportgraphics(gca, "/Users/michaelchen/UMich/Class/F25/Aero_481/Figures/sizing_strike.png", "Resolution", 1000);
 
 %% Helper functions TODO turn into full function later
 function K = getK(ac, polar)
