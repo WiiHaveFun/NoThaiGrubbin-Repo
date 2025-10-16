@@ -2,13 +2,13 @@ function cst = cost(ac)
 % COST  Creates a cost struct containing cost parameters.
 %    cst = COST()  returns the cost struct.
 
-% All units are imperial (ft-lb-s)
+% All units are imperial (ft-lb-s)W
 
 %% Auxillary
-mission_mix_a2a = 0.5;  % Proportion of missions that are air-to-air, assumed 50-50 TODO
+cst.aux.mission_mix_a2a = 0.5;  % Proportion of missions that are air-to-air, assumed 50-50 TODO
 
 [cst.aux.block_time_a2a, cst.aux.block_time_strike] = get_block_time(ac);  % Block time for each mission (hours) TODO refine
-cst.aux.block_time_avg = ((mission_mix_a2a) * cst.aux.block_time_a2a) + ((1 - mission_mix_a2a) * cst.aux.block_time_strike);  % Average block time (hours)
+cst.aux.block_time_avg = ((cst.aux.mission_mix_a2a) * cst.aux.block_time_a2a) + ((1 - cst.aux.mission_mix_a2a) * cst.aux.block_time_strike);  % Average block time (hours)
 
 cst.aux.fuel_density = 6.739;  % Fuel density (lb/gal)
 cst.aux.fuel_price = inflation(2025, 4.05);  % Fuel price (USD/gal)
@@ -16,13 +16,13 @@ cst.aux.oil_density = 7.15;  % Lubricating oil density (lb/gal)
 cst.aux.oil_price = inflation(2025, 14.58);  % Lubricating oil price (USD/gal)
 cst.aux.price_engine = ac.initial.num_eng * inflation(2000, 5000000);  % F110-GE-132 total price (USD)
 
-cst.aux.avg_missiles = ((mission_mix_a2a) * (ac.a2a.num_120 + ac.a2a.num_9x)) + ((1 - mission_mix_a2a) * ac.strike.num_9x);  % Average missiles carried
+cst.aux.avg_missiles = ((cst.aux.mission_mix_a2a) * (ac.a2a.num_120 + ac.a2a.num_9x)) + ((1 - cst.aux.mission_mix_a2a) * ac.strike.num_9x);  % Average missiles carried
 
 %% Environmental, Fleet, Compatibility, Weapons
 cst.EFCW.AIM120_price = inflation(1991, 386000);  % Cost per AIM-120 (USD)
 cst.EFCW.AIM9X_price = inflation(2022, 516144);  % Cost per AIM-9X (USD)
 cst.EFCW.JDAM_price = inflation(2007, 22000) + inflation(2001, 3026);  % Cost per JDAM (USD)
-cst.EFCW.life_support = inflation(1999, 195000);  % Life support cost (USD), ejection seat only
+cst.EFCW.life_support = inflation(1999, 195000) + inflation(2025, 412002);  % Life support cost (USD)
 
 cst.EFCW.mass_avionics = 2500;  % Avionics weight (lb), RFP, 5400 for 40% cost
 cst.EFCW.C_lb_avionics = inflation(2012, 8000);  % Avionics price per pound (USD/lb), Raymer 18.4.2, 4000-8000, using 8000
@@ -34,7 +34,7 @@ cst.EFCW.sub_tech = 0;  % Subsystem technologies cost (USD) TODO
 %% COC
 % Fuel, oil, lubricant
 cst.MO.F_OL = 1.005;  % Oil and lubricant cost factor, Roskam VIII Page 146
-cst.MO.W_F_used = N2lbs(((mission_mix_a2a) * (ac.a2a.Wf)) + ((1 - mission_mix_a2a) * ac.strike.Wf));  % Average fuel used per mission (lbs)
+cst.MO.W_F_used = N2lbs(((cst.aux.mission_mix_a2a) * (ac.a2a.Wf)) + ((1 - cst.aux.mission_mix_a2a) * ac.strike.Wf));  % Average fuel used per mission (lbs)
 
 cst.MO.FP = cst.aux.fuel_price;  % Fuel price (USD/gal)
 cst.MO.FD = cst.aux.fuel_density;  % Fuel density (lb/gal)
@@ -57,7 +57,7 @@ cst.MO.C_POL = cst.MO.F_OL * cst.MO.W_F_used * (cst.MO.FP / cst.MO.FD) * cst.MO.
 % Direct personnel
 cst.MO.N_crew = ac.initial.num_crew;  % Number of pilots from ac struct
 cst.MO.R_cr = 1.1;  % Crew ratio per airplane, Roskam VIII Table 6.1
-cst.MO.Pay_crew = inflation(2012, 115);  % Pilot hourly rate (USD), Raymer 18.4.2 for engineering via Raymer 18.5.2
+cst.MO.Pay_crew = inflation(2012, 115*2080);  % Pilot yearly rate (USD), Raymer 18.4.2 for engineering via Raymer 18.5.2
 cst.MO.OHR_crew = 3;  % Crew overhead rate factor, Roskam VIII Page 154
 cst.MO.C_crewpr = cst.MO.N_serv * cst.MO.N_crew * cst.MO.R_cr * cst.MO.Pay_crew * cst.MO.OHR_crew * cst.MO.N_yr;  % Program cost of aircrews, Roskam VIII Eq. 6.10
 
@@ -66,8 +66,6 @@ cst.MO.R_m_ml = inflation(1989, 45);  % Military maintenance labor rate, Roskam 
 cst.MO.C_mpersdir = cst.MO.N_serv * cst.MO.N_yr * cst.MO.U_ann_flt * cst.MO.MHR_flthr * cst.MO.R_m_ml;  % Program cost of direct maintenance personnel, Roskam VIII Eq. 6.11
 
 cst.MO.engine_ratio = 2793/10652.9;  % Ratio of maintenance relating to engines, Gov. Accountability Office
-cst.MO.airframe_total = (1 - cst.MO.engine_ratio) * cst.MO.C_mpersdir;  %  Program cost of airframe maintenance
-cst.MO.engine_total = cst.MO.engine_ratio * cst.MO.C_mpersdir;  % Program cost of engine maintenance
 
 cst.MO.C_PERSDIR = cst.MO.C_crewpr + cst.MO.C_mpersdir;  % Program cost of direct personnel, Roskam VIII Eq. 6.9
 
@@ -91,6 +89,13 @@ cst.MO.C_OPS = (cst.MO.C_POL + cst.MO.C_PERSDIR + cst.MO.C_CONMAT) / ...
                (1 - cst.MO.f_persind - cst.MO.f_spares - cst.MO.f_depot - cst.MO.f_misc);  % Program operating cost, Roskam VIII Eq. 6.20
 cst.MO.C_OPS_HR = cst.MO.C_OPS / (cst.MO.N_serv * cst.MO.N_yr * cst.MO.U_ann_flt);  % Program operating cost per flight hour, Roskam VIII Eq. 6.23
 
+cst.MO.C_spares = cst.MO.f_spares * cst.MO.C_OPS; % Program cost of spares
+cst.MO.C_depot = cst.MO.f_depot * cst.MO.C_OPS; % Program cost of depot
+
+% Maintainence totals
+cst.MO.airframe_total = (1 - cst.MO.engine_ratio) * (cst.MO.C_mpersdir + cst.MO.C_CONMAT + cst.MO.C_spares + cst.MO.C_depot);  %  Program cost of airframe maintenance
+cst.MO.engine_total = cst.MO.engine_ratio * (cst.MO.C_mpersdir + cst.MO.C_CONMAT + cst.MO.C_spares + cst.MO.C_depot);  % Program cost of engine maintenance
+
 % Weapons
 cst.COC.a2a_weapons = ac.a2a.num_120 * cst.EFCW.AIM120_price + ...
                       ac.a2a.num_9x * cst.EFCW.AIM9X_price;  % Single A2A mission weapons cost, assumes all are used (USD)
@@ -98,7 +103,7 @@ cst.COC.a2a_weapons = ac.a2a.num_120 * cst.EFCW.AIM120_price + ...
 cst.COC.strike_weapons = ac.strike.num_JDAM * cst.EFCW.JDAM_price + ...
                          ac.strike.num_9x * cst.EFCW.AIM9X_price;  % Single strike mission weapons cost, assumes all are used (USD)
 
-cst.COC.avg_weapons = ((mission_mix_a2a) * (cst.COC.a2a_weapons)) + ((1 - mission_mix_a2a) * ac.strike.num_9x);  % Average mission weapons cost
+cst.COC.avg_weapons = ((cst.aux.mission_mix_a2a) * (cst.COC.a2a_weapons)) + ((1 - cst.aux.mission_mix_a2a) * ac.strike.num_9x);  % Average mission weapons cost
 
 %% Airplane Unit Cost
 % Labor Cost
