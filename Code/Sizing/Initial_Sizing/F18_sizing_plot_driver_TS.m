@@ -1,7 +1,7 @@
 %% Plot options
 fontsize = 10;
-width = 7;
-height = 5;
+width = 6.5;
+height = 4;
 
 %% Weights and weight fractions
 % ac = aircraft();
@@ -202,11 +202,12 @@ xlabel("$W/S (lb/ft^2)$", "Interpreter", "latex", "FontSize", fontsize);
 ylabel("$T/W$", "Interpreter", "latex", "FontSize", fontsize);
 set(gca, 'TickLabelInterpreter', 'latex');
 
-set(gcf, 'Units', 'Inches', 'OuterPosition', [8.097222222222221,6.861111111111111,width,height]);
+% set(gcf, 'Units', 'Inches', 'OuterPosition', [8.097222222222221,6.861111111111111,width,height]);
+set(gcf, 'Units', 'Inches', 'Position', [8.097222222222221,6.861111111111111,width,height]);
 
 dn = 5;
 label_line(p1, 65, dn, "M1.6 Dash", "interpreter", "latex", "FontSize", fontsize);
-label_line(p2, 30, dn, "10 deg/s Sustained Turn", "interpreter", "latex", "FontSize", fontsize);
+label_line(p2, 30, dn, "8 deg/s Sustained Turn", "interpreter", "latex", "FontSize", fontsize);
 label_line(p3, 180, dn, "8g Vertical Load Factor~~", "interpreter", "latex", "FontSize", fontsize);
 label_line(p4, 157, dn, "Cruise 1", "interpreter", "latex", "FontSize", fontsize);
 label_line(p5, 157, dn, "Cruise 2", "interpreter", "latex", "FontSize", fontsize);
@@ -220,8 +221,10 @@ label_line(p12, 180, dn, "Landing~~", "interpreter", "latex", "FontSize", fontsi
 label_line(p13, 120, dn, "Catapult", "interpreter", "latex", "FontSize", fontsize);
 label_line(p14, 180, dn, "Recovery~~", "interpreter", "latex", "FontSize", fontsize);
 
-saveas(gcf, "/Users/michaelchen/UMich/Class/F25/Aero_481/Figures/F18_sizing_a2a.svg");
-exportgraphics(gca, "/Users/michaelchen/UMich/Class/F25/Aero_481/Figures/F18_sizing_a2a.png", "Resolution", 1000);
+% saveas(gcf, "/Users/michaelchen/UMich/Class/F25/Aero_481/Figures/F18_sizing_a2a.svg");
+% exportgraphics(gca, "/Users/michaelchen/UMich/Class/F25/Aero_481/Figures/F18_sizing_a2a.png", "Resolution", 1000);
+set(gcf, 'Renderer', 'painters');
+exportgraphics(gca, "/Users/michaelchen/UMich/Class/F25/Aero_481/Figures/F18_sizing_a2a.pdf", "ContentType", "vector");
 
 %% Plot Strike
 % Design Point
@@ -274,7 +277,8 @@ xlabel("$W/S (lb/ft^2)$", "Interpreter", "latex", "FontSize", fontsize);
 ylabel("$T/W$", "Interpreter", "latex", "FontSize", fontsize);
 set(gca, 'TickLabelInterpreter', 'latex');
 
-set(gcf, 'Units', 'Inches', 'OuterPosition', [8.097222222222221+width,6.861111111111111,width,height]);
+% set(gcf, 'Units', 'Inches', 'OuterPosition', [8.097222222222221+width,6.861111111111111,width,height]);
+set(gcf, 'Units', 'Inches', 'Position', [8.097222222222221+width,6.861111111111111,width,height]);
 
 dn = 5;
 label_line(p1, 180, -dn, "M0.9 Dash", "interpreter", "latex", "FontSize", fontsize);
@@ -292,8 +296,10 @@ label_line(p12, 180, dn, "Landing~~", "interpreter", "latex", "FontSize", fontsi
 label_line(p13, 20, dn, "Catapult", "interpreter", "latex", "FontSize", fontsize);
 label_line(p14, 180, dn, "Recovery~~", "interpreter", "latex", "FontSize", fontsize);
 
-saveas(gcf, "/Users/michaelchen/UMich/Class/F25/Aero_481/Figures/F18_sizing_strike.svg");
-exportgraphics(gca, "/Users/michaelchen/UMich/Class/F25/Aero_481/Figures/F18_sizing_strike.png", "Resolution", 1000);
+% saveas(gcf, "/Users/michaelchen/UMich/Class/F25/Aero_481/Figures/F18_sizing_strike.svg");
+% exportgraphics(gca, "/Users/michaelchen/UMich/Class/F25/Aero_481/Figures/F18_sizing_strike.png", "Resolution", 1000);
+set(gcf, 'Renderer', 'painters');
+exportgraphics(gca, "/Users/michaelchen/UMich/Class/F25/Aero_481/Figures/F18_sizing_strike.pdf", "ContentType", "vector");
 
 %% Helper functions TODO turn into full function later
 function K = getK(ac, polar)

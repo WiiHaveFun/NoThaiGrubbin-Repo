@@ -1,7 +1,7 @@
 %% Plot options
 fontsize = 10;
-width = 7;
-height = 5;
+width = 6.5;
+height = 4;
 
 %% Weights and weight fractions
 ac = aircraft();
@@ -211,7 +211,7 @@ clabel(C1, p15, "Interpreter", "latex", "FontSize", fontsize);
 
 shadeRegion({S_plot, S_plot, S_a2a_catapult, S_a2a_landing}, {T0_a2a_dash, T0_a2a_takeoff, T0_plot, T0_plot}, {'lower', 'lower', 'upper', 'upper'}, [500, 1000, 100]);
 text(750, 6e4, "Feasible", "HorizontalAlignment", "center", "Interpreter", "latex", "FontSize", fontsize);
-text(ac.initial.Sref ./ 0.092903, ac.initial.T_max ./ 4.44822, "Design Point (Max)~~~", "HorizontalAlignment", "right", "Interpreter", "latex", "FontSize", fontsize);
+text(ac.initial.Sref ./ 0.092903, ac.initial.T_max ./ 4.44822, "Design Point (Max)~", "HorizontalAlignment", "right", "Interpreter", "latex", "FontSize", fontsize);
 
 legend(p15, "Flyaway Cost 500 Units (\$B 2025)", "Interpreter", "latex", "FontSize", fontsize);
 
@@ -221,12 +221,14 @@ xlabel("$S (ft^2)$", "Interpreter", "latex", "FontSize", fontsize);
 ylabel("$T (lb)$", "Interpreter", "latex", "FontSize", fontsize);
 set(gca, 'TickLabelInterpreter', 'latex');
 
-set(gcf, 'Units', 'Inches', 'OuterPosition', [8.097222222222221,6.861111111111111,width,height]);
+% set(gcf, 'Units', 'Inches', 'OuterPosition', [8.097222222222221,6.861111111111111,width,height]);
+set(gcf, 'Units', 'Inches', 'Position', [8.097222222222221,6.861111111111111,width,height]);
+
 
 dn = 5;
 label_line(p1, 875, dn, "M1.7 Dash", "interpreter", "latex", "FontSize", fontsize);
 label_line(p2, 525, -dn, "10 deg/s Sustained Turn", "interpreter", "latex", "FontSize", fontsize);
-label_line(p3, 460, -dn, "8g Vertical Load Factor", "interpreter", "latex", "FontSize", fontsize);
+label_line(p3, 460, -2*dn, "8g Vertical Load Factor", "interpreter", "latex", "FontSize", fontsize);
 label_line(p4, 900, dn, "Cruise 1", "interpreter", "latex", "FontSize", fontsize);
 label_line(p5, 900, -dn, "Cruise 2", "interpreter", "latex", "FontSize", fontsize);
 label_line(p6, 520, dn, "50,000 ft Ceiling", "interpreter", "latex", "FontSize", fontsize);
@@ -239,8 +241,10 @@ label_line(p12, 650, dn, "Landing", "interpreter", "latex", "FontSize", fontsize
 label_line(p13, 710, dn, "Catapult", "interpreter", "latex", "FontSize", fontsize);
 label_line(p14, 550, dn, "Recovery", "interpreter", "latex", "FontSize", fontsize);
 
-saveas(gcf, "/Users/michaelchen/UMich/Class/F25/Aero_481/Figures/TS_a2a.svg");
-exportgraphics(gca, "/Users/michaelchen/UMich/Class/F25/Aero_481/Figures/TS_a2a.png", "Resolution", 1000);
+% saveas(gcf, "/Users/michaelchen/UMich/Class/F25/Aero_481/Figures/TS_a2a.svg");
+% exportgraphics(gca, "/Users/michaelchen/UMich/Class/F25/Aero_481/Figures/TS_a2a.png", "Resolution", 1000);
+set(gcf, 'Renderer', 'painters');
+exportgraphics(gca, "/Users/michaelchen/UMich/Class/F25/Aero_481/Figures/TS_a2a.pdf", "ContentType", "vector");
 
 %% Weights and weight fractions
 ac = aircraft();
@@ -419,7 +423,8 @@ xlabel("$S (ft^2)$", "Interpreter", "latex", "FontSize", fontsize);
 ylabel("$T (lb)$", "Interpreter", "latex", "FontSize", fontsize);
 set(gca, 'TickLabelInterpreter', 'latex');
 
-set(gcf, 'Units', 'Inches', 'OuterPosition', [8.097222222222221+width,6.861111111111111,width,height]);
+% set(gcf, 'Units', 'Inches', 'OuterPosition', [8.097222222222221+width,6.861111111111111,width,height]);
+set(gcf, 'Units', 'Inches', 'Position', [8.097222222222221+width,6.861111111111111,width,height]);
 
 dn = 5;
 label_line(p1, 900, dn, "M0.9 Dash", "interpreter", "latex", "FontSize", fontsize);
@@ -433,9 +438,11 @@ label_line(p8, 680, dn, "Climb 1", "interpreter", "latex", "FontSize", fontsize)
 label_line(p9, 680, -dn, "Climb 2", "interpreter", "latex", "FontSize", fontsize);
 label_line(p10, 680, -dn, "Climb 3", "interpreter", "latex", "FontSize", fontsize);
 label_line(p11, 770, dn, "Takeoff", "interpreter", "latex", "FontSize", fontsize);
-label_line(p12, 640, dn, "Landing", "interpreter", "latex", "FontSize", fontsize);
+label_line(p12, 460, dn, "Landing", "interpreter", "latex", "FontSize", fontsize);
 label_line(p13, 720, dn, "Catapult", "interpreter", "latex", "FontSize", fontsize);
 label_line(p14, 450, dn, "Recovery", "interpreter", "latex", "FontSize", fontsize);
 
-saveas(gcf, "/Users/michaelchen/UMich/Class/F25/Aero_481/Figures/TS_strike.svg");
-exportgraphics(gca, "/Users/michaelchen/UMich/Class/F25/Aero_481/Figures/TS_strike.png", "Resolution", 1000);
+% saveas(gcf, "/Users/michaelchen/UMich/Class/F25/Aero_481/Figures/TS_strike.svg");
+% exportgraphics(gca, "/Users/michaelchen/UMich/Class/F25/Aero_481/Figures/TS_strike.png", "Resolution", 1000);
+set(gcf, 'Renderer', 'painters');
+exportgraphics(gca, "/Users/michaelchen/UMich/Class/F25/Aero_481/Figures/TS_strike.pdf", "ContentType", "vector");

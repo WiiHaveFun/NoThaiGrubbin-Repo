@@ -1,7 +1,7 @@
 %% Plot options
 fontsize = 10;
-width = 4;
-height = 5;
+width = 6.5;
+height = 3.5;
 
 n = 100;
 
@@ -69,12 +69,15 @@ xlabel("$C_D$", "Interpreter", "latex", "FontSize", fontsize);
 ylabel("$C_L$", "Interpreter", "latex", "FontSize", fontsize);
 set(gca, 'TickLabelInterpreter', 'latex');
 
-set(gcf, 'Units', 'Inches', 'OuterPosition', [8.097222222222221,6.861111111111111,width,height]);
+% set(gcf, 'Units', 'Inches', 'OuterPosition', [8.097222222222221,6.861111111111111,width,height]);
+set(gcf, 'Units', 'Inches', 'Position', [8.097222222222221,6.861111111111111,width,height]);
 
 legend("Clean, 2 Tanks", "Half Flaps", "Half Flaps, Gear Down", "Full Flaps", "Full Flaps, Gear Down", ...
        "Interpreter", "latex", "FontSize", fontsize, "Location", "southeast");
 
 grid on;
 
-saveas(gcf, "/Users/michaelchen/UMich/Class/F25/Aero_481/Figures/simple_polars.svg");
-exportgraphics(gca, "/Users/michaelchen/UMich/Class/F25/Aero_481/Figures/simple_polars.png", "Resolution", 1000);
+% saveas(gcf, "/Users/michaelchen/UMich/Class/F25/Aero_481/Figures/simple_polars.svg");
+% exportgraphics(gca, "/Users/michaelchen/UMich/Class/F25/Aero_481/Figures/simple_polars.png", "Resolution", 1000);
+set(gcf, 'Renderer', 'painters');
+exportgraphics(gca, "/Users/michaelchen/UMich/Class/F25/Aero_481/Figures/simple_polars.pdf", "ContentType", "vector");

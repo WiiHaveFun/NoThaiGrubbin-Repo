@@ -1,7 +1,7 @@
 %% Plot options
 fontsize = 10;
-width = 7;
-height = 5;
+width = 6.5;
+height = 4;
 
 %% Weights and weight fractions
 F18_W0_driver;
@@ -185,7 +185,8 @@ xlabel("$S (ft^2)$", "Interpreter", "latex", "FontSize", fontsize);
 ylabel("$T (lb)$", "Interpreter", "latex", "FontSize", fontsize);
 set(gca, 'TickLabelInterpreter', 'latex');
 
-set(gcf, 'Units', 'Inches', 'OuterPosition', [8.097222222222221,6.861111111111111,width,height]);
+% set(gcf, 'Units', 'Inches', 'OuterPosition', [8.097222222222221,6.861111111111111,width,height]);
+set(gcf, 'Units', 'Inches', 'Position', [8.097222222222221,6.861111111111111,width,height]);
 
 dn = 5;
 label_line(p1, 700, -dn, "M1.6 Dash", "interpreter", "latex", "FontSize", fontsize);
@@ -203,8 +204,10 @@ label_line(p12, 450, dn, "Landing", "interpreter", "latex", "FontSize", fontsize
 label_line(p13, 500, dn, "Catapult", "interpreter", "latex", "FontSize", fontsize);
 label_line(p14, 350, dn, "Recovery", "interpreter", "latex", "FontSize", fontsize);
 
-saveas(gcf, "/Users/michaelchen/UMich/Class/F25/Aero_481/Figures/F18_TS_a2a.svg");
-exportgraphics(gca, "/Users/michaelchen/UMich/Class/F25/Aero_481/Figures/F18_TS_a2a.png", "Resolution", 1000);
+% saveas(gcf, "/Users/michaelchen/UMich/Class/F25/Aero_481/Figures/F18_TS_a2a.svg");
+% exportgraphics(gca, "/Users/michaelchen/UMich/Class/F25/Aero_481/Figures/F18_TS_a2a.png", "Resolution", 1000);
+set(gcf, 'Renderer', 'painters');
+exportgraphics(gca, "/Users/michaelchen/UMich/Class/F25/Aero_481/Figures/F18_TS_a2a.pdf", "ContentType", "vector");
 
 %% Weights and weight fractions
 F18_W0_driver;
@@ -367,7 +370,8 @@ xlabel("$S (ft^2)$", "Interpreter", "latex", "FontSize", fontsize);
 ylabel("$T (lb)$", "Interpreter", "latex", "FontSize", fontsize);
 set(gca, 'TickLabelInterpreter', 'latex');
 
-set(gcf, 'Units', 'Inches', 'OuterPosition', [8.097222222222221+width,6.861111111111111,width,height]);
+% set(gcf, 'Units', 'Inches', 'OuterPosition', [8.097222222222221+width,6.861111111111111,width,height]);
+set(gcf, 'Units', 'Inches', 'Position', [8.097222222222221+width,6.861111111111111,width,height]);
 
 dn = 5;
 label_line(p1, 500, -dn, "M0.9 Dash", "interpreter", "latex", "FontSize", fontsize);
@@ -385,5 +389,7 @@ label_line(p12, 510, dn, "Landing", "interpreter", "latex", "FontSize", fontsize
 label_line(p13, 510, dn, "Catapult", "interpreter", "latex", "FontSize", fontsize);
 label_line(p14, 430, dn, "Recovery", "interpreter", "latex", "FontSize", fontsize);
 
-saveas(gcf, "/Users/michaelchen/UMich/Class/F25/Aero_481/Figures/F18_TS_strike.svg");
-exportgraphics(gca, "/Users/michaelchen/UMich/Class/F25/Aero_481/Figures/F18_TS_strike.png", "Resolution", 1000);
+% saveas(gcf, "/Users/michaelchen/UMich/Class/F25/Aero_481/Figures/F18_TS_strike.svg");
+% exportgraphics(gca, "/Users/michaelchen/UMich/Class/F25/Aero_481/Figures/F18_TS_strike.png", "Resolution", 1000);
+set(gcf, 'Renderer', 'painters');
+exportgraphics(gca, "/Users/michaelchen/UMich/Class/F25/Aero_481/Figures/F18_TS_strike.pdf", "ContentType", "vector");
