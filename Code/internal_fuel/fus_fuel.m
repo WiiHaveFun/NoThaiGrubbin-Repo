@@ -1,7 +1,7 @@
 function fuel_vol = fus_fuel(l_fus, h_fus, w_fus, d_engine, l_engine, num_engine, per_fus)
 %FUS_FUEL calculates an estimate of fuel volume possible based on fuselage
 %parameters
-
+% overestimates signifigantly
 % l,h,and w_fus are the dimensions of the fuselage
 % d and l engine are the diameter and length of the engine
 % num_engine is the number of engines
