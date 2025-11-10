@@ -73,7 +73,7 @@ Tfrac = get_thrust_frac(0, 0, 1.08, true, true);
 % [WS_a2a_catapult, TW_a2a_catapult] = catapult(WS, TW, ac.a2a.W0, p_full_gear.CD0, K_full_gear, p_full_gear.CLmax, ac.a2a.Wfracs(1), Tfrac);
 WS_a2a_catapult = catapult2(TW, ac.a2a.W0, p_full_gear.CD0, K_full_gear, p_full_gear.CLmax, ac.a2a.Wfracs(1), Tfrac);
 % Recovery
-WS_a2a_recovery = recovery(ac.a2a.W0, p_full_gear.CLmax, Wfrac_land_a2a);
+WS_a2a_recovery = recovery(ac.a2a.W0, p_half_gear.CLmax, Wfrac_land_a2a);
 
 % Fill in catapult
 % WS_temp = linspace(1, WS_a2a_catapult(1), 50);
@@ -138,7 +138,7 @@ WS_strike_landing = landing(2000, ac.initial.h_land, p_full_gear.CLmax, Wfrac_la
 Tfrac = get_thrust_frac(0, 0, 1.08, true, true);
 [WS_strike_catapult, TW_strike_catapult] = catapult(WS, TW, ac.strike.W0, p_full_gear.CD0, K_full_gear, p_full_gear.CLmax, ac.strike.Wfracs(1), Tfrac);
 % Recovery
-WS_strike_recovery = recovery(ac.strike.W0, p_full_gear.CLmax, Wfrac_land_strike);
+WS_strike_recovery = recovery(ac.strike.W0, p_half_gear.CLmax, Wfrac_land_strike);
 
 % Fill in catapult
 WS_temp = linspace(1, WS_strike_catapult(1), 50);

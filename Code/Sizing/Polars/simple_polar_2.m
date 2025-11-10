@@ -11,23 +11,28 @@ switch state
     case "clean"
         polar.CD0 = polar.CD0 + 0;
         polar.e = polar.e + 0;
-        polar.CLmax = 1.2;
+        % polar.CLmax = 1.2;
+        polar.CLmax = 0.805;
     case "half_flaps"
         polar.CD0 = polar.CD0 + 0.02;
         polar.e = polar.e - 0.05;
-        polar.CLmax = 1.6;
+        % polar.CLmax = 1.6;
+        polar.CLmax = 1.3;
     case "half_flaps_gear"
         polar.CD0 = polar.CD0 + 0.02 + 0.025;
         polar.e = polar.e - 0.05;
-        polar.CLmax = 1.6;
+        % polar.CLmax = 1.6;
+        polar.CLmax = 1.3;
     case "full_flaps"
         polar.CD0 = polar.CD0 + 0.075;
         polar.e = polar.e - 0.1;
-        polar.CLmax = 2.0;
+        % polar.CLmax = 2.0;
+        polar.CLmax = 1.7034;
     case "full_flaps_gear"
         polar.CD0 = polar.CD0 + 0.075 + 0.025;
         polar.e = polar.e - 0.1;
-        polar.CLmax = 2.0;
+        % polar.CLmax = 2.0;
+        polar.CLmax = 1.7034;
 end
 
 polar.CD0 = polar.CD0 + n_tanks .* (0.0007 + 0.0001);
