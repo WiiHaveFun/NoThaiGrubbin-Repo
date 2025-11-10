@@ -1,0 +1,88 @@
+function [ac, flag] = iterate_W0_TS_ref(ac, Wfrac_reg, mission_fun, T0, S)
+% ITERATE_W0  Iteratively calculates takeoff weight for a mission.
+%   [ac, W0] = ITERATE_W0(ac, Wfrac_fun, mission_fun) calculates takeoff weight.
+
+options = optimoptions("fsolve", "Display", "iter");
+if isequal(mission_fun, @a2a_ref_Ffrac)
+    [ac.a2a.W0, ~, flag, ~] = fsolve(@(W0) W0_residual(ac, Wfrac_reg, mission_fun, T0, S, W0), ac.a2a.W0, options);
+    % [ac.a2a.W0, ~, flag, ~] = fzero(@(W0) W0_residual(ac, Wfrac_reg, mission_fun, T0, S, W0), [1e2, 1e7]);
+    [~, ac] = W0_residual(ac, Wfrac_reg, mission_fun, T0, S, ac.a2a.W0);  
+    [Ffrac, ac.a2a.Wfracs, ac.a2a.segments] = mission_fun(ac);
+    ac.a2a.Wf = ac.a2a.W0 .* Ffrac;
+elseif isequal(mission_fun, @strike_ref_Ffrac)
+    ac.strike.W0 = fsolve(@(W0) W0_residual(ac, Wfrac_reg, mission_fun, T0, S, W0), ac.strike.W0, options);
+    % ac.strike.We = ac.strike.W0 .* (Wfrac_reg.A .* ac.strike.W0.^Wfrac_reg.C);
+    [~, ac] = W0_residual(ac, Wfrac_reg, mission_fun, T0, S, ac.strike.W0);
+    [Ffrac, ac.strike.Wfracs, ac.strike.segments] = mission_fun(ac);
+    ac.strike.Wf = ac.strike.W0 .* Ffrac;
+else
+    fprintf("Error. Invalid mission function.\n");
+end
+end
+
+function [R, ac] = W0_residual(ac, Wfrac_reg, mission_fun, T0, S, W0)
+    sigma_wing = 44.*9.81; % kg/m^2 to N/m^2
+    if isequal(mission_fun, @a2a_ref_Ffrac)
+        % Modify drag polars using wing area 
+        
+        % ac.polar.a2a.clean = simple_polar_3("clean", ac.a2a.W0, ac.initial.Sref, S, ac.initial.num_drop_tanks);
+        % ac.polar.a2a.half = simple_polar_3("half_flaps", ac.a2a.W0, ac.initial.Sref, S, ac.initial.num_drop_tanks);
+        % ac.polar.a2a.full = simple_polar_3("full_flaps", ac.a2a.W0, ac.initial.Sref, S, ac.initial.num_drop_tanks);
+        % ac.polar.a2a.half_gear = simple_polar_3("half_flaps_gear", ac.a2a.W0, ac.initial.Sref, S, ac.initial.num_drop_tanks);
+        % ac.polar.a2a.full_gear = simple_polar_3("full_flaps_gear", ac.a2a.W0, ac.initial.Sref, S, ac.initial.num_drop_tanks);
+        
+        ac.a2a.W0 = W0;
+        % Wfrac = Wfrac_reg.A .* ac.a2a.W0.^Wfrac_reg.C;
+
+        ac.polar.a2a.clean = simple_polar_2("clean", ac.a2a.W0, S, ac.initial.num_drop_tanks);
+        ac.polar.a2a.half = simple_polar_2("half_flaps", ac.a2a.W0, S, ac.initial.num_drop_tanks);
+        ac.polar.a2a.full = simple_polar_2("full_flaps", ac.a2a.W0, S, ac.initial.num_drop_tanks);
+        ac.polar.a2a.half_gear = simple_polar_2("half_flaps_gear", ac.a2a.W0, S, ac.initial.num_drop_tanks);
+        ac.polar.a2a.full_gear = simple_polar_2("full_flaps_gear", ac.a2a.W0, S, ac.initial.num_drop_tanks);
+
+        ac.a2a.cruise_pp = generate_cruise_spline(ac, ac.polar.a2a.clean);
+
+        % ac.a2a.We = ac.a2a.W0 .* Wfrac;
+        % % Modify wing weight using areal density
+        % ac.a2a.We = ac.a2a.We + sigma_wing .* (S - ac.initial.Sref);
+        % % Modify engine weight using maximum thrust
+        % ac.a2a.We = ac.a2a.We + get_Weng(T0) - get_Weng(ac.initial.T_max);
+
+        % This makes solutions hard to converge
+        % ac.initial.T_max = T0;
+        % ac.initial.T_mil = 0.6 .* T0;
+        % ac.initial.Sref = S;
+        [Ffrac, ~, ~] = mission_fun(ac);
+        ac.a2a.Wf = W0 .* Ffrac;
+        ac.a2a.We = empty_weight(ac, mission_fun);
+        R = W0 - (ac.a2a.W_crew + ac.a2a.W_pay) - ac.a2a.We - ac.a2a.Wf;
+    elseif isequal(mission_fun, @strike_ref_Ffrac)
+        % Modify drag polars using wing area
+        % ac.polar.strike.clean = simple_polar_3("clean", ac.strike.W0, ac.initial.Sref, S, ac.initial.num_drop_tanks);
+        % ac.polar.strike.half = simple_polar_3("half_flaps", ac.strike.W0, ac.initial.Sref, S, ac.initial.num_drop_tanks);
+        % ac.polar.strike.full = simple_polar_3("full_flaps", ac.strike.W0, ac.initial.Sref, S, ac.initial.num_drop_tanks);
+        % ac.polar.strike.half_gear = simple_polar_3("half_flaps_gear", ac.strike.W0, ac.initial.Sref, S, ac.initial.num_drop_tanks);
+        % ac.polar.strike.full_gear = simple_polar_3("full_flaps_gear", ac.strike.W0, ac.initial.Sref, S, ac.initial.num_drop_tanks);
+
+        ac.strike.W0 = W0;
+        % Wfrac = Wfrac_reg.A .* ac.strike.W0.^Wfrac_reg.C;
+
+        ac.polar.strike.clean = simple_polar_2("clean", ac.strike.W0, S, ac.initial.num_drop_tanks);
+        ac.polar.strike.half = simple_polar_2("half_flaps", ac.strike.W0, S, ac.initial.num_drop_tanks);
+        ac.polar.strike.full = simple_polar_2("full_flaps", ac.strike.W0, S, ac.initial.num_drop_tanks);
+        ac.polar.strike.half_gear = simple_polar_2("half_flaps_gear", ac.strike.W0, S, ac.initial.num_drop_tanks);
+        ac.polar.strike.full_gear = simple_polar_2("full_flaps_gear", ac.strike.W0, S, ac.initial.num_drop_tanks);
+
+        ac.strike.cruise_pp = generate_cruise_spline(ac, ac.polar.strike.clean);
+
+        % ac.strike.We = ac.strike.W0 .* Wfrac;
+        % % Modify wing weight using areal density
+        % ac.strike.We = ac.strike.We + sigma_wing .* (S - ac.initial.Sref);
+        % % Modify engine weight using maximum thrust
+        % ac.strike.We = ac.strike.We + get_Weng(T0) - get_Weng(ac.initial.T_max);
+        [Ffrac, ~, ~] = mission_fun(ac);
+        ac.strike.Wf = W0 .* Ffrac;
+        ac.strike.We = empty_weight(ac, mission_fun);
+        R = W0 - (ac.strike.W_crew + ac.strike.W_pay) - ac.strike.We - ac.strike.Wf;
+    end
+end

@@ -8,7 +8,7 @@ options = optimoptions("fsolve", "Display", "none");
 
 g = 9.81; % Acceleration due to gravity
 
-n = 10; % Number of subsegments
+n = 5; % Number of subsegments
 h = linspace(h0, h1, n+1); % Linear spacing in altitude
 
 % Takeoff wing loading, TWR, thrust
@@ -48,6 +48,8 @@ for i = 1:n
 
     V_i = fsolve(@(V) best_V_residual(V, WS, TW, h(i), CD0, K, is_max), V_i, options);
     V_ip1 = fsolve(@(V) best_V_residual(V, WS, TW, h(i+1), CD0, K, is_max), V_ip1, options);
+    % V_i = fzero(@(V) best_V_residual(V, WS, TW, h(i), CD0, K, is_max), [0 V_i*2]);
+    % V_ip1 = fzero(@(V) best_V_residual(V, WS, TW, h(i+1), CD0, K, is_max), [0 V_ip1*2]);
 
     % Change in energy height
     dHe = (h(i+1) + V_ip1.^2 ./ (2.*g)) - (h(i) + V_i.^2 ./ (2.*g));
@@ -66,6 +68,7 @@ for i = 1:n
 
     % Specific excess power
     Ps = (T.*V_i - D.*V_i) ./ W;
+    % Distance travelled during subsegment
     dx = dx + dHe./Ps .* V_i;
 end
 end

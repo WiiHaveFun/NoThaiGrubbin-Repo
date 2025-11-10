@@ -1,7 +1,8 @@
 function h1 = get_cruise_start_h(ac, Wfrac_1, W0, h0, polar, is_max, pp)
 
-% options = optimoptions("fsolve", "Display", "none");
-h1 = fsolve(@(h) h_residual(h), 10000);
+options = optimoptions("fsolve", "Display", "none");
+h1 = fsolve(@(h) h_residual(h), 12000, options);
+% h1 = fzero(@(h) h_residual(h), [1000, 20000]);
 
 function R = h_residual(h)
     [Wfrac_2, ~] = climb_ref_Wfrac(ac, Wfrac_1, W0, h0, h, polar, is_max);

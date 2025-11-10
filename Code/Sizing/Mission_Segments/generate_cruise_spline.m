@@ -2,8 +2,8 @@ function pp = generate_cruise_spline(ac, polar)
 
 options = optimoptions("fmincon", "Display", "none");
 
-n = 100;
-W = linspace(10000 .* 4.44822, 90000 .* 4.44822, n); % Linear spacing in weight
+n = 20;
+W = linspace(5000 .* 4.44822, 90000 .* 4.44822, n); % Linear spacing in weight
 
 M = ac.initial.M_cruise;
 
