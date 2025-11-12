@@ -22,9 +22,6 @@ else
 end
 TW0 = T0 ./ W0;
 
-CD0 = polar.CD0;
-K = 1 ./ (pi .* ac.initial.AR .* polar.e);
-
 % Loop over subsegments
 Wfrac_2 = 1;
 dx = 0;
@@ -41,15 +38,21 @@ for i = 1:n
     [~, a, ~, rho_i] = atmoscoesa(h(i));
     [~, ~, ~, rho_ip1] = atmoscoesa(h(i+1));
 
-    % Velocity for best rate of climb at beginning and end of subsegment
-    % Assume change in WS and TW is small
-    V_i = sqrt(WS ./ (3.*rho_i.*CD0) .* (TW + sqrt((TW).^2 + 12.*CD0.*K)));
-    V_ip1 = sqrt(WS ./ (3.*rho_ip1.*CD0) .* (TW + sqrt((TW).^2 + 12.*CD0.*K)));
+    % Initial guess
+    % M = 0.9;
+    % % Velocity for best rate of climb at beginning and end of subsegment
+    % % Assume change in WS and TW is small
+    % V_i = sqrt(WS ./ (3.*rho_i.*CD0) .* (TW + sqrt((TW).^2 + 12.*CD0.*K)));
+    % V_ip1 = sqrt(WS ./ (3.*rho_ip1.*CD0) .* (TW + sqrt((TW).^2 + 12.*CD0.*K)));
 
-    V_i = fsolve(@(V) best_V_residual(V, WS, TW, h(i), CD0, K, is_max), V_i, options);
-    V_ip1 = fsolve(@(V) best_V_residual(V, WS, TW, h(i+1), CD0, K, is_max), V_ip1, options);
-    % V_i = fzero(@(V) best_V_residual(V, WS, TW, h(i), CD0, K, is_max), [0 V_i*2]);
-    % V_ip1 = fzero(@(V) best_V_residual(V, WS, TW, h(i+1), CD0, K, is_max), [0 V_ip1*2]);
+    V_i = fsolve(@(V) best_V_residual(V, WS, TW, h(i), polar, is_max), 0.9.*a, options);
+    V_ip1 = fsolve(@(V) best_V_residual(V, WS, TW, h(i+1), polar, is_max), 0.9.*a, options);
+    % V_i = fzero(@(V) best_V_residual(V, WS, TW, h(i), polar, is_max), [1 2.0.*a]);
+    % V_ip1 = fzero(@(V) best_V_residual(V, WS, TW, h(i+1), polar, is_max), [1 2.0.*a]);
+
+    M = V_i ./ a;
+    CD0 = polar.get_CD0(h(i), M);
+    K = polar.get_K(M);
 
     % Change in energy height
     dHe = (h(i+1) + V_ip1.^2 ./ (2.*g)) - (h(i) + V_i.^2 ./ (2.*g));
@@ -73,10 +76,14 @@ for i = 1:n
 end
 end
 
-function R = best_V_residual(V, WS, TW, h, CD0, K, is_max)
+function R = best_V_residual(V, WS, TW, h, polar, is_max)
     % Calculate TWR with thrust fraction correction
     [~, a, ~, rho] = atmoscoesa(h);
-    TW = TW .* get_thrust_frac(V./a, h, 1.08, is_max, false);
+    M = V./a;
+    TW = TW .* get_thrust_frac(M, h, 1.08, is_max, false);
+
+    CD0 = polar.get_CD0(h, M);
+    K = polar.get_K(M);
 
     % Residual is difference between velocity and velocity for best rate of
     % climb

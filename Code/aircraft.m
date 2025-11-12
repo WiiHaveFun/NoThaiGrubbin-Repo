@@ -13,6 +13,7 @@ ac.initial.num_drop_tanks = 2;
 ac.initial.h_cruise = 40000 .* 0.3048;              % Cruise altitude (ft to m)
 ac.initial.h_ceiling = 50000 .* 0.3048;             % Ceiling altitude (ft to m)
 ac.initial.h_land = 4000 .* 0.3048;                 % Highest elevation airfoield
+ac.initial.h_loiter = 10000 .* 0.3048;              % Loiter altitude (ft to m)
 % Velocities and Mach numbers
 ac.initial.M_cruise = 0.84;                         % Cruise Mach number
 ac.initial.V_cruise = getV(ac.initial.h_cruise, ... % Cruise velocity (m/s)
@@ -61,7 +62,8 @@ ac.initial.sweep_c4_VT = deg2rad(32);               % Vertical tail quarter chor
 ac.initial.MAC_VT = 3.4595;                         % Vertical tail mean aerodynamic chord (m)
 ac.initial.xc_m_VT = 0.5;                           % Biconvex max thickness location
 ac.initial.tc_VT = 0.04;                            % Vertical tail thickness-to-chord ratio
-ac.initial.sweep_m_VT = deg2rad(25.64);         % Vertical tail max thickness sweep angle
+ac.initial.sweep_m_VT = deg2rad(25.64);             % Vertical tail max thickness sweep angle
+ac.initial.cant_VT = deg2rad(20);                   % Vertical stabilizer cant angle
 % Fuselage+
 ac.initial.fus_width = 11.89 .* 0.3048;             % Fuselage structrual width (ft to m)
 ac.initial.fus_length = 39.75 .* 0.3048;            % Fuselage structrual length (ft to m)
@@ -93,9 +95,15 @@ ac.polar.strike.half = simple_polar("half_flaps", ac.initial.num_drop_tanks);
 ac.polar.strike.full = simple_polar("full_flaps", ac.initial.num_drop_tanks);
 ac.polar.strike.half_gear = simple_polar("half_flaps_gear", ac.initial.num_drop_tanks);
 ac.polar.strike.full_gear = simple_polar("full_flaps_gear", ac.initial.num_drop_tanks);
-ac.initial.CL_cruise = 0.4287; % TODO
+% Refined polars (Declaration)
+ac.initial.CL_cruise = 0.4287;                      % Cruise CL at mid-mission weight (end of cruise out)
+ac.polar.clean = [];                                % Fuel tanks only if present for all polars
+ac.polar.catapult = [];                             % Full flaps, gear deployed
+ac.polar.approach = [];                             % Half flaps, gear deployed, hook deployed
+ac.polar.takeoff = [];                              % Half flaps, gear deployed
+ac.polar.landing = [];                              % Full flaps, gear deployed
 % Supersonic parameters
-ac.sup.Amax = 79.30 .* 0.092903;                    % Maximum cross-sectional area (ft^2 to m^2)           
+ac.sup.Amax = (79.30-14.85) .* 0.092903;                    % Maximum cross-sectional area (ft^2 to m^2) % TODO Subtract inlet capture area           
 ac.sup.l = 2 .* 31.25 .* 0.3048;                    % Supersonic length (ft to m)
 ac.sup.Ewd = 2.2;
 % Engine performance and geometry
@@ -168,8 +176,6 @@ ac.a2a.W_pay = 2460 .* 4.44822;                     % Payload weight (lb to N)
 % Mission segment weight fractions
 ac.a2a.Wfracs = [];
 ac.a2a.segments = [];
-% Cruise spline
-ac.a2a.cruise_pp = [];
 
 % Strike mission parameters
 ac.strike.R = 1020 .* 1852;                          % Combat radius (nm to m)
@@ -202,4 +208,17 @@ ac.pt.seroc_ap = 500 .* 0.00508;                    % Takeoff SEROC (ft/min to m
 ac.pt.seroc_to_V = 156 .* 0.514444;                 % Approach SEROC velocity (kts to m/s)
 ac.pt.seroc_ap_V = 144 .* 0.514444;                   % Takeoff SEROC velocity (kts to m/s)
 
+% Refined polars (initialization)
+ac.polar.clean = drag_polar(ac, ...                 % Fuel tanks only if present for all polars
+                            "no", false, true, false);  
+ac.polar.catapult = drag_polar(ac, ...              % Full flaps, gear deployed
+                            "full", true, true, false);  
+ac.polar.approach = drag_polar(ac, ...              % Half flaps, gear deployed, hook deployed
+                            "half", true, true, true);  
+ac.polar.takeoff = drag_polar(ac, ...               % Half flaps, gear deployed
+                            "half", true, true, false);  
+ac.polar.landing = drag_polar(ac, ...               % Full flaps, gear deployed
+                            "full", true, true, false);   
+% Cruise spline
+ac.polar.cruise_pp = generate_cruise_spline(ac, ac.polar.clean);
 end

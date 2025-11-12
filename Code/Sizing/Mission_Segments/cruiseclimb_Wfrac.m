@@ -9,9 +9,6 @@ M = ac.initial.M_cruise;
 
 S = ac.initial.Sref;
 
-CD0 = polar.CD0;
-K = 1 ./ (pi .* ac.initial.AR .* polar.e);
-
 c = ac.initial.TSFC_dry;
 
 % Loop over subsegments
@@ -27,6 +24,10 @@ for i = 1:n
     h = ppval(pp, W_i);
     [~, a, ~, rho] = atmoscoesa(h);
     V = M .* a;
+
+    % Get drag polar parameters
+    CD0 = polar.get_CD0(h, M);
+    K = polar.get_K(M);
 
     % Calculate aero coefficients
     CL = 2.*W_i ./ (rho.*V.^2.*S);

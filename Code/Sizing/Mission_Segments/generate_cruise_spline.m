@@ -9,13 +9,10 @@ M = ac.initial.M_cruise;
 
 S = ac.initial.Sref;
 
-CD0 = polar.CD0;
-K = 1 ./ (pi .* ac.initial.AR .* polar.e);
-
 h = zeros(n, 1);
 h_guess = 10000;
 for i = 1:n
-    h(i) = fmincon(@(h) -cruise_obj(h, M, W(i), S, CD0, K), h_guess, 0, 0, [], [], [], [], [], options);
+    h(i) = fmincon(@(h) -cruise_obj(h, M, W(i), S, polar), h_guess, 0, 0, [], [], [], [], [], options);
     h_guess = h(i);
 end
 
@@ -23,7 +20,10 @@ pp = spline(W, h);
 
 end
 
-function obj = cruise_obj(h, M, W, S, CD0, K)
+function obj = cruise_obj(h, M, W, S, polar)
+    CD0 = polar.get_CD0(h, M);
+    K = polar.get_K(M);
+
     [~, a, ~, rho] = atmoscoesa(h);
 
     V = M .* a;

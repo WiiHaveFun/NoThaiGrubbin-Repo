@@ -27,6 +27,8 @@ b_HT = ac.initial.b_HT ./ 0.3048;
 S_HT = ac.initial.S_HT ./ 0.092903;
 W_HT = Weight_HT(W0, Wf, n_z, fus_width_HT, b_HT, S_HT);
 
+cant_VT = ac.initial.cant_VT;
+n_z_VT = cos(cant_VT) + n_z .* sin(cant_VT); % TODO change
 S_VT = ac.initial.S_VT ./ 0.092903;
 L_mom_VT = ac.initial.L_mom_VT ./ 0.3048;
 S_rud = ac.initial.S_rud ./ 0.092903;
@@ -34,7 +36,7 @@ AR_VT = ac.initial.AR_VT;
 taper_VT = ac.initial.taper_VT;
 sweep_c4_VT = ac.initial.sweep_c4_VT;
 M = ac.a2a.M_dash;
-W_VT = 2 .* Weight_VT(W0, Wf, n_z, S_VT, M, L_mom_VT, S_rud, AR_VT, taper_VT, sweep_c4_VT);
+W_VT = 2 .* Weight_VT(W0, Wf, n_z_VT, S_VT, M, L_mom_VT, S_rud, AR_VT, taper_VT, sweep_c4_VT);
 
 % Fuselage weight
 fus_width = ac.initial.fus_width ./ 0.3048;

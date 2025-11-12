@@ -13,14 +13,15 @@ Wfrac = Wfrac .* misc_Wfrac("takeoff");
 % Climb and accelerate
 segments = [segments, "climb_1"];
 Wfracs = [Wfracs, Wfrac];
-h1 = get_cruise_start_h(ac, Wfrac, ac.strike.W0, 0, ac.polar.strike.clean, false, ac.strike.cruise_pp);
-[Wfrac_climb, d_climb] = climb_ref_Wfrac(ac, Wfrac, ac.strike.W0, 0, h1, ac.polar.strike.clean, false);
+% h1 = get_cruise_start_h(ac, Wfrac, ac.strike.W0, 0, ac.polar.strike.clean, false, ac.strike.cruise_pp);
+h1 = ac.initial.h_cruise;
+[Wfrac_climb, d_climb] = climb_ref_Wfrac(ac, Wfrac, ac.strike.W0, 0, h1, ac.polar.clean, false);
 Wfrac = Wfrac .* Wfrac_climb;
 
 % Cruise climb to combat
 segments = [segments, "cruise_1"];
 Wfracs = [Wfracs, Wfrac];
-[Wfrac_cruise, ~, ~] = cruiseclimb_Wfrac(ac, Wfrac, ac.strike.W0, ac.strike.R - d_climb, ac.polar.strike.clean, ac.strike.cruise_pp);
+[Wfrac_cruise, ~, ~] = cruiseclimb_Wfrac(ac, Wfrac, ac.strike.W0, ac.strike.R - d_climb, ac.polar.clean, ac.polar.cruise_pp);
 Wfrac = Wfrac .* Wfrac_cruise;
 
 % Descent to combat
@@ -44,14 +45,15 @@ Wfrac = Wfrac .* (1 - Wf_combat ./ (Wfrac .* ac.strike.W0));
 % Climb and accelerate
 segments = [segments, "climb_2"];
 Wfracs = [Wfracs, Wfrac];
-h1 = get_cruise_start_h(ac, Wfrac, ac.strike.W0, ac.strike.h_combat, ac.polar.strike.clean, false, ac.strike.cruise_pp);
-[Wfrac_climb, d_climb] = climb_ref_Wfrac(ac, Wfrac, ac.strike.W0, ac.strike.h_combat, h1, ac.polar.strike.clean, false);
+% h1 = get_cruise_start_h(ac, Wfrac, ac.strike.W0, ac.strike.h_combat, ac.polar.strike.clean, false, ac.strike.cruise_pp);
+h1 = ac.initial.h_cruise;
+[Wfrac_climb, d_climb] = climb_ref_Wfrac(ac, Wfrac, ac.strike.W0, ac.strike.h_combat, h1, ac.polar.clean, false);
 Wfrac = Wfrac .* Wfrac_climb;
 
 % Cruise climb back
 segments = [segments, "cruise_2"];
 Wfracs = [Wfracs, Wfrac];
-[Wfrac_cruise, ~, ~] = cruiseclimb_Wfrac(ac, Wfrac, ac.strike.W0, ac.strike.R - d_climb, ac.polar.strike.clean, ac.strike.cruise_pp);
+[Wfrac_cruise, ~, ~] = cruiseclimb_Wfrac(ac, Wfrac, ac.strike.W0, ac.strike.R - d_climb, ac.polar.clean, ac.polar.cruise_pp);
 Wfrac = Wfrac .* Wfrac_cruise;
 
 % Descent to loiter
@@ -62,7 +64,7 @@ Wfrac = Wfrac .* misc_Wfrac("descent");
 % Loiter
 segments = [segments, "loiter_1"];
 Wfracs = [Wfracs, Wfrac];
-LDmax = 0.5 * sqrt(pi .* ac.initial.AR .* ac.polar.strike.clean.e ./ ac.polar.strike.clean.CD0);
+LDmax = 0.5 * sqrt(1 ./ ac.polar.clean.get_CD0(ac.initial.h_loiter, ac.initial.M_loiter) ./ ac.polar.clean.get_K(ac.initial.M_loiter));
 Wfrac = Wfrac .* loiter_Wfrac(ac.strike.t_loiter, ac.initial.TSFC_dry, LDmax);
 
 % First landing attempt
