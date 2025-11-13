@@ -163,11 +163,17 @@ classdef drag_polar
         function K = get_K(obj, M)
             AR = obj.ac.initial.AR;
             lambda_le = obj.ac.initial.sweep_le;
-            if M <= 1
+            if M < obj.Mcrit
                 e = 4.61 .* (1 - 0.045.*AR.^0.68) .* cos(lambda_le).^0.15 - 3.1;
-            else
+            elseif M > 1.2
                 K = AR.*(M.^2 - 1).*cos(lambda_le) ./ (4.*AR.*sqrt(M.^2 - 1) - 2);
                 e = 1 ./ (pi.*AR.*K);
+            else
+                e1 = 4.61 .* (1 - 0.045.*AR.^0.68) .* cos(lambda_le).^0.15 - 3.1;
+                K2 = AR.*(1.2.^2 - 1).*cos(lambda_le) ./ (4.*AR.*sqrt(1.2.^2 - 1) - 2);
+                e2 = 1 ./ (pi.*AR.*K2);
+
+                e = spline([obj.Mcrit 1.2], [0, e1, e2, 0], M);
             end
 
             switch obj.flap

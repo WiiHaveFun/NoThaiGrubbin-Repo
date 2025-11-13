@@ -12,7 +12,8 @@ ac.initial.num_drop_tanks = 2;
 % Altitudes
 ac.initial.h_cruise = 40000 .* 0.3048;              % Cruise altitude (ft to m)
 ac.initial.h_ceiling = 50000 .* 0.3048;             % Ceiling altitude (ft to m)
-ac.initial.h_land = 4000 .* 0.3048;                 % Highest elevation airfoield
+ac.initial.h_land = 4000 .* 0.3048;                 % Highest elevation airfield
+ac.initial.d_land = 8000 .* 0.3048;                 % Runway length (ft to m)
 ac.initial.h_loiter = 10000 .* 0.3048;              % Loiter altitude (ft to m)
 % Velocities and Mach numbers
 ac.initial.M_cruise = 0.84;                         % Cruise Mach number
@@ -23,8 +24,8 @@ ac.initial.V_climb = 151.2 .* 0.514444;             % Climb speed (kts to m/s)
 ac.initial.climb_rate = 55.7 .* 0.514444;           % Rate of climb (kts to m/s)
 ac.initial.climb_angle = deg2rad(13);               % Climb angle (deg to rad)
 % Aircraft geometry
-ac.initial.b = 60 .* 0.3048;                        % Wing span (ft to m)
-ac.initial.Sref = 670 .* 0.092903;                  % Planform area (ft^2 to m^2)
+ac.initial.b = 50 .* 0.3048;                        % Wing span (ft to m)
+ac.initial.Sref = 600 .* 0.092903;                  % Planform area (ft^2 to m^2)
 ac.initial.AR = ac.initial.b.^2 ./ ac.initial.Sref; % Aspect ratio
 ac.initial.tc = 0.06;                               % Wing thickness-to-chord ratio
 ac.initial.tc_r = 0.06;                             % Root thickness-to-chord ratio
@@ -155,7 +156,7 @@ ac.initial.Swet_pylon = 42.07 .* 0.092903;          % Pylon wetted area (ft^2 to
 
 % Air-to-air mission parameters
 ac.a2a.R = 900 .* 1852;                             % Combat radius (nm to m)
-ac.a2a.M_dash = 1.7;                                % Dash Mach number
+ac.a2a.M_dash = 1.6;                                % Dash Mach number
 ac.a2a.t_combat = 2.5 .* 60;                        % Combat time (min to s)
 ac.a2a.t_loiter = 20 .* 60;                         % Loiter time (min to s)
 ac.a2a.h_combat = 10000 .* 0.3048;                  % Combat altitude (ft to m)
@@ -165,6 +166,7 @@ ac.a2a.num_9x = 2;                                  % Number of AIM-9x missiles
 ac.a2a.turn_rate = deg2rad(10);                     % Turn rate (deg/s to rad/s)
 ac.a2a.max_g = 8;                                   % Maximum vertical load factor
 ac.a2a.max_g_V = getV(ac.a2a.h_combat, 0.95);       % Velocity for max load factor (m/s)
+ac.a2a.climb_rate = 17500 .* 0.00508;               % Sea level rate of climb (ft/min to m/s)
 % Weights
 ac.a2a.W0 = 60000 .* 4.44822;                       % Takeoff weight (lb to N)
 ac.a2a.We = 30000 .* 4.44822;                       % Empty weight (lb to N)
@@ -190,6 +192,8 @@ ac.strike.num_JDAM = 4;                             % Number of MK-83 JDAMs
 ac.strike.num_9x = 2;                               % Number of AIM-9x missiles
 ac.strike.max_g = 8;                                % Maximum vertical load factor
 ac.strike.max_g_V = getV(ac.strike.h_combat, 0.95); % Velocity for max load factor (m/s)
+ac.strike.climb_rate = 10900 .* 0.00508;            % Sea level rate of climb (ft/min to m/s)
+ac.strike.climb_rate_combat = 12950 .* 0.00508;     % Combat rate of climb (ft/min to m/s)
 % Weights
 ac.strike.W0 = 60000 .* 4.44822;                    % Takeoff weight (lb to N)
 ac.strike.We = 30000 .* 4.44822;                    % Empty weight (lb to N)
