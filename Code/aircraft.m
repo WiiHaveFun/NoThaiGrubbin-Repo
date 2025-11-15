@@ -8,7 +8,7 @@ function ac = aircraft()
 % Aircraft parameters
 ac.initial.num_crew = 1;
 ac.initial.num_eng = 2;
-ac.initial.num_drop_tanks = 2;
+ac.initial.num_drop_tanks = 0;
 % Altitudes
 ac.initial.h_cruise = 40000 .* 0.3048;              % Cruise altitude (ft to m)
 ac.initial.h_ceiling = 50000 .* 0.3048;             % Ceiling altitude (ft to m)
@@ -25,7 +25,7 @@ ac.initial.climb_rate = 55.7 .* 0.514444;           % Rate of climb (kts to m/s)
 ac.initial.climb_angle = deg2rad(13);               % Climb angle (deg to rad)
 % Aircraft geometry
 ac.initial.b = 50 .* 0.3048;                        % Wing span (ft to m)
-ac.initial.Sref = 600 .* 0.092903;                  % Planform area (ft^2 to m^2)
+ac.initial.Sref = 625 .* 0.092903;                  % Planform area (ft^2 to m^2)
 ac.initial.AR = ac.initial.b.^2 ./ ac.initial.Sref; % Aspect ratio
 ac.initial.tc = 0.06;                               % Wing thickness-to-chord ratio
 ac.initial.tc_r = 0.06;                             % Root thickness-to-chord ratio
@@ -155,8 +155,8 @@ ac.initial.Swet_tanks = 119.78 .* 0.092903;         % Drop tank wetted area (ft^
 ac.initial.Swet_pylon = 42.07 .* 0.092903;          % Pylon wetted area (ft^2 to m^2)
 
 % Air-to-air mission parameters
-ac.a2a.R = 900 .* 1852;                             % Combat radius (nm to m)
-ac.a2a.M_dash = 1.6;                                % Dash Mach number
+ac.a2a.R = 1000 .* 1852;                             % Combat radius (nm to m)
+ac.a2a.M_dash = 1.65;                                % Dash Mach number
 ac.a2a.t_combat = 2.5 .* 60;                        % Combat time (min to s)
 ac.a2a.t_loiter = 20 .* 60;                         % Loiter time (min to s)
 ac.a2a.h_combat = 10000 .* 0.3048;                  % Combat altitude (ft to m)

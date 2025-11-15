@@ -4,15 +4,23 @@ width = 6.5;
 height = 4;
 
 %% Weights and weight fractions
-ac = aircraft();
-ac.initial.T_max = ac.initial.T_max*0.9;
-ac.initial.T_mil = ac.initial.T_mil*0.9;
+stack = dbstack;
+calledExternally = (numel(stack) > 1);
+if ~calledExternally
+    ac = aircraft();
+    ac.initial.T_max = ac.initial.T_max*0.9;
+    ac.initial.T_mil = ac.initial.T_mil*0.9;
+end
 
 [ac] = iterate_W0_TS_ref(ac, @a2a_ref_Ffrac, ac.initial.T_max, ac.initial.Sref);
+if ~calledExternally
 [ac] = iterate_W0_TS_ref(ac, @strike_ref_Ffrac, ac.initial.T_max, ac.initial.Sref);
+end
 
 Wfrac_land_a2a = (ac.a2a.We + 0.25.*ac.a2a.Wf + 0.5.*ac.a2a.W_pay) ./ ac.a2a.W0;
+if ~calledExternally
 Wfrac_land_strike = (ac.strike.We + 0.25.*ac.strike.Wf + 0.5.*ac.strike.W_pay) ./ ac.strike.W0;
+end
 
 %% Polars
 p_clean = ac.polar.clean;
@@ -103,6 +111,7 @@ WS_a2a_catapult = WS_a2a_catapult .* 0.020885434273039;
 WS_a2a_recovery = WS_a2a_recovery .* 0.020885434273039;
 
 %% Strike constraints
+if ~calledExternally
 % Dash
 CD0 = p_clean.get_CD0(ac.strike.h_combat, ac.strike.M_dash);
 K = p_clean.get_K(ac.strike.M_dash);
@@ -179,10 +188,12 @@ WS_strike_max_g = WS_strike_max_g .* 0.020885434273039;
 WS_strike_landing = WS_strike_landing .* 0.020885434273039;
 WS_strike_catapult = WS_strike_catapult .* 0.020885434273039;
 WS_strike_recovery = WS_strike_recovery .* 0.020885434273039;
+end
 
 %% Plot A2A
 WS2 = WS .* 0.020885434273039;
 
+if ~calledExternally
 % Design Point
 WSdesign = ac.a2a.W0 ./ ac.initial.Sref .* 0.020885434273039;
 TWmax = ac.initial.T_max./ac.a2a.W0;
@@ -271,8 +282,11 @@ label_line(p14, 180, dn, "Recovery~~", "interpreter", "latex", "FontSize", fonts
 % exportgraphics(gca, "/Users/michaelchen/UMich/Class/F25/Aero_481/Figures/sizing_a2a.png", "Resolution", 1000);
 set(gcf, 'Renderer', 'painters');
 exportgraphics(gca, "/Users/michaelchen/UMich/Class/F25/Aero_481/Figures/sizing_a2a.pdf", "ContentType", "vector");
+end
 
 %% Plot Strike
+
+if ~calledExternally
 % Design Point
 WSdesign = ac.strike.W0 ./ ac.initial.Sref .* 0.020885434273039;
 TWmax = ac.initial.T_max./ac.strike.W0;
@@ -361,6 +375,7 @@ saveas(gcf, "/Users/michaelchen/UMich/Class/F25/Aero_481/Figures/sizing_strike.s
 % exportgraphics(gca, "/Users/michaelchen/UMich/Class/F25/Aero_481/Figures/sizing_strike.png", "Resolution", 1000);
 set(gcf, 'Renderer', 'painters');
 exportgraphics(gca, "/Users/michaelchen/UMich/Class/F25/Aero_481/Figures/sizing_strike.pdf", "ContentType", "vector");
+end
 
 %% Helper functions TODO turn into full function later
 function K = getK(ac, polar)

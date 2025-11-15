@@ -1,7 +1,5 @@
 function [ac, feasible] = check_feasible_sizing_TS(ac)
 
-
-
 sizing_plot_driver_ref;
 
 WSdesign = ac.a2a.W0 ./ ac.initial.Sref .* 0.020885434273039;
@@ -30,5 +28,4 @@ if TWmil <= max([interp1(WS2, TW_a2a_cruise_1, WSdesign, "linear") ...
                  interp1(WS2, TW_a2a_climb_2, WSdesign, "linear")])
     feasible = false;
 end    
-
 end
