@@ -32,7 +32,7 @@ CONTROL
 TE_Flap   1.0    0.8019     0 1 0    1
 
 AFILE
-C:\Users\tsher\OneDrive\Documents\AE481\NoThaiGrubbin-Repo\Aero\PlanformTrade2\opt_5pt_3mm_newcl.dat
+C:\Users\james\OneDrive - Umich\Desktop\AERO 481\Github481\NoThaiGrubbin-Repo\Aero\PlanformTrade2\opt_5pt_3mm_newcl.dat
 
 CDCL
 -0.2605 0.0124 -0.0131 0.0065 0.6448 0.0136
@@ -54,7 +54,7 @@ CONTROL
 Flaperon  1.0    0.74       0 1 0    1
 
 AFILE
-C:\Users\tsher\OneDrive\Documents\AE481\NoThaiGrubbin-Repo\Aero\PlanformTrade2\opt_5pt_3mm_newcl.dat
+C:\Users\james\OneDrive - Umich\Desktop\AERO 481\Github481\NoThaiGrubbin-Repo\Aero\PlanformTrade2\opt_5pt_3mm_newcl.dat
 
 CDCL
 -0.2605 0.0124 -0.0131 0.0065 0.6448 0.0136
@@ -72,7 +72,7 @@ CONTROL
 Flaperon  1.0    0.74       0 1 0    1
 
 AFILE
-C:\Users\tsher\OneDrive\Documents\AE481\NoThaiGrubbin-Repo\Aero\PlanformTrade2\opt_5pt_3mm_newcl.dat
+C:\Users\james\OneDrive - Umich\Desktop\AERO 481\Github481\NoThaiGrubbin-Repo\Aero\PlanformTrade2\opt_5pt_3mm_newcl.dat
 
 CDCL
 -0.2605 0.0124 -0.0131 0.0065 0.6448 0.0136
@@ -82,7 +82,7 @@ SECTION
 10.584 7.4295 0.0000 1.8687 -2.7000
 
 AFILE
-C:\Users\tsher\OneDrive\Documents\AE481\NoThaiGrubbin-Repo\Aero\PlanformTrade2\opt_5pt_3mm_newcl.dat
+C:\Users\james\OneDrive - Umich\Desktop\AERO 481\Github481\NoThaiGrubbin-Repo\Aero\PlanformTrade2\opt_5pt_3mm_newcl.dat
 
 CDCL
 -0.2605 0.0124 -0.0131 0.0065 0.6448 0.0136
