@@ -1,0 +1,58 @@
+F-67A
+# Trapezoidal Swept Wing, Flaps
+# Thomas Sheridan, 11/8/2025
+
+0.0                   ! Mach
+0      0      0       ! iYsym  iZsym  Zsym
+62.2450 3.7325 18.2880  ! Sref Cref Bref
+0.0000 0.0000 0.0000  ! Xref   Yref   Zref
+
+SURFACE
+Wing
+
+# Nchord    Cspace    Nspan    Sspace
+12 1.0 24 1.0
+
+YDUPLICATE
+0.0
+
+SECTION
+# Xle  Yle    Zle    chord  angle
+0.0000 0.0000 0.0000 5.2363 0.0000
+
+AFILE
+C:\Users\tsher\OneDrive\Documents\AE481\NoThaiGrubbin-Repo\Aero\PlanformTrade1\opt_5pt_3mm_newcl.dat
+
+SECTION
+# Xle  Yle    Zle    chord  angle
+1.5960 2.4384 0.0000 4.2589 -0.7200
+
+AFILE
+C:\Users\tsher\OneDrive\Documents\AE481\NoThaiGrubbin-Repo\Aero\PlanformTrade1\opt_5pt_3mm_newcl.dat
+
+
+
+SECTION
+# Xle  Yle    Zle    chord  angle
+3.3750 5.1562 0.0000 3.1694 -1.5220
+
+AFILE
+C:\Users\tsher\OneDrive\Documents\AE481\NoThaiGrubbin-Repo\Aero\PlanformTrade1\opt_5pt_3mm_newcl.dat
+
+
+
+SECTION
+# Xle  Yle    Zle    chord  angle
+5.6857 8.6868 0.0000 1.7542 -2.5650
+
+AFILE
+C:\Users\tsher\OneDrive\Documents\AE481\NoThaiGrubbin-Repo\Aero\PlanformTrade1\opt_5pt_3mm_newcl.dat
+
+
+
+SECTION
+# Xle  Yle    Zle    chord  angle
+5.9850 9.1440 0.0000 1.5709 -2.7000
+
+AFILE
+C:\Users\tsher\OneDrive\Documents\AE481\NoThaiGrubbin-Repo\Aero\PlanformTrade1\opt_5pt_3mm_newcl.dat

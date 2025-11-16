@@ -1,0 +1,160 @@
+F-67D
+# Wing with LE flap, inboard TE flap, and outboard flaperon. H-Tail with elevator. V-Tail. Top cruciform.
+# Thomas Sheridan, 11/14/2025
+
+0.84                  ! Mach
+0      0      0       ! iYsym  iZsym  Zsym
+60.1607 4.4401 14.8590  ! Sref Cref Bref
+8.7873 0.0000 0.0000  ! Xref Yref Zref
+
+SURFACE
+Wing
+
+# Nchord    Cspace    Nspan    Sspace
+10 1.0 20 1.0
+
+YDUPLICATE
+0.0
+
+COMPONENT
+1
+
+SECTION
+# Xle  Yle    Zle    chord  angle
+6.7829 2.0066 0.0000 5.0513 0.0000
+
+CONTROL
+# surface gain   xhinge     hvec     SgnDup
+LE_Flap   1.0    -0.1023    0 -1 0   1
+
+CONTROL
+# surface gain   xhinge     hvec     SgnDup
+TE_Flap   1.0    0.8019     0 1 0    1
+
+AFILE
+C:\Users\tsher\OneDrive\Documents\AE481\NoThaiGrubbin-Repo\Aero\PlanformTrade2\opt_5pt_3mm_newcl.dat
+
+CDCL
+-0.2608 0.0124 -0.0131 0.0065 0.6428 0.0136
+
+SECTION
+# Xle  Yle    Zle    chord  angle
+9.1155 5.3340 0.0000 3.0985 -1.6567
+
+CONTROL
+# surface gain   xhinge     hvec     SgnDup
+LE_Flap   1.0    -0.1380    0 -1 0   1
+
+CONTROL
+# surface gain   xhinge     hvec     SgnDup
+TE_Flap   1.0    0.7338     0 1 0    1
+
+CONTROL
+# surface gain   xhinge     hvec     SgnDup
+Flaperon  1.0    0.74       0 1 0    1
+
+AFILE
+C:\Users\tsher\OneDrive\Documents\AE481\NoThaiGrubbin-Repo\Aero\PlanformTrade2\opt_5pt_3mm_newcl.dat
+
+CDCL
+-0.2645 0.0129 -0.0131 0.0070 0.6223 0.0133
+
+SECTION
+# Xle  Yle    Zle    chord  angle
+10.3241 7.0580 0.0000 2.0867 -2.5150
+
+CONTROL
+# surface gain   xhinge     hvec     SgnDup
+LE_Flap   1.0    -0.2493    0 -1 0   1
+
+CONTROL
+# surface gain   xhinge     hvec     SgnDup
+Flaperon  1.0    0.74       0 1 0    1
+
+AFILE
+C:\Users\tsher\OneDrive\Documents\AE481\NoThaiGrubbin-Repo\Aero\PlanformTrade2\opt_5pt_3mm_newcl.dat
+
+CDCL
+-0.2675 0.0133 -0.0131 0.0073 0.6117 0.0131
+
+SECTION
+# Xle  Yle    Zle    chord  angle
+10.5845 7.4295 0.0000 1.8687 -2.7000
+
+AFILE
+C:\Users\tsher\OneDrive\Documents\AE481\NoThaiGrubbin-Repo\Aero\PlanformTrade2\opt_5pt_3mm_newcl.dat
+
+CDCL
+-0.2683 0.0134 -0.0131 0.0074 0.6094 0.0131
+
+SURFACE
+Top Plane Cruciform
+
+# Nchord    Cspace    Nspan    Sspace
+20 1.0 10 1.0
+
+YDUPLICATE
+0.0
+
+COMPONENT
+1
+
+SECTION
+# Xle  Yle    Zle    chord  angle
+0.0000 0.0000 0.0000 12.954 0.0000
+
+SECTION
+# Xle  Yle    Zle    chord  angle
+4.9276 0.9754 0.0000 8.0263 0.0000
+
+SECTION
+# Xle  Yle    Zle    chord  angle
+4.0716 2.0066 0.0000 10.922 0.0000
+
+SURFACE
+Horizontal Stabilizer
+
+# Nchord    Cspace    Nspan    Sspace
+10 1.0 20 1.0
+
+YDUPLICATE
+0.0
+
+COMPONENT
+2
+
+SECTION
+# Xle  Yle    Zle    chord  angle
+12.0969 2.0066 -0.1000 3.7714 0.0000
+
+CONTROL
+# surface   gain   xhinge   hvec     SgnDup
+Elevator    1.0    0.0      0 1 0    1
+
+SECTION
+# Xle  Yle    Zle    chord  angle
+14.9926 5.6837 -0.1000 1.1314 0.0000
+
+CONTROL
+# surface   gain   xhinge   hvec     SgnDup
+Elevator    1.0    0.0      0 1 0    1
+
+SURFACE
+Vertical Stabilizer
+
+# Nchord    Cspace    Nspan    Sspace
+10 1.0 20 1.0
+
+YDUPLICATE
+0.0
+
+COMPONENT
+3
+
+SECTION
+# Xle  Yle    Zle    chord  angle
+11.5460 0.9652 0.0000 3.5981 0.0000
+
+SECTION
+# Xle  Yle    Zle    chord  angle
+13.6820 1.8882 2.5359 1.7991 0.0000

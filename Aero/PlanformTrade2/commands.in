@@ -1,7 +1,9 @@
-LOAD F-67A.avl
+LOAD F-67D.avl
 OPER
 A
-C 0.5547
+C 0.4323
+D4
+PM 0
 X
 ST
 cruisest.txt
