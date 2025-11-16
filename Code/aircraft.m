@@ -24,8 +24,8 @@ ac.initial.V_climb = 151.2 .* 0.514444;             % Climb speed (kts to m/s)
 ac.initial.climb_rate = 55.7 .* 0.514444;           % Rate of climb (kts to m/s)
 ac.initial.climb_angle = deg2rad(13);               % Climb angle (deg to rad)
 % Aircraft geometry
-ac.initial.b = 50 .* 0.3048;                        % Wing span (ft to m)
-ac.initial.Sref = 625 .* 0.092903;                  % Planform area (ft^2 to m^2)
+ac.initial.b = 48.75 .* 0.3048;                        % Wing span (ft to m)
+ac.initial.Sref = (48.75.^2./3.67) .* 0.092903;                  % Planform area (ft^2 to m^2)
 ac.initial.AR = ac.initial.b.^2 ./ ac.initial.Sref; % Aspect ratio
 ac.initial.tc = 0.06;                               % Wing thickness-to-chord ratio
 ac.initial.tc_r = 0.06;                             % Root thickness-to-chord ratio
@@ -97,7 +97,7 @@ ac.polar.strike.full = simple_polar("full_flaps", ac.initial.num_drop_tanks);
 ac.polar.strike.half_gear = simple_polar("half_flaps_gear", ac.initial.num_drop_tanks);
 ac.polar.strike.full_gear = simple_polar("full_flaps_gear", ac.initial.num_drop_tanks);
 % Refined polars (Declaration)
-ac.initial.CL_cruise = 0.4287;                      % Cruise CL at mid-mission weight (end of cruise out)
+ac.initial.CL_cruise = 0.4323;                      % Cruise CL at mid-mission weight (end of cruise out)
 ac.polar.clean = [];                                % Fuel tanks only if present for all polars
 ac.polar.catapult = [];                             % Full flaps, gear deployed
 ac.polar.approach = [];                             % Half flaps, gear deployed, hook deployed
@@ -157,7 +157,7 @@ ac.initial.Swet_pylon = 42.07 .* 0.092903;          % Pylon wetted area (ft^2 to
 % Air-to-air mission parameters
 ac.a2a.R = 1000 .* 1852;                             % Combat radius (nm to m)
 ac.a2a.M_dash = 1.65;                                % Dash Mach number
-ac.a2a.t_combat = 2.5 .* 60;                        % Combat time (min to s)
+ac.a2a.t_combat = 3.0 .* 60;                        % Combat time (min to s)
 ac.a2a.t_loiter = 20 .* 60;                         % Loiter time (min to s)
 ac.a2a.h_combat = 10000 .* 0.3048;                  % Combat altitude (ft to m)
 ac.a2a.h_dash = 30000 .* 0.3048;                    % Combat altitude (ft to m)

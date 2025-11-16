@@ -45,6 +45,8 @@ parfor i = 1:n
                     ac.initial.Sref = b(u).^2./AR(v) .* 0.092903;
                     ac.initial.AR = AR(v);
 
+                    ac = init_polars(ac);
+
                     [ac, feasible_out(i, j, k, u, v)] = check_feasible_sizing_TS(ac);
 
                     W0_out(i, j, k, u, v) = ac.a2a.W0;
@@ -106,12 +108,16 @@ for i = 1:n_span
             Cconv = carpetcontourconvert(R_ref+(k-1).*300, t_combat_ref, obj_interp./1e6, 3, OC);
             h = hatchedcontours(Cconv, 'b');
 
+            if all(feasible_out(:, :, k, i, j), "all")
+                carpettext(R_ref+(k-1).*300, t_combat_ref, obj_interp./1e6, offset, 700+(k-1).*300, 4, '$All Feasible$', 0, 0.5);
+            end
+
             if k == 1
                 carpetlabel(R_ref+(k-1).*300, t_combat_ref, obj_interp./1e6, 3, nref, 1, 0, 1, 0.0 );
                 carpetlabel(R_ref+(k-1).*300, t_combat_ref, obj_interp./1e6, 3, nref, 0, -1, 0, 0.0 );
             end
 
-            title(sprintf("b = %.2f, AR = %.2f", b(i), AR(j)));
+            title(sprintf("b = %.2f, S =  %.2f, AR = %.2f", b(i), b(i).^2./AR(j), AR(j)));
         end
     end
 end
@@ -119,8 +125,8 @@ end
 %%
 figure(4);
 clf;
-i = 1;
-j = 3;
+i = 2;
+j = 4;
 for k = 1:l
     obj_interp = interp2(R, t_combat, (obj(:, :, k, i, j))', R_ref, t_combat_ref', "linear");
     feasible_interp = interp2(R, t_combat, (feasible_out(:, :, k, i, j))', R_ref, t_combat_ref', "linear");
@@ -139,7 +145,7 @@ for k = 1:l
     title(sprintf("b = %.2f, AR = %.2f", b(i), AR(j)));
 end
 
-ylabel("Unit Cost ($B 2025)");
+ylabel("Unit Cost (\$B 2025)");
 
 carpettext(R_ref, t_combat_ref, obj_interp./1e6, offset, 750, 2.5, 'R', 0.0, -0.5);
 carpettext(R_ref, t_combat_ref, obj_interp./1e6, offset, 700, 2.5, 't', -100, -2.5);
@@ -148,7 +154,7 @@ carpettext(R_ref, t_combat_ref, obj_interp./1e6, offset, 700, 2.5, 't', -100, -2
 figure(5);
 clf;
 i = 2;
-j = 5;
+j = 4;
 k = 2;
 obj_interp = interp2(R, t_combat, (obj(:, :, k, i, j))', R_ref, t_combat_ref', "linear");
 feasible_interp = interp2(R, t_combat, (feasible_out(:, :, k, i, j))', R_ref, t_combat_ref', "linear");
@@ -162,14 +168,14 @@ h = hatchedcontours(Cconv, 'b');
 carpetlabel(R_ref, t_combat_ref, obj_interp./1e6, offset, nref, 1, 0, 0.0, 0.25);
 carpetlabel(R_ref, t_combat_ref, obj_interp./1e6, offset, nref, 0, 1, 12.5, 0.0);
 
-title(sprintf("b = %.2f, AR = %.2f", b(i), AR(j)), "FontSize", fontsize);
+title(sprintf("b = %.2f ft, AR = %.2f", b(i), AR(j)), "FontSize", fontsize);
 
-ylabel("Unit Cost (\$B 2025)", "FontSize", fontsize);
+ylabel("Unit Cost (\$M 2025)", "FontSize", fontsize);
 
 carpettext(R_ref, t_combat_ref, obj_interp./1e6, offset, 850, 4, '$R$', 0, 0.5);
 carpettext(R_ref, t_combat_ref, obj_interp./1e6, offset, 1000, 3, '$t$', 25, 0.0);
 
-[xc, yc] = carpetconvert(R_ref, t_combat_ref, obj_interp./1e6, offset, 1000, 2.5);
+[xc, yc] = carpetconvert(R_ref, t_combat_ref, obj_interp./1e6, offset, 1000, 3);
 plot(xc,yc, 'r.', 'MarkerSize', 20);
 
 % axis([650 1050 98, 102]) % Pad them a bit.
