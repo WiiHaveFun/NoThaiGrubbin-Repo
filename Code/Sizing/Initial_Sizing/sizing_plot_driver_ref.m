@@ -147,7 +147,7 @@ TW_strike_climb_ap = climb_rate(WS, ac.pt.seroc_ap, ac.pt.seroc_ap_V, 0, CD0, K,
 [V, ~] = get_best_climb_V(ac, ac.strike.Wfracs(2), ac.strike.W0, 0, p_clean, false);
 CD0 = p_clean.get_CD0(0, V./a);
 K = p_clean.get_K(V./a);
-Tfrac = get_thrust_frac(0, 0, 1.08, false, false);
+Tfrac = get_thrust_frac(V./a, 0, 1.08, false, false);
 TW_strike_climb_1 = climb_rate(WS, ac.strike.climb_rate, V, 0, CD0, K, false, false, ac.initial.num_eng, false, ac.strike.Wfracs(2), Tfrac);
 % Climb 2
 CD0 = p_clean.get_CD0(0, ac.strike.M_dash);
@@ -158,7 +158,7 @@ TW_strike_climb_2 = climb_rate(WS, ac.strike.climb_rate_combat, ac.strike.V_dash
 [V, ~] = get_best_climb_V(ac, ac.strike.Wfracs(7), ac.strike.W0, 0, p_clean, false);
 CD0 = p_clean.get_CD0(0, V./a);
 K = p_clean.get_K(V./a);
-Tfrac = get_thrust_frac(0, 0, 1.08, false, false);
+Tfrac = get_thrust_frac(V./a, 0, 1.08, false, false);
 TW_strike_climb_3 = climb_rate(WS, ac.strike.climb_rate, V, 0, CD0, K, false, false, ac.initial.num_eng, false, ac.strike.Wfracs(7), Tfrac);
 
 % Takeoff % TODO set ground roll distance, BPR, mu, 

@@ -195,7 +195,7 @@ classdef drag_polar
                 case "half"
                     CLmax = 1.2542;
                 case "full"
-                    CLmax = 1.7034;
+                    CLmax = 1.4;
             end
         end
 

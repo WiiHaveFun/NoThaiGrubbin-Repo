@@ -9,7 +9,7 @@ WS = WS .* Wfrac;
 
 [~, a, ~, rho] = atmoscoesa(h);
 
-options = optimoptions("fsolve", "Display", "none");
+options = optimoptions("fsolve", "Display", "final");
 TW = zeros(size(WS));
 Tfrac = zeros(size(WS));
 V = 1;
@@ -17,7 +17,7 @@ V = 1;
 for i = 1:length(WS)
     [out, ~, exitflag, ~] = fsolve(@(x) turn_rate_fun(x, WS(i)), [1, V], options);
     if exitflag <= 0
-        % out = fsolve(@(x) turn_rate_fun(x, WS(i)), [1, 1], options);
+        % out = fsolve(@(x) turn_rate_fun(x, WS(i)), [1, 1000], options);
         TW(i:end) = 3; % Kill solver early
         Tfrac(i:end) = 1;
         break

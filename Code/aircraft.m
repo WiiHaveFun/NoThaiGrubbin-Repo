@@ -73,18 +73,18 @@ ac.initial.L_duct = 15.26 .* 0.3048;                % Duct length (ft to m)
 ac.initial.S_cs = ac.initial.S_csw + ...            % Total control surface area (ft^2 to m^2)
                   ac.initial.S_HT + ...
                   ac.initial.S_rud;
-ac.initial.l_canopy = 10.83 .* 0.3048;              % Canopy length (ft to m) TODO
-ac.initial.l_fus = 43.83 .* 0.3048;                 % Fuselage length (ft to m) TODO
-ac.initial.Amax_fus = 61.66 .* 0.3048;              % Fuselage frontal area (ft^2 to m^2) TODO
-ac.initial.Amax_canopy = 5.10 .* 0.3048;            % Canopy frontal area (ft^2 to m^2) TODO
+ac.initial.l_canopy = 9.61 .* 0.3048;               % Canopy length (ft to m)
+ac.initial.l_fus = 43.83 .* 0.3048;                 % Fuselage length (ft to m)
+ac.initial.Amax_fus = 68.16 .* 0.3048;              % Fuselage frontal area (ft^2 to m^2)
+ac.initial.Amax_canopy = 5.86 .* 0.3048;            % Canopy frontal area (ft^2 to m^2)
 % Landing gear
-ac.gear.L_ng = 65.757 ./ 12 .* 0.3048;              % Nose landing gear length (in to m) TODO
-ac.gear.L_mg = 56.8 ./ 12 .* 0.3048;                % Main landing gear length (in to m) TODO
+ac.gear.L_ng = 3.2567 .* 0.3048;                    % Nose landing gear length (ft to m)
+ac.gear.L_mg = 3.1219 .* 0.3048;                    % Main landing gear length (ft to m)
 ac.gear.N_nw = 2;                                   % Number of nose gear wheels
-ac.gear.A_nw = 1.05 .* 0.092903;                    % Nose wheel frontal area (ft^2 to m^2) TODO
-ac.gear.A_ng = 2.08 .* 0.092903;                    % Nose gear strut frontal area (ft^2 to m^2) TODO
-ac.gear.A_mw = 4.90 .* 0.092903;                    % Main wheel frontal area (ft^2 to m^2) TODO
-ac.gear.A_mg = 2.08 .* 0.092903;                    % Main gear strut frontal area (ft^2 to m^2) TODO
+ac.gear.A_nw = 1.05 .* 0.092903;                    % Nose wheel frontal area (ft^2 to m^2)
+ac.gear.A_ng = 1.35 .* 0.092903;                    % Nose gear strut frontal area (ft^2 to m^2)
+ac.gear.A_mw = 3.18 .* 0.092903;                    % Main wheel frontal area (ft^2 to m^2)
+ac.gear.A_mg = 0.78 .* 0.092903;                    % Main gear strut frontal area (ft^2 to m^2)
 % Aircraft aerodynamics
 ac.polar.a2a.clean = simple_polar("clean", ac.initial.num_drop_tanks);
 ac.polar.a2a.half = simple_polar("half_flaps", ac.initial.num_drop_tanks);
@@ -104,8 +104,8 @@ ac.polar.approach = [];                             % Half flaps, gear deployed,
 ac.polar.takeoff = [];                              % Half flaps, gear deployed
 ac.polar.landing = [];                              % Full flaps, gear deployed
 % Supersonic parameters
-ac.sup.Amax = (79.30-14.85) .* 0.092903;            % Maximum cross-sectional area (ft^2 to m^2) % TODO    
-ac.sup.l = 2 .* 31.25 .* 0.3048;                    % Supersonic length (ft to m) TODO
+ac.sup.Amax = (82.30-16.83) .* 0.092903;            % Maximum cross-sectional area (ft^2 to m^2)
+ac.sup.l = 2 .* 31.25 .* 0.3048;                    % Supersonic length (ft to m)
 ac.sup.Ewd = 2.2;
 % Engine performance and geometry
 ac.initial.TSFC_dry = 0.68 ./ 3600;                 % Dry thrust specific fuel consumption (lb/lb-s to N/N-s)
@@ -117,7 +117,7 @@ ac.initial.T_max = ac.initial.num_eng .* ...        % Maximum thrust (lb to N)
 ac.initial.W_eng = 3990 .* 4.44822;                 % Individual engine weight (lb to N)
 ac.initial.D_eng = 46.5 ./ 12 .* 0.3048;            % Engine diameter (in to m)
 ac.initial.L_eng = 185.3 ./ 12 .* 0.3048;           % Engine length (in to m)
-ac.initial.L_engcon = 24.87 .* 0.3048;              % Engine controls length (ft to m) TODO
+ac.initial.L_engcon = 24.87 .* 0.3048;              % Engine controls length (ft to m)
 % Miscellaneous
 ac.initial.num_fcs = 4;                             % Number of flight control systems
 ac.initial.num_util = 15;                           % Number of hydraulic utility functions
@@ -134,8 +134,8 @@ ac.initial.Amax_pylon = 1.08 .* 0.3048;             % Pylon frontal area (ft^2 t
 ac.initial.Swet_wing = 779.29 .* 0.092903;          % Wing wetted area (ft^2 to m^2)
 ac.initial.Swet_HT = 385.76 .* 0.092903;            % Horizontal tail wetted area (ft^2 to m^2)
 ac.initial.Swet_VT = 364.05 .* 0.092903;            % Vertical tail wetted area (ft^2 to m^2)
-ac.initial.Swet_fus = 976.39 .* 0.092903;           % Fuselage wetted area (ft^2 to m^2) excludes canopy TODO
-ac.initial.Swet_canopy = 41.28 .* 0.092903;         % Canopy wetted area (ft^2 to m^2) TODO
+ac.initial.Swet_fus = 1092.98 .* 0.092903;          % Fuselage wetted area (ft^2 to m^2) excludes canopy
+ac.initial.Swet_canopy = 41.74 .* 0.092903;         % Canopy wetted area (ft^2 to m^2)
 ac.initial.Swet_tanks = 119.78 .* 0.092903;         % Drop tank wetted area (ft^2 to m^2)
 ac.initial.Swet_pylon = 42.07 .* 0.092903;          % Pylon wetted area (ft^2 to m^2)
 
@@ -204,8 +204,12 @@ ac.polar.catapult = drag_polar(ac, ...              % Full flaps, gear deployed
                             "full", true, true, false);  
 ac.polar.approach = drag_polar(ac, ...              % Half flaps, gear deployed, hook deployed
                             "half", true, true, true);  
+ac.polar.approach_nogear = drag_polar(ac, ...              % Half flaps, gear deployed, hook deployed
+                            "half", false, true, true);  
 ac.polar.takeoff = drag_polar(ac, ...               % Half flaps, gear deployed
                             "half", true, true, false);  
+ac.polar.takeoff_nogear = drag_polar(ac, ...               % Half flaps, gear deployed
+                            "half", false, true, false);  
 ac.polar.landing = drag_polar(ac, ...               % Full flaps, gear deployed
                             "full", true, true, false);   
 % Cruise spline

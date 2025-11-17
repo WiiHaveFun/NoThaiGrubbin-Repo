@@ -104,4 +104,8 @@ We = W_wing + W_HT + W_VT + W_fus + W_engsec + W_engmount + W_duct + W_cooling +
 
 We = We .* 4.44822;
 
+[~, W_main, W_nose] = Weight_LandingGear(Wl, L_mg, L_ng, N_nw);
+install_engine = W_engsec+W_engmount+W_cooling+W_starter+W_eng.*N_eng;
+everything_else = W_duct+W_engcon+W_fcon+W_instr+W_hydr+W_elec+W_av+W_aircon+W_hand+W_fsys+W_furn+W_ext;
+
 end

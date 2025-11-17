@@ -9,6 +9,8 @@
 
 fprintf("AEP: $%g Million\n", cst.unit.AEP / 1e6);
 fprintf("COC: $%g Million\n", cst.MO.C_OPS / (cst.MO.N_yr * cst.MO.N_serv * 1e6));
+fprintf("DOC per unit per year: $%g Million\n", cst.MO.C_OPS ./ (cst.MO.N_yr .* cst.MO.N_serv .* 1e6));
+fprintf("Total life-cycle cost: $%g Billion\n", (cst.unit.C_MAN + cst.unit.C_PRO + cst.MO.C_OPS + cst.unit.C_RDTE) ./ 1e9);
 
 cost_column = [
     cst.MO.C_crewpr / (cst.MO.N_yr * cst.MO.N_serv)
