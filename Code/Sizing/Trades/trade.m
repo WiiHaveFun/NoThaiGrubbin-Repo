@@ -145,7 +145,7 @@ for k = 1:l
     title(sprintf("b = %.2f, AR = %.2f", b(i), AR(j)));
 end
 
-ylabel("Unit Cost (\$B 2025)");
+ylabel("Unit Cost (\$M 2025)");
 
 carpettext(R_ref, t_combat_ref, obj_interp./1e6, offset, 750, 2.5, 'R', 0.0, -0.5);
 carpettext(R_ref, t_combat_ref, obj_interp./1e6, offset, 700, 2.5, 't', -100, -2.5);
