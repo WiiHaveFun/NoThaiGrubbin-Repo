@@ -96,6 +96,7 @@ ac.polar.strike.half = simple_polar("half_flaps", ac.initial.num_drop_tanks);
 ac.polar.strike.full = simple_polar("full_flaps", ac.initial.num_drop_tanks);
 ac.polar.strike.half_gear = simple_polar("half_flaps_gear", ac.initial.num_drop_tanks);
 ac.polar.strike.full_gear = simple_polar("full_flaps_gear", ac.initial.num_drop_tanks);
+ac.polar.CLa = 5.028071;                            % Lift slope
 % Refined polars (Declaration)
 ac.initial.CL_cruise = 0.4323;                      % Cruise CL at mid-mission weight (end of cruise out)
 ac.polar.clean = [];                                % Fuel tanks only if present for all polars
@@ -138,11 +139,14 @@ ac.initial.Swet_fus = 1092.98 .* 0.092903;          % Fuselage wetted area (ft^2
 ac.initial.Swet_canopy = 41.74 .* 0.092903;         % Canopy wetted area (ft^2 to m^2)
 ac.initial.Swet_tanks = 119.78 .* 0.092903;         % Drop tank wetted area (ft^2 to m^2)
 ac.initial.Swet_pylon = 42.07 .* 0.092903;          % Pylon wetted area (ft^2 to m^2)
+% Loads
+ac.initial.max_g = 8;                               % Maximum vertical load factor
+ac.initial.max_ng = -6;                             % Maximum negative load factor
 
 % Air-to-air mission parameters
 ac.a2a.R = 1000 .* 1852;                            % Combat radius (nm to m)
 ac.a2a.M_dash = 1.65;                               % Dash Mach number
-ac.a2a.t_combat = 3.0 .* 60;                        % Combat time (min to s)
+ac.a2a.t_combat = 3.5 .* 60;                        % Combat time (min to s)
 ac.a2a.t_loiter = 20 .* 60;                         % Loiter time (min to s)
 ac.a2a.h_combat = 10000 .* 0.3048;                  % Combat altitude (ft to m)
 ac.a2a.h_dash = 30000 .* 0.3048;                    % Combat altitude (ft to m)

@@ -83,6 +83,9 @@ segments = [segments, "landing_2"];
 Wfracs = [Wfracs, Wfrac];
 Wfrac = Wfrac .* misc_Wfrac("landing");
 
+segments = [segments, "end"];
+Wfracs = [Wfracs, Wfrac];
+
 % Mission fuel
 Wf_mission = (1 - Wfrac) .* ac.a2a.W0;
 

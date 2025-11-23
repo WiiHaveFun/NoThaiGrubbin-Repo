@@ -87,8 +87,8 @@ R_ref = refvec(R, nref);
 t_combat_ref = refvec(t_combat, nref);
 M_dash_ref = refvec(M_dash, nref);
 
-obj = cost_out;
-% obj = W0_out;
+% obj = cost_out;
+obj = W0_out;
 
 figure(3);
 clf;

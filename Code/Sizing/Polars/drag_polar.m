@@ -168,6 +168,7 @@ classdef drag_polar
             elseif M > 1.2
                 K = AR.*(M.^2 - 1).*cos(lambda_le) ./ (4.*AR.*sqrt(M.^2 - 1) - 2);
                 e = 1 ./ (pi.*AR.*K);
+                e = max(e, 0.3);
             else
                 e1 = 4.61 .* (1 - 0.045.*AR.^0.68) .* cos(lambda_le).^0.15 - 3.1;
                 K2 = AR.*(1.2.^2 - 1).*cos(lambda_le) ./ (4.*AR.*sqrt(1.2.^2 - 1) - 2);
@@ -191,11 +192,11 @@ classdef drag_polar
         function CLmax = get_CLmax(obj)
             switch obj.flap
                 case "no"
-                    CLmax = 0.805;
+                    CLmax = 0.79;
                 case "half"
-                    CLmax = 1.2542;
+                    CLmax = 1.105;
                 case "full"
-                    CLmax = 1.4;
+                    CLmax = 1.42;
             end
         end
 

@@ -32,7 +32,8 @@ function [R, ac] = W0_residual(ac, mission_fun, T0, S, W0)
 
         [Ffrac, ~, ~] = mission_fun(ac);
         ac.strike.Wf = W0 .* Ffrac;
-        ac.strike.We = empty_weight(ac, mission_fun);
+        % ac.strike.We = empty_weight(ac, mission_fun);
+        ac.strike.We = ac.a2a.We;
         R = W0 - (ac.strike.W_crew + ac.strike.W_pay) - ac.strike.We - ac.strike.Wf;
     end
 end
