@@ -86,7 +86,7 @@ TW_a2a_climb_2 = climb_rate(WS, ac.a2a.climb_rate, V, ac.a2a.h_combat, CD0, K, f
 CD0 = p_takeoff.get_CD0(ac.initial.h_land, ac.pt.seroc_to_V./a);
 K = p_takeoff.get_K(ac.pt.seroc_to_V./a);
 Tfrac = get_thrust_frac(0, 0, 1.08, true, true);
-TW_a2a_takeoff = takeoff(WS, 0.5.*ac.initial.d_land, ac.initial.h_land, CD0, p_takeoff.get_CLmax(), 0.68, 0.025, ac.a2a.Wfracs(1), Tfrac);
+TW_a2a_takeoff = takeoff(WS, ac.initial.d_land, ac.initial.h_land, CD0, p_takeoff.get_CLmax(), 0.68, 0.025, ac.a2a.Wfracs(1), Tfrac);
 % Landing
 WS_a2a_landing = landing(ac.initial.d_land, ac.initial.h_land, p_landing.get_CLmax(), Wfrac_land_a2a);
 
@@ -166,11 +166,12 @@ TW_strike_climb_3 = climb_rate(WS, ac.strike.climb_rate, V, 0, CD0, K, false, fa
 CD0 = p_takeoff.get_CD0(ac.initial.h_land, ac.pt.seroc_to_V./a);
 K = p_takeoff.get_K(ac.pt.seroc_to_V./a);
 Tfrac = get_thrust_frac(0, 0, 1.08, true, true);
-TW_strike_takeoff = takeoff(WS, 0.5.*ac.initial.d_land, ac.initial.h_land, CD0, p_takeoff.get_CLmax(), 0.68, 0.025, ac.strike.Wfracs(1), Tfrac);
+TW_strike_takeoff = takeoff(WS, ac.initial.d_land, ac.initial.h_land, CD0, p_takeoff.get_CLmax(), 0.68, 0.025, ac.strike.Wfracs(1), Tfrac);
 % Landing
 WS_strike_landing = landing(ac.initial.d_land, ac.initial.h_land, p_landing.get_CLmax(), Wfrac_land_strike);
 
 % Catapult launch
+[~, a, ~, ~] = atmoscoesa(0);
 CD0 = p_catapult.get_CD0(0, ac.pt.seroc_to_V./a);
 K = p_catapult.get_K(ac.pt.seroc_to_V./a);
 Tfrac = get_thrust_frac(0, 0, 1.08, true, true);
@@ -215,7 +216,7 @@ p8 = plot(WS2, TW_a2a_climb_ap, "--", "color", "#0B6623");
 p9 = plot(WS2, TW_a2a_climb_1, "-", "color", "#028A0F");
 p10 = plot(WS2, TW_a2a_climb_2, "-", "color", "#028A0F");
 
-p11 = plot(WS2, TW_a2a_takeoff, "--", "color", "#222021");
+p11 = plot(WS2, TW_a2a_takeoff, "-", "color", "#222021");
 p12 = plot(WS_a2a_landing.*ones(n, 1), TW, "-", "color", "#A52A2A");
 
 % p13 = plot(WS_a2a_catapult, TW_a2a_catapult, "--", "color", "#7F00FF");
@@ -308,7 +309,7 @@ p8 = plot(WS2, TW_strike_climb_1, "-", "color", "#028A0F");
 p9 = plot(WS2, TW_strike_climb_2, "-", "color", "#028A0F");
 p10 = plot(WS2, TW_strike_climb_3, "-", "color", "#028A0F");
 
-p11 = plot(WS2, TW_strike_takeoff, "--", "color", "#222021");
+p11 = plot(WS2, TW_strike_takeoff, "-", "color", "#222021");
 p12 = plot(WS_strike_landing.*ones(n, 1), TW, "-", "color", "#A52A2A");
 
 p13 = plot(WS_strike_catapult, TW, "--", "color", "#7F00FF");

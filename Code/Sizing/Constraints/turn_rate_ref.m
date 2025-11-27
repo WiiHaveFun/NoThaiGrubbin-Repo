@@ -40,7 +40,7 @@ for i = 1:length(WS)
     % if Tfrac(i) < 0
     %     Tfrac(i) = 0.01;
     % end
-    V = fmincon(@(v) turn_rate_min(v, WS(i)), V, [], [], [], [], 0, [], [], options);
+    V = fmincon(@(v) turn_rate_min(v, WS(i)), 300, [], [], [], [], 0, [], [], options);
     TW(i) = turn_rate_min(V, WS(i));
 end
 
