@@ -3,7 +3,7 @@ set(groot, 'defaultAxesTickLabelInterpreter','latex');
 set(groot, 'defaultLegendInterpreter','latex');
 set(0,'defaultTextInterpreter','latex');
 fontsize = 10;
-width = 6.5;
+width = 4;
 height = 4;
 
 %% Weights and weight fractions
@@ -65,10 +65,15 @@ dn = 5;
 label_line(p1, 0.4, dn, "Stall limit", "interpreter", "latex", "FontSize", fontsize);
 label_line(p2, 1.6, -dn, "$q$-limit", "interpreter", "latex", "FontSize", fontsize);
 label_line(p3, 0.4, dn, "Pilot ejection altitude limit", "interpreter", "latex", "FontSize", fontsize);
-label_line(p4, 1.03, 2.*dn, "$P_s=0$ intermediate thrust", "interpreter", "latex", "FontSize", fontsize);
+label_line(p4, 1.03, 2.*dn, "$P_s=0$ military thrust", "interpreter", "latex", "FontSize", fontsize);
 label_line(p5, 1.4, dn, "$P_s=0$ maximum thrust", "interpreter", "latex", "FontSize", fontsize);
 text(1.45, 61000, "Absolute ceiling", "interpreter", "latex", "FontSize", fontsize, "HorizontalAlignment", "center");
 text(1.45, 53000, "Service ceiling", "interpreter", "latex", "FontSize", fontsize, "HorizontalAlignment", "center");
+
+text(0.1, 6e4, {'Takeoff weight'}, 'Interpreter', 'latex', 'FontSize', fontsize);
+
+saveas(gcf, "/Users/michaelchen/UMich/Class/F25/Aero_481/Figures/envelope.svg");
+exportgraphics(gca, "/Users/michaelchen/UMich/Class/F25/Aero_481/Figures/envelope.png", "Resolution", 1000);
 
 %% Functions
 function M = stall_limit(ac, W, h)

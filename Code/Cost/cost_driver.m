@@ -56,3 +56,17 @@ EFCW_column = [
     cst.EFCW.surface_treat_per_FH * cst.MO.t_mis * cst.MO.N_mission
     cst.EFCW.sub_tech
     ];
+
+DOC_components = [
+    cst.MO.W_F_used * (cst.MO.FP / cst.MO.FD) * cst.MO.N_mission % Fuel cost
+    (cst.MO.F_OL - 1) * (cst.MO.W_F_used * (cst.MO.FP / cst.MO.FD)) * cst.MO.N_mission % Oil Cost
+    cst.MO.C_POL / (cst.MO.N_yr * cst.MO.N_serv) % Fuel oil lube cost double check it adds up
+    cst.MO.airframe_total / (cst.MO.N_yr * cst.MO.N_serv) % Aircraft
+    cst.MO.engine_total / (cst.MO.N_yr * cst.MO.N_serv) % Engine
+    cst.MO.C_crewpr / (cst.MO.N_yr * cst.MO.N_serv) % Crew cost
+    cst.EFCW.surface_treat_per_FH * cst.MO.t_mis * cst.MO.N_mission % Surface treatment
+    cst.MO.C_OPS / (cst.MO.N_yr * cst.MO.N_serv) % DOC per aircraft per year
+];
+
+fprintf("Misc cost per aircraft per year, %f", DOC_components(8) - DOC_components(1) - DOC_components(2) ...
+     - DOC_components(4) - DOC_components(5) - DOC_components(6) - DOC_components(7)); 

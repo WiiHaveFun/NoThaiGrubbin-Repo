@@ -238,6 +238,7 @@ p13 = plot(S_a2a_catapult, T0_plot, "--", "color", "#7F00FF");
 p14 = plot(S_a2a_recovery, T0_plot, "-", "color", "#000000");
 
 scatter(ac.initial.Sref ./ 0.092903, ac.initial.T_max ./ 4.44822, 20, [252, 106, 3]./255, "filled");
+% scatter(ac.initial.Sref ./ 0.092903, ac.initial.T_mil ./ 4.44822, 20, "k", "filled");
 
 % AEP(imag(AEP)~=0) = NaN;
 [C1, p15] = contour(S_grid, T0_grid, 500.*AEP./1e9, 44:0.5:55, "-k", "ShowText", "on", "EdgeAlpha", 0.2, "LabelSpacing", 400);
@@ -249,6 +250,7 @@ clabel(C1, p15, "Interpreter", "latex", "FontSize", fontsize);
 shadeRegion({S_plot, S_plot, S_a2a_catapult, S_a2a_landing}, {T0_a2a_dash, T0_a2a_takeoff, T0_plot, T0_plot}, {'lower', 'lower', 'upper', 'upper'}, [500, 1000, 100]);
 text(700, 6.5e4, "Feasible", "HorizontalAlignment", "center", "Interpreter", "latex", "FontSize", fontsize);
 text(ac.initial.Sref ./ 0.092903, ac.initial.T_max ./ 4.44822, "Design Point (Max)~", "HorizontalAlignment", "right", "Interpreter", "latex", "FontSize", fontsize);
+% text(ac.initial.Sref ./ 0.092903, ac.initial.T_mil ./ 4.44822, "Design Point (Mil)~", "HorizontalAlignment", "right", "Interpreter", "latex", "FontSize", fontsize);
 
 legend(p15, "Flyaway Cost 500 Units (\$B 2025)", "Interpreter", "latex", "FontSize", fontsize);
 
@@ -264,11 +266,11 @@ set(gcf, 'Units', 'Inches', 'Position', [8.097222222222221,6.861111111111111,wid
 
 dn = 5;
 label_line(p1, 700, dn, "M1.65 Dash", "interpreter", "latex", "FontSize", fontsize);
-label_line(p2, 650, dn, "10 deg/s Sustained Turn", "interpreter", "latex", "FontSize", fontsize);
+label_line(p2, 600, -dn, "10 deg/s Sustained Turn", "interpreter", "latex", "FontSize", fontsize);
 label_line(p3, 550, -dn, "8g Vertical Load Factor", "interpreter", "latex", "FontSize", fontsize);
 label_line(p4, 550, dn, "Cruise 1", "interpreter", "latex", "FontSize", fontsize);
 label_line(p5, 550, dn, "Cruise 2", "interpreter", "latex", "FontSize", fontsize);
-label_line(p6, 550, dn, "50,000 ft Ceiling", "interpreter", "latex", "FontSize", fontsize);
+label_line(p6, 540, dn, "50,000 ft Ceiling", "interpreter", "latex", "FontSize", fontsize);
 label_line(p7, 750, dn, "SEROC Takeoff", "interpreter", "latex", "FontSize", fontsize);
 label_line(p8, 750, dn, "SEROC Approach", "interpreter", "latex", "FontSize", fontsize);
 label_line(p9, 550, dn, "Climb 1", "interpreter", "latex", "FontSize", fontsize);
@@ -471,6 +473,7 @@ p13 = plot(S_strike_catapult, T0_plot, "--", "color", "#7F00FF");
 p14 = plot(S_strike_recovery, T0_plot, "-", "color", "#000000");
 
 scatter(ac.initial.Sref ./ 0.092903, ac.initial.T_max ./ 4.44822, 20, [252, 106, 3]./255, "filled");
+scatter(ac.initial.Sref ./ 0.092903, ac.initial.T_mil ./ 4.44822, 20, "k", "filled");
 
 [C1, p15] = contour(S_grid, T0_grid, 500.*AEP./1e9, 44:0.5:55, "-k", "ShowText", "on", "EdgeAlpha", 0.2, "LabelSpacing", 400);
 clabel(C1, p15, "Interpreter", "latex", "FontSize", fontsize);
@@ -484,6 +487,7 @@ shadeRegion({S_plot, S_strike_max_g, S_plot, S_plot, S_plot, S_plot, S_plot, S_p
              'lower', 'upper', 'upper', 'upper'}, [500, 1000, 1000]);
 text(700, 5e4, "Feasible", "HorizontalAlignment", "center", "Interpreter", "latex", "FontSize", fontsize);
 text(ac.initial.Sref ./ 0.092903, ac.initial.T_max ./ 4.44822, "Design Point (Max)~~~", "HorizontalAlignment", "right", "Interpreter", "latex", "FontSize", fontsize);
+text(ac.initial.Sref ./ 0.092903, ac.initial.T_mil ./ 4.44822, "Design Point (Mil)~~~", "HorizontalAlignment", "right", "Interpreter", "latex", "FontSize", fontsize);
 
 legend(p15, "Flyaway Cost 500 Units (\$B 2025)", "Interpreter", "latex", "FontSize", fontsize);
 
@@ -512,7 +516,7 @@ label_line(p12, 520, dn, "Landing", "interpreter", "latex", "FontSize", fontsize
 label_line(p13, 525, dn, "Catapult", "interpreter", "latex", "FontSize", fontsize);
 label_line(p14, 520, -dn, "Recovery", "interpreter", "latex", "FontSize", fontsize);
 
-saveas(gcf, "/Users/michaelchen/UMich/Class/F25/Aero_481/Figures/TS_strike_cdr.svg");
-exportgraphics(gca, "/Users/michaelchen/UMich/Class/F25/Aero_481/Figures/TS_strike_cdr.png", "Resolution", 1000);
+% saveas(gcf, "/Users/michaelchen/UMich/Class/F25/Aero_481/Figures/TS_strike_cdr.svg");
+% exportgraphics(gca, "/Users/michaelchen/UMich/Class/F25/Aero_481/Figures/TS_strike_cdr.png", "Resolution", 1000);
 % set(gcf, 'Renderer', 'painters');
 % exportgraphics(gca, "/Users/michaelchen/UMich/Class/F25/Aero_481/Figures/TS_strike.pdf", "ContentType", "vector");

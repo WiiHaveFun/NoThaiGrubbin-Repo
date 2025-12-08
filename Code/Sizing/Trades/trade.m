@@ -159,27 +159,35 @@ k = 2;
 obj_interp = interp2(R, t_combat, (obj(:, :, k, i, j))', R_ref, t_combat_ref', "linear");
 feasible_interp = interp2(R, t_combat, (feasible_out(:, :, k, i, j))', R_ref, t_combat_ref', "linear");
 
-carpet(R_ref, t_combat_ref, obj_interp./1e6, offset, nref, 'k', 'k');
+% carpet(R_ref, t_combat_ref, obj_interp./1e6, offset, nref, 'k', 'k');
+carpet(R_ref, t_combat_ref, obj_interp./4.44822, offset, nref, 'k', 'k');
 hold on;
 OC = ocontourc(R_ref, t_combat_ref, feasible_interp, 0.5*[1 1], true);
-Cconv = carpetcontourconvert(R_ref, t_combat_ref, obj_interp./1e6, offset, OC);
+% Cconv = carpetcontourconvert(R_ref, t_combat_ref, obj_interp./1e6, offset, OC);
+Cconv = carpetcontourconvert(R_ref, t_combat_ref, obj_interp./4.44822, offset, OC);
 h = hatchedcontours(Cconv, 'b');
 
-carpetlabel(R_ref, t_combat_ref, obj_interp./1e6, offset, nref, 1, 0, 0.0, 0.25);
-carpetlabel(R_ref, t_combat_ref, obj_interp./1e6, offset, nref, 0, 1, 12.5, 0.0);
+% carpetlabel(R_ref, t_combat_ref, obj_interp./1e6, offset, nref, 1, 0, 0.0, 0.25);
+% carpetlabel(R_ref, t_combat_ref, obj_interp./1e6, offset, nref, 0, 1, 12.5, 0.0);
+carpetlabel(R_ref, t_combat_ref, obj_interp./4.44822, offset, nref, 1, 0, 0.0, 1000);
+carpetlabel(R_ref, t_combat_ref, obj_interp./4.44822, offset, nref, 0, 1, 12.5, 0.0);
 
 title(sprintf("b = %.2f ft, AR = %.2f", b(i), AR(j)), "FontSize", fontsize);
 
-ylabel("Unit Cost (\$M 2025)", "FontSize", fontsize);
+% ylabel("Unit Cost (\$M 2025)", "FontSize", fontsize);
+ylabel("Takeoff Weight (lb)", "FontSize", fontsize);
 
-carpettext(R_ref, t_combat_ref, obj_interp./1e6, offset, 850, 4, '$R$', 0, 0.5);
-carpettext(R_ref, t_combat_ref, obj_interp./1e6, offset, 1000, 3, '$t$', 25, 0.0);
+% carpettext(R_ref, t_combat_ref, obj_interp./1e6, offset, 850, 4, '$R$', 0, 0.5);
+% carpettext(R_ref, t_combat_ref, obj_interp./1e6, offset, 1000, 3, '$t$', 25, 0.0);
+carpettext(R_ref, t_combat_ref, obj_interp./4.44822, offset, 850, 4, '$R$', 0, 2000);
+carpettext(R_ref, t_combat_ref, obj_interp./4.44822, offset, 1000, 3, '$t$', 25, 0.0);
 
-[xc, yc] = carpetconvert(R_ref, t_combat_ref, obj_interp./1e6, offset, 1000, 3);
+% [xc, yc] = carpetconvert(R_ref, t_combat_ref, obj_interp./1e6, offset, 1000, 3.5);
+[xc, yc] = carpetconvert(R_ref, t_combat_ref, obj_interp./4.44822, offset, 1000, 3.5);
 plot(xc,yc, 'r.', 'MarkerSize', 20);
 
 % axis([650 1050 98, 102]) % Pad them a bit.
-ylim([98, 102]);
+% ylim([98, 102]);
 
 set(gcf, 'Units', 'Inches', 'Position', [8.097222222222221,6.861111111111111,width,height]);
 

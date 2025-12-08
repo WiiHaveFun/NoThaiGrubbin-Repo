@@ -97,6 +97,7 @@ ac.polar.strike.full = simple_polar("full_flaps", ac.initial.num_drop_tanks);
 ac.polar.strike.half_gear = simple_polar("half_flaps_gear", ac.initial.num_drop_tanks);
 ac.polar.strike.full_gear = simple_polar("full_flaps_gear", ac.initial.num_drop_tanks);
 ac.polar.CLa = 5.028071;                            % Lift slope
+ac.initial.sub_NP = 26.6228 .* 0.3048;              % Subsonic neutal point (ft to m)
 % Refined polars (Declaration)
 ac.initial.CL_cruise = 0.4323;                      % Cruise CL at mid-mission weight (end of cruise out)
 ac.polar.clean = [];                                % Fuel tanks only if present for all polars
@@ -204,18 +205,22 @@ ac.pt.seroc_ap_V = 144 .* 0.514444;                 % Takeoff SEROC velocity (kt
 % Refined polars (initialization)
 ac.polar.clean = drag_polar(ac, ...                 % Fuel tanks only if present for all polars
                             "no", false, true, false);  
-ac.polar.catapult = drag_polar(ac, ...              % Full flaps, gear deployed
+ac.polar.catapult = drag_polar(ac, ...              % Full flaps
                             "full", true, true, false);  
+ac.polar.catapult_nogear = drag_polar(ac, ...              % Full flaps, gear deployed
+                            "full", false, true, false);  
 ac.polar.approach = drag_polar(ac, ...              % Half flaps, gear deployed, hook deployed
                             "half", true, true, true);  
-ac.polar.approach_nogear = drag_polar(ac, ...              % Half flaps, gear deployed, hook deployed
+ac.polar.approach_nogear = drag_polar(ac, ...              % Half flaps, hook deployed
                             "half", false, true, true);  
 ac.polar.takeoff = drag_polar(ac, ...               % Half flaps, gear deployed
                             "half", true, true, false);  
-ac.polar.takeoff_nogear = drag_polar(ac, ...               % Half flaps, gear deployed
+ac.polar.takeoff_nogear = drag_polar(ac, ...               % Half flaps
                             "half", false, true, false);  
 ac.polar.landing = drag_polar(ac, ...               % Full flaps, gear deployed
-                            "full", true, true, false);   
+                            "full", true, true, false);  
+ac.polar.landing_nogear = drag_polar(ac, ...               % Full flaps
+                            "full", false, true, false);  
 % Cruise spline
 ac.polar.cruise_pp = generate_cruise_spline(ac, ac.polar.clean);
 end

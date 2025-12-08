@@ -3,7 +3,7 @@ set(groot, 'defaultAxesTickLabelInterpreter','latex');
 set(groot, 'defaultLegendInterpreter','latex');
 set(0,'defaultTextInterpreter','latex');
 fontsize = 10;
-width = 6.5;
+width = 3;
 height = 4;
 
 %% Weights and weight fractions
@@ -55,7 +55,7 @@ scatter(Vn.Vdash ./ 0.514444, ac.initial.max_g, 30, "k", "filled");
 % Dive
 scatter(Vn.Vdive ./ 0.514444, ac.initial.max_g, 30, "k", "filled");
 
-set(gcf, 'Units', 'Inches', 'Position', [8.097222222222221,6.861111111111111,width,height]);
+set(gcf, 'Units', 'Inches', 'Position', [8.097222222222221-width,6.861111111111111,width,height]);
 
 % Labels
 dn = 0.2;
@@ -64,8 +64,12 @@ text(Vn.Vb ./ 0.514444, Vn.n_rough+dn, "$V_B$", "FontSize", fontsize, "Horizonta
 text(Vn.Vdash ./ 0.514444, ac.initial.max_g+dn, "$V_C$", "FontSize", fontsize, "HorizontalAlignment", "right",  "VerticalAlignment", "bottom");
 text(Vn.Vdive ./ 0.514444, ac.initial.max_g+dn, "$V_D$", "FontSize", fontsize, "HorizontalAlignment", "right",  "VerticalAlignment", "bottom");
 
+text(20, 10, ["Maximum weight", "20,000 ft gusts"]);
+text(50, -6, "Limit load factor");
+text(50, -9, "Ultimate load factor");
+
 dn = 7;
-label_line(p1, 525, dn, "$V_B$ gust", "FontSize", fontsize);
+label_line(p1, 500, dn, "$V_B$ gust", "FontSize", fontsize);
 label_line(p2, 650, dn, "$V_C$ gust", "FontSize", fontsize);
 label_line(p3, 525, -dn, "$V_D$ gust", "FontSize", fontsize);
 
@@ -73,8 +77,7 @@ yline(0);
 xlabel("$V_\mathrm{EAS}$ (kts)", "FontSize", fontsize);
 ylabel("$n$", "FontSize", fontsize);
 
-set(gcf, 'Renderer', 'painters');
-% exportgraphics(gca, "/Users/michaelchen/UMich/Class/F25/Aero_481/Figures/Vn_max.pdf", "ContentType", "vector");
+exportgraphics(gca, "/Users/michaelchen/UMich/Class/F25/Aero_481/Figures/Vn_max.png", "Resolution", 1000);
 saveas(gcf, "/Users/michaelchen/UMich/Class/F25/Aero_481/Figures/Vn_max.svg");
 
 %% Mid
@@ -122,8 +125,10 @@ text(Vn.Vb ./ 0.514444, Vn.n_rough+dn, "$V_B$", "FontSize", fontsize, "Horizonta
 text(Vn.Vdash ./ 0.514444, ac.initial.max_g+dn, "$V_C$", "FontSize", fontsize, "HorizontalAlignment", "right",  "VerticalAlignment", "bottom");
 text(Vn.Vdive ./ 0.514444, ac.initial.max_g+dn, "$V_D$", "FontSize", fontsize, "HorizontalAlignment", "right",  "VerticalAlignment", "bottom");
 
+text(20, 10, ["Mid-mission weight", "20,000 ft gusts"]);
+
 dn = 7;
-label_line(p1, 525, dn, "$V_B$ gust", "FontSize", fontsize);
+label_line(p1, 500, dn, "$V_B$ gust", "FontSize", fontsize);
 label_line(p2, 650, dn, "$V_C$ gust", "FontSize", fontsize);
 label_line(p3, 525, -dn, "$V_D$ gust", "FontSize", fontsize);
 
@@ -131,8 +136,7 @@ yline(0);
 xlabel("$V_\mathrm{EAS}$ (kts)", "FontSize", fontsize);
 ylabel("$n$", "FontSize", fontsize);
 
-set(gcf, 'Renderer', 'painters');
-% exportgraphics(gca, "/Users/michaelchen/UMich/Class/F25/Aero_481/Figures/Vn_mid.pdf", "ContentType", "vector");
+exportgraphics(gca, "/Users/michaelchen/UMich/Class/F25/Aero_481/Figures/Vn_mid.png", "Resolution", 1000);
 saveas(gcf, "/Users/michaelchen/UMich/Class/F25/Aero_481/Figures/Vn_mid.svg");
 
 %% Min
@@ -171,7 +175,7 @@ scatter(Vn.Vdash ./ 0.514444, ac.initial.max_g, 30, "k", "filled");
 % Dive
 scatter(Vn.Vdive ./ 0.514444, ac.initial.max_g, 30, "k", "filled");
 
-set(gcf, 'Units', 'Inches', 'Position', [8.097222222222221,6.861111111111111,width,height]);
+set(gcf, 'Units', 'Inches', 'Position', [8.097222222222221+width,6.861111111111111,width,height]);
 
 % Labels
 dn = 0.2;
@@ -180,8 +184,10 @@ text(Vn.Vb ./ 0.514444, Vn.n_rough+dn, "$V_B$", "FontSize", fontsize, "Horizonta
 text(Vn.Vdash ./ 0.514444, ac.initial.max_g+dn, "$V_C$", "FontSize", fontsize, "HorizontalAlignment", "right",  "VerticalAlignment", "bottom");
 text(Vn.Vdive ./ 0.514444, ac.initial.max_g+dn, "$V_D$", "FontSize", fontsize, "HorizontalAlignment", "right",  "VerticalAlignment", "bottom");
 
+text(20, 10, ["Minimum weight", "20,000 ft gusts"]);
+
 dn = 7;
-label_line(p1, 525, dn, "$V_B$ gust", "FontSize", fontsize);
+label_line(p1, 500, dn, "$V_B$ gust", "FontSize", fontsize);
 label_line(p2, 650, dn, "$V_C$ gust", "FontSize", fontsize);
 label_line(p3, 525, -dn, "$V_D$ gust", "FontSize", fontsize);
 
@@ -189,6 +195,5 @@ yline(0);
 xlabel("$V_\mathrm{EAS}$ (kts)", "FontSize", fontsize);
 ylabel("$n$", "FontSize", fontsize);
 
-set(gcf, 'Renderer', 'painters');
-% exportgraphics(gca, "/Users/michaelchen/UMich/Class/F25/Aero_481/Figures/Vn_min.pdf", "ContentType", "vector");
+exportgraphics(gca, "/Users/michaelchen/UMich/Class/F25/Aero_481/Figures/Vn_min.png", "Resolution", 1000);
 saveas(gcf, "/Users/michaelchen/UMich/Class/F25/Aero_481/Figures/Vn_min.svg");

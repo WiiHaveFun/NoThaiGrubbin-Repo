@@ -224,14 +224,14 @@ classdef drag_polar
             plot(M, CD_plot(5, :));
         end
 
-        function plot_polar(obj, h, M)
+        function plot_polar(obj, h, M, varargin)
             CD0 = get_CD0(obj, h, M);
             K = get_K(obj, M);
             CLmax = get_CLmax(obj);
 
             CL = linspace(0, CLmax, 100);
             CD = CD0 + K .* CL.^2;
-            plot(CD, CL);
+            plot(CD, CL, varargin{:});
         end
     end
 end

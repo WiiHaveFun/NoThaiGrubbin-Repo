@@ -3,7 +3,7 @@ set(groot, 'defaultAxesTickLabelInterpreter','latex');
 set(groot, 'defaultLegendInterpreter','latex');
 set(0,'defaultTextInterpreter','latex');
 fontsize = 10;
-width = 6.5;
+width = 4;
 height = 4;
 
 %% Weights and weight fractions
@@ -47,7 +47,7 @@ plot([M_limit, M_limit(end)], [turn_rate_limit, 0], "-b");
 clabel(C, h, "FontSize", fontsize, "Interpreter", "latex", "labelspacing", 1000);
 
 xlabel("Mach number", "FontSize", fontsize);
-ylabel("Turn rate (deg/s)", "FontSize", fontsize)f
+ylabel("Turn rate (deg/s)", "FontSize", fontsize);
 
 xlim([0.05, 1.4]);
 ylim([0, 20]);
@@ -63,6 +63,9 @@ for i = 1:length(R)
 end
 
 text(0.1, 17, {'10,000 ft', 'Maximum thrust', 'Combat weight'}, 'Interpreter', 'latex', 'FontSize', fontsize);
+
+saveas(gcf, "/Users/michaelchen/UMich/Class/F25/Aero_481/Figures/EM.svg");
+exportgraphics(gca, "/Users/michaelchen/UMich/Class/F25/Aero_481/Figures/EM.png", "Resolution", 1000);
 
 %% Functions
 function [M, turn_rate] = lift_limit(ac, W)

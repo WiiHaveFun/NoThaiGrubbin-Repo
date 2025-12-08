@@ -12,6 +12,8 @@ if __name__ == '__main__':
     x.add_system("AF", SUBOPT, r"\text{Airfoil Optimization}")
     x.add_system("tail", SUBOPT, r"\text{Tail Sizing}")
     x.add_system("AVL", FUNC, r"\text{AVL}")
+    x.add_system("CG", FUNC, r"\text{CG Estimation}")
+    x.add_system("gear", FUNC, r"\text{Landing Gear Sizing}")
     x.add_system("RFP", FUNC, r"\text{RFP Constraints}")
 
     # Processes
@@ -21,6 +23,7 @@ if __name__ == '__main__':
     x.add_process(["wing", "AF", "wing"], arrow=True)
     x.add_process(["wing", "RFP", "human"], arrow=True)
     x.add_process(["tail", "RFP", "human"], arrow=True)
+    x.add_process(["W", "CG", "gear", "W"], arrow=True)
 
     # Connections
     # Preliminary Sizing
@@ -49,6 +52,11 @@ if __name__ == '__main__':
     x.connect("wing", "RFP", r"y_\text{wing}")
     x.connect("tail", "RFP", r"y_\text{tail}")
     x.connect("RFP", "human", r"c_\text{RFP}")
+    # CG
+    x.connect("W", "CG", r"y_{\text{weights}}")
+    # Gear
+    x.connect("CG", "gear", r"y_{\text{CG}}")
+    x.connect("gear", "W", r"y_{\text{gear}}")
 
     # Outputs
     x.add_output("human", [r"x_{\text{aircraft}}^*", r"x_{\text{mission}}^*"], side=LEFT)
@@ -56,12 +64,14 @@ if __name__ == '__main__':
     x.add_output("wing", r"y_\text{wing}^*", side=LEFT)
     x.add_output("tail", r"y_\text{tail}^*", side=LEFT)
     x.add_output("AF", r"y_\text{airfoil}^*", side=LEFT)
+    x.add_output("CG", r"y_\text{CG}^*", side=LEFT)
+    x.add_output("gear", r"y_\text{gear}^*", side=LEFT)
 
     # x.add_input("W_TO", r"b, S_{ref}, \text{Mission Parameters}")
 
     # x.connect("W_TO", "D1", "x, z")
 
-    x.write("xdsm_pdr")
+    x.write("xdsm_cdr")
     # x.add_system("opt", OPT, r"\text{Optimizer}")
     # x.add_system("solver", SOLVER, r"\text{Newton}")
     # x.add_system("D1", FUNC, "D_1")
