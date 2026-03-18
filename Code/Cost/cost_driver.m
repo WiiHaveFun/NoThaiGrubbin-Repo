@@ -67,6 +67,67 @@ DOC_components = [
     cst.EFCW.surface_treat_per_FH * cst.MO.t_mis * cst.MO.N_mission % Surface treatment
     cst.MO.C_OPS / (cst.MO.N_yr * cst.MO.N_serv) % DOC per aircraft per year
 ];
+% 
+% fprintf("Misc cost per aircraft per year, %f", DOC_components(8) - DOC_components(1) - DOC_components(2) ...
+%      - DOC_components(4) - DOC_components(5) - DOC_components(6) - DOC_components(7)); 
 
-fprintf("Misc cost per aircraft per year, %f", DOC_components(8) - DOC_components(1) - DOC_components(2) ...
-     - DOC_components(4) - DOC_components(5) - DOC_components(6) - DOC_components(7)); 
+DOC_components = [
+    (((cst.MO.W_F_used * (cst.MO.FP / cst.MO.FD) * cst.MO.N_mission * cst.MO.N_serv * cst.MO.N_yr) ...
+    / (cst.MO.N_serv * cst.MO.N_yr * cst.MO.U_ann_flt)) * cst.MO.t_mis) ...
+    / ((cst.aux.mission_mix_a2a * N2lbs(ac.a2a.W_pay) * m2nmi(ac.a2a.R) * 2) + ((1 - cst.aux.mission_mix_a2a) * N2lbs(ac.strike.W_pay) * m2nmi(ac.strike.R) * 2)); %Fuel cost
+
+    ((( (cst.MO.F_OL - 1) * (cst.MO.W_F_used * (cst.MO.FP / cst.MO.FD)) * cst.MO.N_mission * cst.MO.N_serv * cst.MO.N_yr) ...
+    / (cst.MO.N_serv * cst.MO.N_yr * cst.MO.U_ann_flt)) * cst.MO.t_mis) ...
+    / ((cst.aux.mission_mix_a2a * N2lbs(ac.a2a.W_pay) * m2nmi(ac.a2a.R) * 2) + ((1 - cst.aux.mission_mix_a2a) * N2lbs(ac.strike.W_pay) * m2nmi(ac.strike.R) * 2)); % Oil Cost
+
+    (cst.MO.airframe_total / (cst.MO.N_yr * cst.MO.N_serv * cst.MO.U_ann_flt)) * cst.MO.t_mis ...
+    / ((cst.aux.mission_mix_a2a * N2lbs(ac.a2a.W_pay) * m2nmi(ac.a2a.R) * 2) + ((1 - cst.aux.mission_mix_a2a) * N2lbs(ac.strike.W_pay) * m2nmi(ac.strike.R) * 2)); % Aircraft
+
+    (cst.MO.engine_total / (cst.MO.N_yr * cst.MO.N_serv * cst.MO.U_ann_flt)) * cst.MO.t_mis ...
+    / ((cst.aux.mission_mix_a2a * N2lbs(ac.a2a.W_pay) * m2nmi(ac.a2a.R) * 2) + ((1 - cst.aux.mission_mix_a2a) * N2lbs(ac.strike.W_pay) * m2nmi(ac.strike.R) * 2)); % Engine
+
+    (cst.MO.C_crewpr / (cst.MO.N_yr * cst.MO.N_serv * cst.MO.U_ann_flt)) * cst.MO.t_mis ...
+     / ((cst.aux.mission_mix_a2a * N2lbs(ac.a2a.W_pay) * m2nmi(ac.a2a.R) * 2) + ((1 - cst.aux.mission_mix_a2a) * N2lbs(ac.strike.W_pay) * m2nmi(ac.strike.R) * 2)); % Crew cost
+
+    cst.EFCW.surface_treat_per_FH * cst.MO.t_mis ...
+    / ((cst.aux.mission_mix_a2a * N2lbs(ac.a2a.W_pay) * m2nmi(ac.a2a.R) * 2) + ((1 - cst.aux.mission_mix_a2a) * N2lbs(ac.strike.W_pay) * m2nmi(ac.strike.R) * 2));% Surface treatment
+
+    (cst.MO.C_OPS_HR * cst.MO.t_mis) / ((cst.aux.mission_mix_a2a * N2lbs(ac.a2a.W_pay) * m2nmi(ac.a2a.R) * 2) + ((1 - cst.aux.mission_mix_a2a) * N2lbs(ac.strike.W_pay) * m2nmi(ac.strike.R) * 2)); % DOC per lbm-nmi
+];
+
+fprintf("Misc cost per aircraft per year, %f", DOC_components(7) - DOC_components(1) - DOC_components(2) ...
+     - DOC_components(3) - DOC_components(4) - DOC_components(5) - DOC_components(6)); 
+
+% Total program production
+
+TPPC = [
+cst.aux.price_engine * cst.unit.N_m
+
+cst.EFCW.C_avionics * cst.unit.N_m
+
+cst.unit.C_man_m
+
+cst.unit.C_mat_m
+
+cst.unit.C_tool_m
+
+cst.unit.C_qc_m
+
+cst.unit.C_apc_m
+
+];
+% Flyaway cost
+
+TFC = [
+cst.unit.C_apc_m / cst.unit.N_m
+
+cst.unit.C_aed_m / cst.unit.N_m
+
+cst.unit.C_fto_m / cst.unit.N_m
+
+cst.unit.F_fin_m*cst.unit.C_MAN / cst.unit.N_m
+
+cst.unit.C_PRO / cst.unit.N_m
+
+cst.unit.AEP
+];

@@ -83,8 +83,8 @@ ylabel("$C_L$");
 
 set(gcf, 'Units', 'Inches', 'Position', [8.097222222222221,6.861111111111111,width,height]);
 
-saveas(gcf, "/Users/michaelchen/UMich/Class/F25/Aero_481/Figures/cdr_polar.svg");
-exportgraphics(gca, "/Users/michaelchen/UMich/Class/F25/Aero_481/Figures/cdr_polar.png", "Resolution", 1000);
+% saveas(gcf, "/Users/michaelchen/UMich/Class/F25/Aero_481/Figures/cdr_polar.svg");
+% exportgraphics(gca, "/Users/michaelchen/UMich/Class/F25/Aero_481/Figures/cdr_polar.png", "Resolution", 1000);
 
 %% Parasitic
 figure(2);

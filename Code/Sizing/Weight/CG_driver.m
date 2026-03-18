@@ -3,7 +3,7 @@ set(groot, 'defaultAxesTickLabelInterpreter','latex');
 set(groot, 'defaultLegendInterpreter','latex');
 set(0,'defaultTextInterpreter','latex');
 fontsize = 10;
-width = 4;
+width = 3;
 height = 4;
 
 %% Weights and weight fractions
